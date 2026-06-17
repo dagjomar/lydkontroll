@@ -1,0 +1,27 @@
+# Python helper artifacts
+__pycache__/
+*.py[cod]
+
+# JavaScript
+node_modules/
+dist/
+
+# Rust and Tauri
+target/
+src-tauri/target/
+
+# Local application and OS files
+.DS_Store
+*.log
+
+# Build outputs and signing material
+src-tauri/gen/
+*.app
+*.dmg
+*.key
+*.p12
+
+# User audio and local data
+*.mp3
+*.wav
+local-data/

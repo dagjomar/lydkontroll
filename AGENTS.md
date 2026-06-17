@@ -1,5 +1,35 @@
 # Repository Guidelines
 
+## Agent Startup Protocol
+
+This repository uses the workflow in `.agents/` as its durable project memory.
+At the beginning of every session:
+
+1. Read `PLAN.md`, `.agents/PROJECT.md`, and `.agents/STATE.md`.
+2. Run `python3 scripts/ralph.py status` and `python3 scripts/ralph.py next`.
+3. Read the selected task file and any linked plan or decision records.
+4. Claim planning work with
+   `python3 scripts/ralph.py claim TASK-NNN --owner "<agent/session>"`.
+5. Before implementation, start a `ready` task with
+   `python3 scripts/ralph.py start TASK-NNN --owner "<agent/session>"`.
+
+Do not begin a task whose dependencies are incomplete. If a task is marked
+`needs-planning`, create its linked plan from `.agents/plans/TEMPLATE.md`, resolve
+the open questions, then move it to `ready` for implementation or `done` if the
+task's entire outcome was the plan itself.
+
+Before ending a working session:
+
+1. Update the task's acceptance criteria, notes, and status.
+2. Update `.agents/STATE.md` if the current focus, blocker, or project-level
+   understanding changed.
+3. Append a concise entry to `.agents/PROGRESS.md`.
+4. Replace `.agents/HANDOFF.md` with the exact next action and useful context.
+5. Run `python3 scripts/ralph.py check`.
+
+Task files are the source of truth for backlog status. Do not maintain a
+separate hand-written backlog table.
+
 ## Project Structure & Module Organization
 
 This repository is currently in the planning stage; `PLAN.md` is the product and architecture source of truth. The intended implementation is a Tauri 2 desktop application with a React/TypeScript frontend and a Rust backend.
