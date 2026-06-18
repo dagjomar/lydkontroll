@@ -4,14 +4,14 @@ Last updated: 2026-06-18
 
 ## Phase
 
-Fail-closed Tailscale transport is complete; the reconnecting iPhone control
-interface is next.
+The reconnecting iPhone control interface is complete; event preflight and
+operator diagnostics are next.
 
 ## Current Focus
 
-Refine `TASK-008` around a mobile projection of the existing production
-frontend, visible connection/acknowledgement state, reconnect backoff, stale
-socket handling, and touch-safe cue/playback controls.
+Refine `TASK-009` around managed-file validation, Tailscale/server status,
+audio-output guidance, QR presentation, safe test playback, and blocking versus
+warning diagnostics.
 
 ## Working Software
 
@@ -41,6 +41,9 @@ A runnable Tauri 2 application with:
   for QR presentation;
 - hardware-free discovery, HTTP, WebSocket, bind-failure, reconnect, and
   graceful-shutdown coverage.
+- a dedicated iPhone Safari projection with touch-safe controls, persistent
+  connection/acknowledgement status, fresh-snapshot reconnects, stale-socket
+  guards, and duplicate in-flight action suppression.
 
 ## Known Blockers
 
@@ -55,9 +58,9 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-An iPhone Safari view renders the authoritative state, sends commands with
-visible acknowledgement status, reconnects from a fresh snapshot, and remains
-usable through mobile-network transitions without disrupting Mac playback.
+An event preflight view identifies blocking and warning conditions for managed
+files, Tailscale/control-server readiness, audio output, QR/mobile access, and
+safe test playback.
 
 ## Accepted Foundation
 

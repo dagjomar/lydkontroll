@@ -136,6 +136,7 @@ function createHarness(overrides: Partial<AppSnapshot> = {}): {
     return snapshot;
   });
   const api: DesktopApi = {
+    mode: "desktop",
     getSnapshot: vi.fn(async () => snapshot),
     getControlServerInfo: vi.fn(async () => null),
     execute,

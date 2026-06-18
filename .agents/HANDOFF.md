@@ -4,52 +4,43 @@ Updated: 2026-06-18
 
 ## What Just Happened
 
-`TASK-006` is complete. The app now discovers and validates one local Tailscale
-IPv4 address, fails closed, serves embedded production assets through Axum, and
-provides authoritative WebSocket snapshots and idempotent command
-acknowledgements without coupling transport health to local playback.
+`TASK-008` is complete. iPhone Safari now receives a dedicated touch-safe
+projection with visible connection and acknowledgement state, authoritative
+fresh-snapshot reconnects, stale-socket guards, and duplicate in-flight action
+suppression.
 
 ## Exact Next Action
 
-Refine `TASK-008` into a plan for the reconnecting iPhone projection, move it to
-`ready`, then implement the mobile control interface against `/ws`.
+Refine `TASK-009` into a plan for event preflight and operator diagnostics,
+move it to `ready`, then implement it.
 
 ```text
-python3 scripts/ralph.py claim TASK-008 --owner "<agent/session>"
+python3 scripts/ralph.py claim TASK-009 --owner "<agent/session>"
 ```
 
 ## Important Context
 
-- `adapters/network/discovery.rs` is the strict CLI/local-address boundary.
-  Production tries `tailscale` from `PATH`, the macOS app-bundle executable,
-  and `/usr/local/bin/tailscale`; packaged-path behavior still needs target-Mac
-  verification.
-- `adapters/network/server.rs` sends `{type:"snapshot"}` on connect, accepts
-  Rust-owned `CommandEnvelope` JSON, sends `{type:"acknowledgement"}`, then
-  publishes the current snapshot. Protocol errors are tagged and recoverable.
-- `src/services/desktopApi.ts` selects Tauri only when
-  `window.__TAURI_INTERNALS__` exists; ordinary Safari uses the WebSocket
-  adapter with command timeouts and reconnect backoff.
-- Frontend identifiers must use `createUuid` from `src/services/uuid.ts`; it
-  supports Safari versions without `crypto.randomUUID`.
-- Reconnect intentionally starts from a fresh full snapshot. There is no delta
-  replay; duplicate command IDs are handled by `ApplicationService`.
-- HTTP uses `TauriWebAssets`, backed by Tauri's embedded production
-  `frontendDist`. `TASK-008` should add a mobile-responsive projection to the
-  existing frontend build rather than introduce runtime asset files.
-- `get_control_server_info` returns the generated `ControlServerInfo` URL for
-  later QR rendering. `TASK-009` owns the full desktop preflight/QR view and
-  periodic Tailscale re-probing.
-- Network adapter tests bind temporary loopback ports and may require elevated
-  sandbox permission. They never bind a non-loopback address in tests.
+- `AppSnapshot.preflight` already contains control-server, audio-output, and
+  audio-file readiness facts, but `TASK-009` must refine how they are refreshed
+  and presented as blocking failures versus warnings.
+- `get_control_server_info` exposes the mobile URL. `TASK-009` owns desktop QR
+  presentation and periodic Tailscale re-probing/rebind orchestration.
+- Managed storage already validates imports and missing files on load. Preflight
+  must identify affected cues rather than duplicate persistence ownership.
+- macOS output naming may not be available through the current CPAL boundary;
+  the task explicitly permits a clear manual verification step.
+- Keep safe test playback on the shared command path and do not weaken the
+  fail-closed Tailscale bind policy.
+- Real iPhone transitions, packaged CLI paths, analog output, and output
+  switching/loss remain release-rehearsal gates.
 
 ## Validation to Run
 
 ```text
-cargo test --manifest-path src-tauri/Cargo.toml
 npm test -- --run
 npm run build
 npm run lint
+cargo test --manifest-path src-tauri/Cargo.toml
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next
 ```

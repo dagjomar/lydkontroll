@@ -306,6 +306,176 @@ h1 {
   max-width: 30rem;
 }
 
+.mobile-shell {
+  width: min(44rem, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: max(1rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-right))
+    max(1.5rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
+}
+
+.mobile-loading {
+  display: grid;
+  align-content: center;
+  gap: 1.5rem;
+}
+
+.mobile-header {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mobile-header h1 {
+  font-size: clamp(2.8rem, 15vw, 4.8rem);
+}
+
+.mobile-status {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 0.9rem;
+  background: #211e1b;
+  font-size: 0.78rem;
+}
+
+.mobile-status > span:last-child {
+  overflow: hidden;
+  color: #bdb4a8;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.connection-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #d5a14e;
+  box-shadow: 0 0 0.8rem currentColor;
+}
+
+.connection-dot.connected {
+  color: #79c58d;
+  background: currentColor;
+}
+
+.connection-dot.reconnecting {
+  color: #e5a85a;
+  background: currentColor;
+}
+
+.mobile-master,
+.mobile-active {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 1rem;
+  background: rgb(28 25 22 / 92%);
+}
+
+.mobile-master label {
+  font-size: 0.9rem;
+}
+
+.mobile-master input[type="range"] {
+  min-height: 3rem;
+}
+
+.mobile-emergency {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.mobile-emergency button {
+  min-height: 4rem;
+  font-size: 1rem;
+}
+
+.mobile-active h2 {
+  font-size: 1.25rem;
+}
+
+.mobile-active article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.mobile-active article span {
+  overflow: hidden;
+  color: #a9d5b5;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-active button {
+  min-height: 3rem;
+}
+
+.mobile-scenes {
+  display: flex;
+  gap: 0.55rem;
+  margin: 0 -1rem 1rem;
+  padding: 0 1rem 0.3rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mobile-scenes button {
+  min-height: 3.2rem;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.mobile-scenes button.selected {
+  color: #1b130e;
+  background: #e0a77f;
+}
+
+.mobile-cues {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.mobile-cue {
+  display: grid;
+  gap: 0.45rem;
+  align-content: center;
+  min-height: 8.5rem;
+  padding: 1rem;
+  border-width: 0.25rem;
+  background: #211e1b;
+  text-align: left;
+  touch-action: manipulation;
+}
+
+.mobile-cue span {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.2rem, 5vw, 1.65rem);
+}
+
+.mobile-cue small {
+  color: #afa69b;
+}
+
+.mobile-cue.active {
+  background: rgb(72 112 82 / 42%);
+  box-shadow: inset 0 0 0 2px rgb(121 197 141 / 45%);
+}
+
 @media (max-width: 760px) {
   .topbar {
     align-items: flex-start;
@@ -328,5 +498,11 @@ h1 {
   .scene-list,
   .editor {
     min-height: auto;
+  }
+}
+
+@media (max-width: 390px) {
+  .mobile-cues {
+    grid-template-columns: 1fr;
   }
 }

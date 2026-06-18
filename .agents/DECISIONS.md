@@ -173,3 +173,22 @@ sequential ID and link the relevant task or plan.
 - **Alternatives:** React-owned persistence was rejected because it duplicates
   authoritative state. Publishing edits before saving was rejected because
   playback could reference data that does not survive restart.
+
+## ADR-010: Project mobile controls from fresh WebSocket snapshots
+
+- **Date:** 2026-06-18
+- **Status:** accepted
+- **Task:** TASK-008
+- **Context:** The embedded production frontend serves both Tauri and iPhone
+  Safari. Mobile controls need visible connection certainty without becoming a
+  second owner of playback state.
+- **Decision:** Select a dedicated read-only mobile projection outside Tauri.
+  Expose connection state from the WebSocket adapter, invalidate cached state
+  on disconnect, accept the fresh snapshot from each new socket generation,
+  ignore stale socket events, and suppress duplicate in-flight UI actions.
+- **Consequences:** Safari always presents Rust-owned state and explicit
+  connection/acknowledgement status. Mobile editing and automatic command retry
+  remain out of scope; real network transitions still require rehearsal.
+- **Alternatives:** Reusing the desktop editor was rejected as unsafe and
+  touch-hostile. Keeping stale snapshots active while reconnecting was rejected
+  because operators could mistake old playback state for current state.

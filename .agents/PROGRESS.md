@@ -136,3 +136,17 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   ESLint, Prettier, generated bindings, rustfmt, and Clippy.
 - Added and tested a UUID-v4 fallback for Safari versions where
   `crypto.randomUUID` is unavailable.
+
+## 2026-06-18 — Reconnecting iPhone controls completed
+
+- Accepted ADR-010 and the `TASK-008` plan for a dedicated Safari projection
+  driven only by fresh authoritative WebSocket snapshots.
+- Added touch-safe scene/cue controls, active playback actions, master volume,
+  stop/fade-all controls, and persistent connection/acknowledgement status.
+- Invalidated cached state on disconnect, guarded replaced socket generations,
+  and suppressed duplicate actions while acknowledgements are pending.
+- Added component and adapter tests for disconnect, reconnect, stale sockets,
+  authoritative replacement, and duplicate taps.
+- Validated Vitest, production build, lint, Ralph metadata, diff hygiene, and a
+  390x844 rendered cue interaction.
+- Next: refine and implement `TASK-009` event preflight and diagnostics.

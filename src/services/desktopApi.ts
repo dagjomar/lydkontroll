@@ -9,14 +9,21 @@ import type { ManagedAudioFile } from "../generated/ManagedAudioFile";
 import { createUuid } from "./uuid";
 
 export interface DesktopApi {
+  mode: "desktop" | "mobile";
   getSnapshot(): Promise<AppSnapshot>;
   getControlServerInfo(): Promise<ControlServerInfo | null>;
   execute(command: Command): Promise<CommandAck>;
   saveLibrary(library: CueLibrary): Promise<AppSnapshot>;
   importAudio(): Promise<ManagedAudioFile | null>;
+  subscribeConnection?(
+    listener: (status: ConnectionStatus) => void,
+  ): () => void;
 }
 
+export type ConnectionStatus = "connecting" | "connected" | "reconnecting";
+
 const tauriDesktopApi: DesktopApi = {
+  mode: "desktop",
   getSnapshot() {
     return invoke<AppSnapshot>("get_snapshot");
   },
@@ -48,12 +55,15 @@ const tauriDesktopApi: DesktopApi = {
   },
 };
 
+const previewMode = new URLSearchParams(window.location.search).get("preview");
 export const desktopApi =
-  new URLSearchParams(window.location.search).get("preview") === "1"
-    ? createPreviewApi()
-    : isTauriRuntime()
-      ? tauriDesktopApi
-      : createRemoteApi();
+  previewMode === "mobile"
+    ? createPreviewApi("mobile")
+    : previewMode === "1"
+      ? createPreviewApi("desktop")
+      : isTauriRuntime()
+        ? tauriDesktopApi
+        : createRemoteApi();
 
 function isTauriRuntime(): boolean {
   return "__TAURI_INTERNALS__" in window;
@@ -64,11 +74,13 @@ type ServerMessage =
   | { type: "acknowledgement"; acknowledgement: CommandAck }
   | { type: "protocolError"; message: string };
 
-function createRemoteApi(): DesktopApi {
+export function createRemoteApi(): DesktopApi {
   let socket: WebSocket | null = null;
   let snapshot: AppSnapshot | null = null;
   let reconnectTimer: number | null = null;
   let reconnectDelayMs = 250;
+  let connectionStatus: ConnectionStatus = "connecting";
+  const connectionListeners = new Set<(status: ConnectionStatus) => void>();
   const snapshotWaiters = new Set<{
     resolve: (value: AppSnapshot) => void;
     reject: (reason: Error) => void;
@@ -90,15 +102,23 @@ function createRemoteApi(): DesktopApi {
       return socket;
     }
     const scheme = window.location.protocol === "https:" ? "wss:" : "ws:";
-    socket = new WebSocket(`${scheme}//${window.location.host}/ws`);
-    socket.addEventListener("open", () => {
+    const nextSocket = new WebSocket(`${scheme}//${window.location.host}/ws`);
+    socket = nextSocket;
+    nextSocket.addEventListener("open", () => {
+      if (socket !== nextSocket) {
+        return;
+      }
       reconnectDelayMs = 250;
     });
-    socket.addEventListener("message", (event) => {
+    nextSocket.addEventListener("message", (event) => {
+      if (socket !== nextSocket) {
+        return;
+      }
       try {
         const message = JSON.parse(String(event.data)) as ServerMessage;
         if (message.type === "snapshot") {
           snapshot = message.snapshot;
+          setConnectionStatus("connected");
           for (const waiter of snapshotWaiters) {
             waiter.resolve(message.snapshot);
           }
@@ -121,8 +141,13 @@ function createRemoteApi(): DesktopApi {
         rejectAll(new Error("Mac-en sendte et ugyldig svar."));
       }
     });
-    socket.addEventListener("close", () => {
+    nextSocket.addEventListener("close", () => {
+      if (socket !== nextSocket) {
+        return;
+      }
       socket = null;
+      snapshot = null;
+      setConnectionStatus("reconnecting");
       rejectAll(new Error("Forbindelsen til Mac-en ble brutt."));
       if (reconnectTimer === null) {
         reconnectTimer = window.setTimeout(() => {
@@ -132,10 +157,22 @@ function createRemoteApi(): DesktopApi {
         reconnectDelayMs = Math.min(reconnectDelayMs * 2, 5000);
       }
     });
-    socket.addEventListener("error", () => {
-      socket?.close();
+    nextSocket.addEventListener("error", () => {
+      if (socket === nextSocket) {
+        nextSocket.close();
+      }
     });
-    return socket;
+    return nextSocket;
+  }
+
+  function setConnectionStatus(status: ConnectionStatus) {
+    if (status === connectionStatus) {
+      return;
+    }
+    connectionStatus = status;
+    for (const listener of connectionListeners) {
+      listener(status);
+    }
   }
 
   function rejectAll(error: Error) {
@@ -161,7 +198,13 @@ function createRemoteApi(): DesktopApi {
   }
 
   return {
+    mode: "mobile",
     getSnapshot,
+    subscribeConnection(listener) {
+      connectionListeners.add(listener);
+      listener(connectionStatus);
+      return () => connectionListeners.delete(listener);
+    },
     async getControlServerInfo() {
       return {
         address: window.location.hostname,
@@ -205,11 +248,44 @@ function createRemoteApi(): DesktopApi {
   };
 }
 
-function createPreviewApi(): DesktopApi {
+function createPreviewApi(mode: "desktop" | "mobile"): DesktopApi {
   let snapshot: AppSnapshot = {
     revision: 0,
-    scenes: [],
-    audioFiles: [],
+    scenes: [
+      {
+        id: "preview-scene",
+        name: "Middag",
+        cues: [
+          {
+            id: "preview-intro",
+            name: "Introduksjon",
+            color: "#d88c68",
+            audioFileId: "preview-audio",
+            volume: 0.8,
+            mode: "overlap",
+            fadeMs: 500,
+          },
+          {
+            id: "preview-dance",
+            name: "Første dans",
+            color: "#7f9c87",
+            audioFileId: "preview-audio",
+            volume: 0.9,
+            mode: "exclusive",
+            fadeMs: 1000,
+          },
+        ],
+      },
+    ],
+    audioFiles: [
+      {
+        id: "preview-audio",
+        fileName: "preview.wav",
+        originalName: "forhandsvisning.wav",
+        format: "wav",
+        byteLength: 44,
+      },
+    ],
     activePlayback: [],
     pendingCueId: null,
     masterVolume: 1,
@@ -221,6 +297,11 @@ function createPreviewApi(): DesktopApi {
     errors: [],
   };
   return {
+    mode,
+    subscribeConnection(listener) {
+      listener("connected");
+      return () => undefined;
+    },
     async getSnapshot() {
       return snapshot;
     },
