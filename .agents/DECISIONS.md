@@ -234,3 +234,26 @@ sequential ID and link the relevant task or plan.
 - **Alternatives:** React-owned file and network checks were rejected because
   they duplicate adapter truth. Treating manual output verification as ready
   was rejected because it hides an event-critical human check.
+
+## ADR-013: Gate the local release with recorded target-hardware rehearsal
+
+- **Date:** 2026-06-18
+- **Status:** accepted
+- **Task:** TASK-010
+- **Context:** The event uses one known Apple Silicon Mac, iPhone, Tailscale
+  accounts, and analog output. Several critical behaviors cannot be accepted
+  through mocks, while signing/notarization would add credentials and
+  distribution scope that the known-Mac workflow does not require.
+- **Decision:** Build an unsigned local `.app` from committed npm/Cargo locks,
+  record its commit, version, path, and SHA-256, then gate release on a
+  documented 60-minute rehearsal using the production cue library and exact
+  event hardware. Deliberately exercise phone, cellular/Tailscale, Mac network,
+  and analog-output loss. Use local Mac control as the primary mobile/network
+  fallback and keep the previous rehearsed build until its replacement passes.
+- **Consequences:** Release evidence is reproducible and tied to one artifact,
+  and hardware-only risks remain visible instead of being implied by automated
+  tests. The app is not prepared for public distribution and may require local
+  Gatekeeper approval if moved to a different Mac.
+- **Alternatives:** An informal final check was rejected because it provides no
+  stable gates or evidence. Signing and notarization were deferred because they
+  require Apple credentials without improving the agreed known-event-Mac path.

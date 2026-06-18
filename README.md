@@ -3,9 +3,9 @@
 Tauri 2 application for reliable local wedding audio playback, with a
 React/TypeScript interface and a Rust-owned application core.
 
-The current implementation is the tested application shell. Cue persistence,
-audio playback, authoritative command state, and Tailscale control arrive in
-the dependency-ordered tasks under `.agents/tasks/`.
+The current implementation includes managed cue persistence/import,
+deterministic local playback, desktop editing, reconnecting iPhone control over
+Tailscale, and event preflight diagnostics.
 
 ## Prerequisites
 
@@ -51,3 +51,16 @@ npm run bindings:check
 ```
 
 Do not edit generated TypeScript files by hand.
+
+## Release candidate
+
+Build and validate an Apple Silicon `.app`:
+
+```bash
+npm ci
+npm run release:build
+```
+
+Use [RELEASE_RUNBOOK.md](RELEASE_RUNBOOK.md) to record build identity, complete
+the target-hardware rehearsal, recover from event-day failures, and operate the
+rehearsed release.

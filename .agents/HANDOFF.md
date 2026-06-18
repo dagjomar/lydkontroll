@@ -4,33 +4,41 @@ Updated: 2026-06-18
 
 ## What Just Happened
 
-`TASK-009` is complete. The Mac now has a single preflight view for managed
-files, audio-output guidance, Tailscale/control-server readiness, mobile URL/QR
-access, and an instance-scoped three-second test play. ADR-012 records the
-Rust-owned readiness boundary.
+`TASK-010` release automation and documentation are implemented. The complete
+release gate passes and builds a 5.2 MB Apple Silicon `Lydkontroll.app`.
+ADR-013 and `RELEASE_RUNBOOK.md` define exact evidence, failure injection,
+recovery, and event-day operation.
 
 ## Exact Next Action
 
-Claim and refine release rehearsal and recovery into an implementation-ready
-plan.
+On the target event Mac with the iPhone, production cue library, Tailscale
+accounts, and analog output, build the committed candidate and complete
+`RELEASE_RUNBOOK.md`. Copy its rehearsal-record template to
+`.agents/REHEARSAL.md` and fill every field.
 
 ```text
-python3 scripts/ralph.py claim TASK-010 --owner "<agent/session>"
+npm ci
+npm run release:build
 ```
+
+If every manual gate passes, mark the final two `TASK-010` acceptance criteria
+complete, set the task to `done`, update state/progress/handoff, validate, and
+commit the rehearsal record.
 
 ## Important Context
 
-- `TASK-010` dependencies are complete, but its linked plan is still a
-  placeholder with unresolved rehearsal hardware, pass/fail, evidence, and
-  recovery details.
-- Preflight warnings are manual checks; unavailable statuses are blockers.
-- Output selection remains a manual macOS System Settings step.
-- Real packaged Tailscale discovery, iPhone network transitions, analog output,
-  and output-loss recovery remain rehearsal gates.
+- The current automated build is arm64 and ad-hoc signed; no Apple signing
+  credentials are required for the known event Mac.
+- The release bundle and local audio/data remain ignored and must not be
+  committed.
+- Network tests need permission to bind temporary loopback ports.
+- Mac-local control is the fallback for any phone/network failure. Do not
+  restart the app during active audio.
 
 ## Validation to Run
 
 ```text
+npm run release:build
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next
 git diff --check

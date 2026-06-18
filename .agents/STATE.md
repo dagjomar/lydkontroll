@@ -4,13 +4,13 @@ Last updated: 2026-06-18
 
 ## Phase
 
-Event preflight and operator diagnostics are complete; release hardening,
-packaging, and rehearsal planning are next.
+Release automation, Apple Silicon packaging, rehearsal planning, recovery, and
+event-day operating guidance are complete. Target-hardware rehearsal remains.
 
 ## Current Focus
 
-Refine `TASK-010` into a reproducible release, rehearsal, recovery, and
-event-day operator plan.
+Run the `TASK-010` rehearsal on the event Mac/iPhone/analog-output setup and
+record the result against the exact committed build.
 
 ## Working Software
 
@@ -47,10 +47,16 @@ A runnable Tauri 2 application with:
 - a desktop preflight panel with Rust-refreshed managed-file and control-server
   facts, cue-specific missing-file blockers, manual output warnings, mobile
   URL/QR presentation, and instance-scoped three-second test playback.
+- a single `npm run release:build` gate covering frontend/Rust validation,
+  tracked private-artifact checks, and an Apple Silicon `.app` bundle;
+- a release runbook with build identity, 60-minute failure-injection rehearsal,
+  recovery procedures, and event-day checklists.
 
 ## Known Blockers
 
 - No current implementation blocker.
+- `TASK-010` cannot finish without a manual rehearsal using the target event
+  Mac, iPhone on cellular/Tailscale, production cue library, and analog output.
 - Network tests need permission to bind temporary loopback ports in restricted
   environments.
 - Native Tauri desktop WebDriver remains unavailable on macOS; use
@@ -61,8 +67,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-A reproducible Apple Silicon build, rehearsal matrix, recovery guide, and
-event-day checklist are completed through `TASK-010`.
+The exact committed release candidate passes the recorded target-hardware
+rehearsal and `TASK-010` is closed.
 
 ## Accepted Foundation
 
@@ -87,3 +93,4 @@ event-day checklist are completed through `TASK-010`.
 - keeping desktop, mobile, and Rust state/protocol definitions synchronized;
 - macOS analog output behavior and fade correctness under overlapping playback;
 - ensuring imported files survive source-file moves and app restarts.
+- preserving the identity and checksum of the exact rehearsed build.

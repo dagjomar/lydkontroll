@@ -218,3 +218,19 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Validated Vitest, Cargo tests, production build, ESLint, Prettier, generated
   bindings, rustfmt, Clippy, Ralph metadata, and diff hygiene.
 - Next: refine `TASK-010` release rehearsal and recovery planning.
+
+## 2026-06-18 — Release automation and runbook completed
+
+- Accepted ADR-013 and the `TASK-010` plan for a locked local Apple Silicon
+  build gated by recorded target-hardware rehearsal.
+- Added one `npm run release:build` command for frontend/Rust checks, tracked
+  private-artifact validation, and Tauri packaging.
+- Enabled `.app` bundling and fixed the macOS icon requirement with a generated
+  `.icns`; the resulting 5.2 MB bundle contains a thin arm64 executable.
+- Added build identity, 60-minute failure-injection rehearsal, recovery, and
+  event-day checklists in `RELEASE_RUNBOOK.md`.
+- Validated the complete release command, all Rust/frontend tests, Clippy,
+  formatting, generated bindings, tracked-file safety, Ralph metadata, and
+  diff hygiene.
+- Next: run and record the rehearsal on the event Mac, iPhone cellular/Tailscale
+  path, production cue library, and analog output.
