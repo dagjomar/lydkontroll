@@ -4,38 +4,45 @@ Updated: 2026-06-18
 
 ## What Just Happened
 
-`TASK-003` was completed. Rust now owns a schema-v1 cue library, atomic
-save/backup/recovery, managed MP3/WAV import with decoder validation, and typed
-recoverable storage errors. All automated validation passes.
+`TASK-004` was completed. Playback semantics now live in a deterministic
+application-owned engine, with a fake-backend test suite and a Kira 0.12/CPAL
+adapter for managed MP3/WAV streaming through the macOS default output.
 
 ## Exact Next Action
 
-Claim `TASK-004` for planning, replace its placeholder plan with explicit
-playback ordering/fade decisions, and move the task to `ready` once its ready
-checklist is satisfied.
+Claim `TASK-005` for refinement. Resolve the service ownership, bounded
+deduplication, polling, revision, and error-publication details in its task
+notes or a linked plan, move it to `ready`, then start implementation.
 
 ```text
-python3 scripts/ralph.py claim TASK-004 --owner "<agent/session>"
+python3 scripts/ralph.py claim TASK-005 --owner "<agent/session>"
 ```
 
 ## Important Context
 
-- Follow ADR-001: Kira/CPAL stays behind `AudioBackend`; deterministic ordering
-  belongs to an application-owned state machine tested with fakes.
-- `CueLibrary`, `Cue`, `CueMode`, and managed audio metadata now live in
-  `src-tauri/src/domain/mod.rs`.
-- Production audio paths must resolve from managed filenames beneath the
-  repository's `audio/` directory; source paths are deliberately unavailable.
-- Resolve exclusive transition ordering, retrigger cancellation, fade
-  completion, output-loss behavior, and state publication before implementation.
-- Do not add command deduplication, Axum, Tailscale, or UI behavior in
-  `TASK-004`.
+- `PlaybackEngine<B>` in `src-tauri/src/application/mod.rs` requires mutable
+  serialized access and owns active/pending playback state.
+- `AudioBackend` in `src-tauri/src/ports/mod.rs` is the only playback adapter
+  boundary; transports must never invoke Kira directly.
+- Retrigger stops the old same-cue instance immediately. Exclusive cues wait
+  for all active configured fades to complete, and a newer pending exclusive
+  replaces the old request.
+- `poll()` converts backend completion/failure into engine events and may start
+  a pending exclusive cue. `TASK-005` must serialize polling with commands and
+  increment revisions for resulting state changes.
+- Managed paths must be resolved from persistence metadata beneath the
+  repository audio directory before constructing `CuePlaybackRequest`.
+- Keep Tauri/Axum adapters thin. Tailscale and WebSocket behavior remain
+  `TASK-006`.
+- Real analog playback and output-loss recovery remain documented target-Mac
+  rehearsal gates rather than automated proof.
 
 ## Validation to Run
 
 ```text
 cargo test --manifest-path src-tauri/Cargo.toml
-npm run bindings:check
+npm test -- --run
+npm run build
 npm run lint
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next

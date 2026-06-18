@@ -46,3 +46,18 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Validated Rust/frontend tests, frontend build, bindings, formatting, lint,
   Clippy, and Ralph metadata.
 - Next: refine the `TASK-004` audio-engine plan and move it to `ready`.
+
+## 2026-06-18 — Deterministic local audio playback completed
+
+- Accepted explicit retrigger, exclusive-barrier, cancellation, fade,
+  completion, and failure semantics in the `TASK-004` plan and ADR-007.
+- Added an application-owned `PlaybackEngine` plus narrow `AudioBackend` port,
+  with eleven fake-backend tests independent of React, networking, clocks, and
+  audio hardware.
+- Added the Kira 0.12/CPAL production adapter for managed streaming MP3/WAV,
+  per-cue/master volume, linear stop tweens, decoder failures, and completion
+  polling.
+- Documented the target-Mac analog/output-loss rehearsal and validated Rust and
+  frontend tests, build, bindings, formatting, ESLint, and Clippy.
+- Next: implement `TASK-005` authoritative commands, revisions,
+  deduplication, and snapshots around the playback engine.

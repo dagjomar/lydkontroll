@@ -108,3 +108,25 @@ sequential ID and link the relevant task or plan.
 - **Alternatives:** Tauri desktop WebDriver on macOS is unavailable. UI-only
   tests were rejected because they cannot validate audio, persistence, or bind
   safety.
+
+## ADR-007: Serialize playback semantics above Kira
+
+- **Date:** 2026-06-18
+- **Status:** accepted
+- **Task:** TASK-004
+- **Context:** Kira provides playback handles and tweens but does not define
+  wedding-specific overlap, exclusive, retrigger, or authoritative-state rules.
+- **Decision:** Own these rules in a mutable `PlaybackEngine` behind a narrow
+  `AudioBackend` port. Retrigger immediately stops the old cue instance;
+  exclusive playback starts only after every active instance completes its
+  configured fade; a newer pending exclusive supersedes the older request; and
+  backend completion events finalize state.
+- **Consequences:** Ordering is deterministic under hardware-free tests, and
+  the future application service can serialize commands around this engine.
+  Kira remains responsible for decoding, mixing, CPAL output, and sample-level
+  linear tweens. Real analog output and output-loss recovery remain release
+  rehearsal gates.
+- **Alternatives:** Encoding product rules directly in Kira handles was
+  rejected because it couples authoritative state to an adapter. Timer-based
+  fade completion was rejected because wall-clock guesses can diverge from the
+  actual audio backend.
