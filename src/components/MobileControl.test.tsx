@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 import type { AppSnapshot } from "../generated/AppSnapshot";
@@ -116,6 +116,54 @@ test("keeps the playback region mounted while playback starts and stops", async 
     playbackRegion,
   );
   expect(screen.getByRole("button", { name: /Første dans/ })).toBe(cue);
+});
+
+test.each(["overlay", "controls", "tabs"] as const)(
+  "keeps shared cue commands functional in the %s prototype",
+  async (layout) => {
+    const user = userEvent.setup();
+    const harness = createHarness();
+    render(
+      <MobileControl api={harness.api} pollIntervalMs={0} layout={layout} />,
+    );
+
+    await user.click(
+      await screen.findByRole("button", { name: /Første dans/ }),
+    );
+
+    expect(harness.execute).toHaveBeenCalledWith({
+      type: "triggerCue",
+      cueId: "cue-1",
+    });
+    cleanup();
+  },
+);
+
+test("switches between all preview layouts without changing checkout", async () => {
+  const user = userEvent.setup();
+  const previousUrl = window.location.href;
+  window.history.replaceState({}, "", "/?layout=overlay");
+  const harness = createHarness();
+  render(<MobileControl api={harness.api} pollIntervalMs={0} />);
+
+  expect(await screen.findByTestId("mobile-layout-root")).toHaveAttribute(
+    "data-mobile-layout",
+    "overlay",
+  );
+  await user.click(screen.getByRole("button", { name: "2 · Cues først" }));
+  expect(screen.getByTestId("mobile-layout-root")).toHaveAttribute(
+    "data-mobile-layout",
+    "controls",
+  );
+  await user.click(screen.getByRole("button", { name: "3 · Faner" }));
+  expect(screen.getByTestId("mobile-layout-root")).toHaveAttribute(
+    "data-mobile-layout",
+    "tabs",
+  );
+  await user.click(screen.getByRole("button", { name: "Status" }));
+  expect(screen.getByRole("region", { name: "Status og valg" })).toBeVisible();
+
+  window.history.replaceState({}, "", previousUrl);
 });
 
 const baseSnapshot: AppSnapshot = {

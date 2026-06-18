@@ -4,13 +4,13 @@ Last updated: 2026-06-18
 
 ## Phase
 
-The reconnecting iPhone control interface and stable mobile cue layout are
-complete; event preflight planning is next.
+Three functional iPhone layout prototypes are ready for operator comparison
+before one becomes the production layout.
 
 ## Current Focus
 
-Refine `TASK-009` into an implementation-ready event preflight and operator
-diagnostics slice.
+Choose between `overlay`, `controls`, and `tabs` for `TASK-013`. Event preflight
+planning resumes after the production mobile layout is selected.
 
 ## Working Software
 
@@ -44,6 +44,9 @@ A runnable Tauri 2 application with:
   connection/acknowledgement status, fresh-snapshot reconnects, stale-socket
   guards, duplicate in-flight action suppression, a fixed-height playback
   status region, and stable cue positions across playback changes.
+- three query-selectable, functional iPhone layout prototypes sharing the real
+  command/state path: expanding overlay, cue-first controls-below, and
+  cues/status tabs.
 
 ## Known Blockers
 
@@ -58,9 +61,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-The operator can verify control-server readiness, managed audio, output
-expectations, mobile access, and safe test playback before the event through
-`TASK-009`.
+Promote the operator-selected iPhone prototype through `TASK-013`, then refine
+`TASK-009` event preflight around the space and navigation that choice creates.
 
 ## Accepted Foundation
 
@@ -82,6 +84,7 @@ expectations, mobile access, and safe test playback before the event through
 
 - packaged macOS visibility of the Tailscale CLI;
 - Safari reconnect behavior during real Wi-Fi/mobile transitions;
+- final choice among the overlay, cue-first, and tabbed iPhone layouts;
 - keeping desktop, mobile, and Rust state/protocol definitions synchronized;
 - macOS analog output behavior and fade correctness under overlapping playback;
 - ensuring imported files survive source-file moves and app restarts.

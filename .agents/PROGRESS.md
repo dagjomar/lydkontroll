@@ -173,3 +173,17 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Validated Vitest, production build, ESLint, Prettier, generated bindings,
   rustfmt, Clippy, Ralph metadata, and diff hygiene.
 - Next: refine `TASK-009` event preflight and operator diagnostics.
+
+## 2026-06-18 — Three iPhone layout prototypes completed
+
+- Added one-checkout query-selectable prototypes for an expanding now-playing
+  overlay, cue-first controls below the cues, and separate cues/status tabs.
+- Kept all variants on the same snapshot, WebSocket, command, acknowledgement,
+  and reconnect path; query options also work against the real iPhone URL.
+- Added a bottom comparison switcher, shared-command/layout tests, and a short
+  operator guide in `MOBILE_LAYOUT_PROTOTYPES.md`.
+- Reviewed all three at 390x844 with three active playback rows. Overlay
+  maximized space, cue-first prioritized cue access but required scrolling for
+  global controls, and tabs separated operation from setup most cleanly.
+- Next: operator selects or combines a prototype, then `TASK-013` promotes it
+  to the production layout before preflight work resumes.
