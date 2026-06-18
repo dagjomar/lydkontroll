@@ -1,8 +1,23 @@
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 
-const bindingPath = new URL("../src/generated/AppMode.ts", import.meta.url);
-const before = await readFile(bindingPath, "utf8");
+const bindingDirectory = new URL("../src/generated/", import.meta.url);
+
+async function snapshotBindings() {
+  const names = (await readdir(bindingDirectory))
+    .filter((name) => name.endsWith(".ts"))
+    .sort();
+  return new Map(
+    await Promise.all(
+      names.map(async (name) => [
+        name,
+        await readFile(new URL(name, bindingDirectory), "utf8"),
+      ]),
+    ),
+  );
+}
+
+const before = await snapshotBindings();
 const result = spawnSync(
   "cargo",
   ["test", "--manifest-path", "src-tauri/Cargo.toml", "export_bindings"],
@@ -18,9 +33,12 @@ if (result.status !== 0) {
   process.exit(result.status ?? 1);
 }
 
-const after = await readFile(bindingPath, "utf8");
+const after = await snapshotBindings();
 
-if (before !== after) {
+if (
+  before.size !== after.size ||
+  [...before].some(([name, contents]) => after.get(name) !== contents)
+) {
   process.stderr.write(
     "Generated TypeScript bindings were stale and have been refreshed. Review and commit the changes.\n",
   );

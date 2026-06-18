@@ -31,3 +31,18 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Validated all automated commands and launched the native macOS app; the user
   visually confirmed the shell.
 - Next: implement `TASK-003` persistence and managed audio import.
+
+## 2026-06-18 — Persistence and managed audio import completed
+
+- Added schema-v1 scene, cue, and managed-audio Rust contracts with committed
+  ts-rs TypeScript output and whole-directory drift detection.
+- Implemented atomic JSON save/backup/recovery and injected app-data paths with
+  Tauri resolution kept at the adapter boundary.
+- Added staged MP3/WAV import with Symphonia frame decoding, fsync, UUID-backed
+  managed filenames, and no persisted source paths.
+- Added typed recovery errors and nine integration tests covering both formats,
+  round trips, corruption, future schemas, interrupted writes, missing files,
+  invalid references, and staging cleanup.
+- Validated Rust/frontend tests, frontend build, bindings, formatting, lint,
+  Clippy, and Ralph metadata.
+- Next: refine the `TASK-004` audio-engine plan and move it to `ready`.

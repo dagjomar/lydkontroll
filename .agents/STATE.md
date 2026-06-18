@@ -4,12 +4,12 @@ Last updated: 2026-06-18
 
 ## Phase
 
-Foundation complete; persistence implementation is next.
+Persistence vertical slice complete; audio-engine planning is next.
 
 ## Current Focus
 
-Start `TASK-003`: implement versioned cue/scene persistence and managed MP3/WAV
-import using the accepted storage architecture.
+Refine the linked `TASK-004` audio-engine plan, resolve deterministic ordering
+and fade semantics, then move the task to `ready`.
 
 ## Working Software
 
@@ -21,6 +21,12 @@ A runnable Tauri 2 shell with:
 - Vitest/React Testing Library and Tauri mock-runtime smoke tests;
 - deterministic ts-rs output under `src/generated/`;
 - ESLint, Prettier, rustfmt, Clippy, frontend build, and Rust test commands.
+- a schema-v1 scene/cue/audio aggregate owned by Rust with generated TypeScript
+  contracts;
+- atomic JSON save/backup/recovery under the app-data root;
+- staged, decoder-validated MP3/WAV import into managed storage;
+- typed corrupt/future schema, missing-file, invalid-audio, and reference errors;
+- integration coverage for round trips and interrupted-write recovery.
 
 ## Known Blockers
 
@@ -30,8 +36,8 @@ A runnable Tauri 2 shell with:
 
 ## Next Milestone
 
-Versioned scene/cue persistence and managed MP3/WAV import with atomic writes,
-backup recovery, generated contracts, and integration tests.
+Deterministic local playback through Kira/CPAL with explicit overlap,
+exclusive, retrigger, stop, and fade semantics.
 
 ## Accepted Foundation
 
