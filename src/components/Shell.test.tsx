@@ -154,6 +154,11 @@ test("shows blocking failures, manual checks, and the mobile access QR", async (
   expect(
     screen.getByRole("link", { name: "http://100.64.0.10:17321/" }),
   ).toBeVisible();
+
+  const refreshCount = vi.mocked(harness.api.refreshPreflight).mock.calls
+    .length;
+  await user.click(screen.getByRole("button", { name: "Kjør sjekk på nytt" }));
+  expect(harness.api.refreshPreflight).toHaveBeenCalledTimes(refreshCount + 1);
 });
 
 test("keeps ready preflight details collapsed until requested", async () => {

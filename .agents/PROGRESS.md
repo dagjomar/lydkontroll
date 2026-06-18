@@ -260,3 +260,19 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   pass.
 - Next: build and briefly rehearse this changed candidate before replacing the
   previously rehearsed event build.
+
+## 2026-06-18 — Compact-status replacement candidate built
+
+- Added `TASK-015` so the release action left in state/handoff is represented
+  in the Ralph task graph.
+- Passed `npm run release:build`, including frontend tests/build/lint, generated
+  binding checks, Rust tests and Clippy, tracked-file safety, and arm64 Tauri
+  packaging. Restricted mode initially denied the expected loopback test binds;
+  the same gate passed with local bind permission.
+- Added explicit regression coverage for the expanded panel's refresh action;
+  the focused shell suite passes all six tests covering status states,
+  expansion, QR, refresh, and the three-second trigger/fade sequence.
+- Recorded source commit, version, bundle path, architecture, and executable
+  checksum in `.agents/CANDIDATE.md`.
+- Next: the user performs the short native launch and audible test-play check
+  in `TASK-016`; keep the previously rehearsed candidate until it passes.

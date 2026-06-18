@@ -4,15 +4,15 @@ Last updated: 2026-06-18
 
 ## Phase
 
-The first event release candidate and its target-hardware rehearsal are
-complete. The desktop operator workspace now keeps preflight tools available
-behind a compact system-status control.
+The compact-status replacement candidate is built and automatically verified.
+The previously rehearsed event candidate remains the fallback until one short
+native desktop and audible-output smoke check passes.
 
 ## Current Focus
 
-Review and rehearse the compact desktop status control before treating this UI
-change as the event candidate. Preserve the previously rehearsed build until
-the replacement passes.
+Complete `TASK-016` on the event Mac: launch the packaged replacement, check the
+collapsed/expanded status UI, QR and refresh, then hear the three-second test
+play fade.
 
 ## Working Software
 
@@ -56,7 +56,8 @@ A runnable Tauri 2 application with:
 
 ## Known Blockers
 
-- No current implementation or release blocker.
+- `TASK-016` needs a human at the Mac because native Tauri UI automation is not
+  available on macOS and audible output cannot be inferred from mocks.
 - Network tests need permission to bind temporary loopback ports in restricted
   environments.
 - Native Tauri desktop WebDriver remains unavailable on macOS; use
@@ -65,8 +66,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Build and briefly rehearse the replacement candidate containing `TASK-014`,
-then record its new commit and executable checksum before event use.
+Pass the short native smoke check in `TASK-016`, then promote the replacement
+candidate recorded in `.agents/CANDIDATE.md` for event use.
 
 ## Accepted Foundation
 
