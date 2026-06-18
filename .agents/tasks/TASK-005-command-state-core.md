@@ -24,12 +24,16 @@ authoritative state model usable by both Tauri commands and WebSocket clients.
 
 ## Acceptance Criteria
 
-- [ ] Commands have unique IDs and typed success/failure acknowledgements.
-- [ ] State includes active sounds, scenes, master volume, and relevant errors.
+- [ ] Versioned command envelopes have UUIDs and typed success/failure
+      acknowledgements that echo the ID and resulting state revision.
+- [ ] State has a monotonically increasing revision and includes active
+      playback instances, scenes, master volume, preflight facts, and relevant
+      recoverable errors.
 - [ ] Desktop and future network adapters call the same application service.
-- [ ] Shared TypeScript types are generated or otherwise derived from the
-      recorded source of truth.
-- [ ] Tests cover duplicate/retried command handling and state transitions.
+- [ ] Shared TypeScript types are generated from Rust Serde types with ts-rs and
+      checked for drift.
+- [ ] Tests cover serialized ordering, bounded duplicate/retried command
+      handling, state revisions, and transitions.
 
 ## Validation
 
@@ -38,3 +42,8 @@ npm test
 cargo test --manifest-path src-tauri/Cargo.toml
 python3 scripts/ralph.py check
 ```
+
+## Notes
+
+Follow ADR-003. React, Tauri commands, and WebSocket handlers must not bypass
+the `ApplicationService`.

@@ -41,4 +41,6 @@ python3 scripts/ralph.py check
 ## Notes
 
 Create the linked plan before changing this task to `ready`; concurrency, clock,
-decoder, and test-double choices deserve explicit design.
+decoder, and test-double choices deserve explicit design. Follow ADR-001:
+Kira/CPAL is the production adapter, while ordering and fade semantics belong to
+an application-owned state machine tested with fake audio and clock ports.

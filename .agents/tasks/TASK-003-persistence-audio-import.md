@@ -24,11 +24,16 @@ scene/cue configuration with clear missing or invalid-file errors.
 
 ## Acceptance Criteria
 
-- [ ] Cue data covers name, color, file, volume, mode, and fade time.
-- [ ] Imported files are copied into the application data directory.
-- [ ] Saving and reopening preserves scenes and cues.
+- [ ] A `schemaVersion: 1` Rust aggregate covers stable IDs, scenes, cue name,
+      color, managed file, volume, mode, and fade time and generates its
+      TypeScript contract with ts-rs.
+- [ ] Imported MP3/WAV files are staged, decode-validated, flushed, and
+      atomically moved into `<app_data_dir>/audio`.
+- [ ] Atomic save, backup, reopen, and version handling preserve scenes/cues and
+      never persist source-file paths.
 - [ ] Missing and invalid files produce recoverable typed errors.
-- [ ] Rust integration tests cover import and persistence behavior.
+- [ ] Rust integration tests cover import, round trip, corrupt/future schemas,
+      interrupted-write recovery, and missing managed files.
 
 ## Validation
 
@@ -39,4 +44,5 @@ python3 scripts/ralph.py check
 
 ## Notes
 
-Refine scope after TASK-001 defines serialization and shared-type ownership.
+Follow ADR-002 and ADR-003. Inject the app-data root in tests and keep Tauri path
+resolution in an adapter.

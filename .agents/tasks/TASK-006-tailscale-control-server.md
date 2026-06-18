@@ -24,12 +24,18 @@ address at port 17321, with acknowledgements, snapshots, and reconnect support.
 
 ## Acceptance Criteria
 
+- [ ] An injectable, timeout-bounded `tailscale ip -4` probe returns exactly one
+      locally assigned address in `100.64.0.0/10` or a typed diagnostic.
 - [ ] The server refuses to bind when no valid Tailscale address is available.
 - [ ] It never binds wildcard, loopback-only, or ordinary LAN interfaces as a
       fallback.
-- [ ] HTTP serves the mobile control assets.
+- [ ] Axum runs as a gracefully stoppable/rebindable task on Tauri's async
+      runtime and a server failure does not stop local playback.
+- [ ] HTTP serves mobile control assets embedded from the production frontend
+      build.
 - [ ] WebSocket commands use the TASK-005 command/state core.
-- [ ] Reconnect obtains an authoritative current-state snapshot.
+- [ ] Connect/reconnect obtains an authoritative current-state snapshot and
+      duplicate command IDs do not replay side effects.
 - [ ] QR-code URL data is exposed to the desktop app.
 
 ## Validation
@@ -42,3 +48,5 @@ python3 scripts/ralph.py check
 ## Notes
 
 Create the linked threat/failure-mode plan before marking this task ready.
+Follow ADR-004 and ADR-005; packaged CLI path discovery must be verified on the
+target Mac and must fail closed.

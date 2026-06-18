@@ -1,7 +1,7 @@
 ---
 id: TASK-001
 title: Decide foundation architecture and implementation slices
-status: needs-planning
+status: done
 priority: P0
 type: research
 owner: unassigned
@@ -43,12 +43,12 @@ slice.
 
 ## Acceptance Criteria
 
-- [ ] `.agents/plans/TASK-001-foundation-architecture.md` resolves the scoped
+- [x] `.agents/plans/TASK-001-foundation-architecture.md` resolves the scoped
       choices with evidence and tradeoffs.
-- [ ] Durable choices are recorded in `.agents/DECISIONS.md`.
-- [ ] The plan includes module boundaries, data flow, failure modes, and tests.
-- [ ] Downstream tasks are split or refined where the findings require it.
-- [ ] This task is moved to `done`, making `TASK-002` actionable.
+- [x] Durable choices are recorded in `.agents/DECISIONS.md`.
+- [x] The plan includes module boundaries, data flow, failure modes, and tests.
+- [x] Downstream tasks are split or refined where the findings require it.
+- [x] This task is moved to `done`, making `TASK-002` actionable.
 
 ## Validation
 
@@ -59,5 +59,9 @@ python3 scripts/ralph.py next
 
 ## Notes
 
-Start by creating the linked plan from `.agents/plans/TEMPLATE.md`. Prefer
-primary documentation and small local experiments for risky library claims.
+The accepted plan records Kira/CPAL, versioned atomic JSON, Axum, Rust-owned
+Serde/ts-rs contracts, fail-closed Tailscale CLI discovery, and the layered test
+strategy. Exact audio transition semantics remain intentionally assigned to the
+required TASK-004 plan.
+
+- 2026-06-18: Accepted foundation plan and ADR-001 through ADR-006; downstream tasks refined.
