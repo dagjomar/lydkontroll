@@ -192,3 +192,23 @@ sequential ID and link the relevant task or plan.
 - **Alternatives:** Reusing the desktop editor was rejected as unsafe and
   touch-hostile. Keeping stale snapshots active while reconnecting was rejected
   because operators could mistake old playback state for current state.
+
+## ADR-011: Use an expanding now-playing overlay on iPhone
+
+- **Date:** 2026-06-18
+- **Status:** accepted
+- **Task:** TASK-013
+- **Context:** A fixed playback region preserved cue coordinates but consumed
+  scarce vertical space and clipped multiple active sounds. Three functional
+  alternatives were tested at 390x844: overlay, global controls below cues, and
+  separate cues/status tabs.
+- **Decision:** Use the expanding overlay as the production iPhone layout. Show
+  it only while playback is active, allow it to grow for multiple sounds up to
+  the viewport limit, and keep the underlying cue screen interactive.
+- **Consequences:** The live cue screen remains dense and global controls stay
+  immediately available. The overlay may cover header/status content while
+  active, which is acceptable because playback actions take temporary
+  priority. Prototype switching and discarded layouts do not ship.
+- **Alternatives:** Controls below cues made emergency actions slower to reach.
+  Tabs created a useful future settings boundary but added navigation during
+  live operation. The fixed region wasted too much permanent vertical space.

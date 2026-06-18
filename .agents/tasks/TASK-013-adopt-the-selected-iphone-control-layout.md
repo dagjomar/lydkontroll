@@ -1,10 +1,10 @@
 ---
 id: TASK-013
 title: Adopt the selected iPhone control layout
-status: idea
+status: done
 priority: P0
 type: feature
-owner: unassigned
+owner: codex-2026-06-18-adopt-overlay
 depends_on: [TASK-012]
 plan: none
 updated: 2026-06-18
@@ -39,11 +39,11 @@ coverage.
 
 ## Acceptance Criteria
 
-- [ ] The operator-selected layout is recorded.
-- [ ] The no-query iPhone URL renders only the selected production layout.
-- [ ] Prototype switcher and discarded layouts are removed.
-- [ ] Playback, reconnect, and touch-safety tests pass.
-- [ ] A final 390x844 real-device-oriented check passes.
+- [x] The operator-selected layout is recorded.
+- [x] The no-query iPhone URL renders only the selected production layout.
+- [x] Prototype switcher and discarded layouts are removed.
+- [x] Playback, reconnect, and touch-safety tests pass.
+- [x] A final 390x844 real-device-oriented check passes.
 
 ## Validation
 
@@ -56,5 +56,18 @@ python3 scripts/ralph.py check
 
 ## Notes
 
-- Waiting for the operator to compare `overlay`, `controls`, and `tabs` using
-  `MOBILE_LAYOUT_PROTOTYPES.md`.
+- 2026-06-18: Operator selected the expanding overlay layout after comparing
+  all three prototypes.
+- 2026-06-18: Implementation is fully specified: make overlay the sole
+  no-query mobile layout, remove the switcher and discarded alternatives, and
+  retain the expanding multi-playback card with interactive cues beneath it.
+- 2026-06-18: Accepted ADR-011 and removed query layout selection, the
+  comparison switcher, cue-first/tab implementations, and the prototype guide.
+- 2026-06-18: At 390x844, nine active playback rows used a 321-pixel overlay
+  with an internally scrolling 249-pixel list. The first cue remained
+  physically uncovered, enabled, and successfully triggered the ninth row.
+  Emergency and playback actions measured 44 pixels.
+- 2026-06-18: `npm test -- --run` and `npm run build` passed before final lint.
+- 2026-06-18: `npm run lint`, Ralph validation, and diff hygiene passed.
+- 2026-06-18: Overlay promoted to the sole production mobile layout;
+  alternatives were removed and crowded-state validation passed.

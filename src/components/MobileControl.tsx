@@ -3,12 +3,9 @@ import type { AppSnapshot } from "../generated/AppSnapshot";
 import type { Command } from "../generated/Command";
 import type { ConnectionStatus, DesktopApi } from "../services/desktopApi";
 
-export type MobileLayout = "stable" | "overlay" | "controls" | "tabs";
-
 interface MobileControlProps {
   api: DesktopApi;
   pollIntervalMs?: number;
-  layout?: MobileLayout;
 }
 
 type CommandStatus =
@@ -20,15 +17,10 @@ type CommandStatus =
 export function MobileControl({
   api,
   pollIntervalMs = 500,
-  layout: requestedLayout,
 }: MobileControlProps) {
   const [snapshot, setSnapshot] = useState<AppSnapshot | null>(null);
   const [connection, setConnection] = useState<ConnectionStatus>("connecting");
   const [selectedSceneId, setSelectedSceneId] = useState<string | null>(null);
-  const [layout, setLayout] = useState<MobileLayout>(
-    requestedLayout ?? initialMobileLayout(),
-  );
-  const [mobileTab, setMobileTab] = useState<"cues" | "status">("cues");
   const [commandStatus, setCommandStatus] = useState<CommandStatus>({
     state: "idle",
     message: "Klar for kommando",
@@ -123,169 +115,29 @@ export function MobileControl({
       scene.cues.map((cue) => [cue.id, cue.name] as const),
     ),
   );
-  const previewSwitcher =
-    requestedLayout === undefined && isLayoutPrototypeSession();
 
   return (
-    <main
-      className={`mobile-shell mobile-layout-${layout}`}
-      data-mobile-layout={layout}
-      data-testid="mobile-layout-root"
-    >
-      {layout === "tabs" ? (
-        <TabbedHeader connection={connection} />
-      ) : (
-        <MobileHeader connection={connection} commandStatus={commandStatus} />
-      )}
-
-      {layout === "stable" ? (
-        <>
-          <MasterControls
-            snapshot={snapshot}
-            controlsDisabled={controlsDisabled}
-            run={run}
-          />
-          <ActivePlayback
-            snapshot={snapshot}
-            cueNames={cueNames}
-            controlsDisabled={controlsDisabled}
-            run={run}
-            fixed
-          />
-          <CueControls
-            snapshot={snapshot}
-            selectedScene={selectedScene}
-            selectedSceneId={selectedSceneId}
-            controlsDisabled={controlsDisabled}
-            setSelectedSceneId={setSelectedSceneId}
-            run={run}
-          />
-        </>
-      ) : null}
-
-      {layout === "overlay" ? (
-        <>
-          <MasterControls
-            snapshot={snapshot}
-            controlsDisabled={controlsDisabled}
-            run={run}
-          />
-          <CueControls
-            snapshot={snapshot}
-            selectedScene={selectedScene}
-            selectedSceneId={selectedSceneId}
-            controlsDisabled={controlsDisabled}
-            setSelectedSceneId={setSelectedSceneId}
-            run={run}
-          />
-          {snapshot.activePlayback.length ? (
-            <ActivePlayback
-              snapshot={snapshot}
-              cueNames={cueNames}
-              controlsDisabled={controlsDisabled}
-              run={run}
-              overlay
-            />
-          ) : null}
-        </>
-      ) : null}
-
-      {layout === "controls" ? (
-        <>
-          <CueControls
-            snapshot={snapshot}
-            selectedScene={selectedScene}
-            selectedSceneId={selectedSceneId}
-            controlsDisabled={controlsDisabled}
-            setSelectedSceneId={setSelectedSceneId}
-            run={run}
-          />
-          <section className="mobile-global-card" aria-label="Global kontroll">
-            <ActivePlayback
-              snapshot={snapshot}
-              cueNames={cueNames}
-              controlsDisabled={controlsDisabled}
-              run={run}
-            />
-            <MasterControls
-              snapshot={snapshot}
-              controlsDisabled={controlsDisabled}
-              run={run}
-              embedded
-            />
-          </section>
-        </>
-      ) : null}
-
-      {layout === "tabs" ? (
-        <>
-          <nav className="mobile-tabs" aria-label="Mobilvisning">
-            <button
-              className={mobileTab === "cues" ? "selected" : ""}
-              type="button"
-              onClick={() => setMobileTab("cues")}
-            >
-              Cues
-            </button>
-            <button
-              className={mobileTab === "status" ? "selected" : ""}
-              type="button"
-              onClick={() => setMobileTab("status")}
-            >
-              Status
-            </button>
-          </nav>
-          {mobileTab === "cues" ? (
-            <>
-              <ActivePlayback
-                snapshot={snapshot}
-                cueNames={cueNames}
-                controlsDisabled={controlsDisabled}
-                run={run}
-                compact
-              />
-              <CueControls
-                snapshot={snapshot}
-                selectedScene={selectedScene}
-                selectedSceneId={selectedSceneId}
-                controlsDisabled={controlsDisabled}
-                setSelectedSceneId={setSelectedSceneId}
-                run={run}
-              />
-            </>
-          ) : (
-            <section className="mobile-status-page" aria-label="Status og valg">
-              <StatusBar
-                connection={connection}
-                commandStatus={commandStatus}
-              />
-              <MasterControls
-                snapshot={snapshot}
-                controlsDisabled={controlsDisabled}
-                run={run}
-              />
-              <div className="mobile-future-card">
-                <p className="eyebrow">Neste steg</p>
-                <h2>Preflight og innstillinger</h2>
-                <p>
-                  Plass for lydutgang, Tailscale, filkontroll og testavspilling.
-                </p>
-              </div>
-            </section>
-          )}
-        </>
-      ) : null}
-
-      {previewSwitcher ? (
-        <LayoutSwitcher
-          layout={layout}
-          onChange={(nextLayout) => {
-            setLayout(nextLayout);
-            setMobileTab("cues");
-            const url = new URL(window.location.href);
-            url.searchParams.set("layout", nextLayout);
-            window.history.replaceState({}, "", url);
-          }}
+    <main className="mobile-shell">
+      <MobileHeader connection={connection} commandStatus={commandStatus} />
+      <MasterControls
+        snapshot={snapshot}
+        controlsDisabled={controlsDisabled}
+        run={run}
+      />
+      <CueControls
+        snapshot={snapshot}
+        selectedScene={selectedScene}
+        selectedSceneId={selectedSceneId}
+        controlsDisabled={controlsDisabled}
+        setSelectedSceneId={setSelectedSceneId}
+        run={run}
+      />
+      {snapshot.activePlayback.length ? (
+        <ActivePlayback
+          snapshot={snapshot}
+          cueNames={cueNames}
+          controlsDisabled={controlsDisabled}
+          run={run}
         />
       ) : null}
     </main>
@@ -312,37 +164,17 @@ function MobileHeader({
   );
 }
 
-function TabbedHeader({ connection }: { connection: ConnectionStatus }) {
-  return (
-    <header className="mobile-header mobile-header-compact">
-      <div>
-        <p className="eyebrow">Marius + Wenche</p>
-        <h1>Lydkontroll</h1>
-      </div>
-      <span className="mobile-connection-pill">
-        <span className={`connection-dot ${connection}`} aria-hidden="true" />
-        {connection === "connected" ? "Tilkoblet" : "Kobler til"}
-      </span>
-    </header>
-  );
-}
-
 function MasterControls({
   snapshot,
   controlsDisabled,
   run,
-  embedded = false,
 }: {
   snapshot: AppSnapshot;
   controlsDisabled: boolean;
   run: RunCommand;
-  embedded?: boolean;
 }) {
   return (
-    <section
-      className={embedded ? "mobile-master embedded" : "mobile-master"}
-      aria-label="Hovedkontroller"
-    >
+    <section className="mobile-master" aria-label="Hovedkontroller">
       <label>
         Mastervolum {Math.round(snapshot.masterVolume * 100)} %
         <input
@@ -392,72 +224,54 @@ function ActivePlayback({
   cueNames,
   controlsDisabled,
   run,
-  fixed = false,
-  overlay = false,
-  compact = false,
 }: {
   snapshot: AppSnapshot;
   cueNames: Map<string, string>;
   controlsDisabled: boolean;
   run: RunCommand;
-  fixed?: boolean;
-  overlay?: boolean;
-  compact?: boolean;
 }) {
-  const classNames = [
-    "mobile-active",
-    fixed ? "fixed" : "",
-    overlay ? "overlay" : "",
-    compact ? "compact" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
   return (
-    <section className={classNames} aria-label="Aktiv lyd">
+    <section className="mobile-active overlay" aria-label="Aktiv lyd">
       <h2>Spiller nå</h2>
       <div className="mobile-active-list">
-        {snapshot.activePlayback.length ? (
-          snapshot.activePlayback.map((playback) => (
-            <article key={playback.id}>
-              <span>
-                {cueNames.get(playback.cueId) ?? "Ukjent cue"} ·{" "}
-                {playback.status === "fading" ? "fader" : "spiller"}
-              </span>
-              <button
-                type="button"
-                disabled={controlsDisabled}
-                onClick={() =>
-                  void run(
-                    {
-                      type: "fadePlayback",
-                      playbackId: playback.id,
-                    },
-                    `fade ${cueNames.get(playback.cueId) ?? "cue"}`,
-                  )
-                }
-              >
-                Fade
-              </button>
-              <button
-                type="button"
-                disabled={controlsDisabled}
-                onClick={() =>
-                  void run(
-                    {
-                      type: "stopPlayback",
-                      playbackId: playback.id,
-                    },
-                    `stopp ${cueNames.get(playback.cueId) ?? "cue"}`,
-                  )
-                }
-              >
-                Stopp
-              </button>
-            </article>
-          ))
-        ) : (
-          <p className="mobile-active-empty">Ingen lyd spiller.</p>
-        )}
+        {snapshot.activePlayback.map((playback) => (
+          <article key={playback.id}>
+            <span>
+              {cueNames.get(playback.cueId) ?? "Ukjent cue"} ·{" "}
+              {playback.status === "fading" ? "fader" : "spiller"}
+            </span>
+            <button
+              type="button"
+              disabled={controlsDisabled}
+              onClick={() =>
+                void run(
+                  {
+                    type: "fadePlayback",
+                    playbackId: playback.id,
+                  },
+                  `fade ${cueNames.get(playback.cueId) ?? "cue"}`,
+                )
+              }
+            >
+              Fade
+            </button>
+            <button
+              type="button"
+              disabled={controlsDisabled}
+              onClick={() =>
+                void run(
+                  {
+                    type: "stopPlayback",
+                    playbackId: playback.id,
+                  },
+                  `stopp ${cueNames.get(playback.cueId) ?? "cue"}`,
+                )
+              }
+            >
+              Stopp
+            </button>
+          </article>
+        ))}
       </div>
     </section>
   );
@@ -524,34 +338,6 @@ function CueControls({
   );
 }
 
-function LayoutSwitcher({
-  layout,
-  onChange,
-}: {
-  layout: MobileLayout;
-  onChange: (layout: MobileLayout) => void;
-}) {
-  const options: Array<[Exclude<MobileLayout, "stable">, string]> = [
-    ["overlay", "1 · Overlay"],
-    ["controls", "2 · Cues først"],
-    ["tabs", "3 · Faner"],
-  ];
-  return (
-    <nav className="mobile-layout-switcher" aria-label="Layoutforslag">
-      {options.map(([value, label]) => (
-        <button
-          className={layout === value ? "selected" : ""}
-          key={value}
-          type="button"
-          onClick={() => onChange(value)}
-        >
-          {label}
-        </button>
-      ))}
-    </nav>
-  );
-}
-
 function StatusBar({
   connection,
   commandStatus,
@@ -591,28 +377,4 @@ function commandErrorMessage(error: { code: string }): string {
     default:
       return "Kommandoen ble avvist.";
   }
-}
-
-function prototypeLayoutFromUrl(): Exclude<MobileLayout, "stable"> | null {
-  const layout = new URLSearchParams(window.location.search).get("layout");
-  return layout === "overlay" || layout === "controls" || layout === "tabs"
-    ? layout
-    : null;
-}
-
-function isLayoutPrototypeSession(): boolean {
-  return (
-    new URLSearchParams(window.location.search).get("preview") === "mobile" ||
-    prototypeLayoutFromUrl() !== null
-  );
-}
-
-function initialMobileLayout(): MobileLayout {
-  const layout = prototypeLayoutFromUrl();
-  if (layout) {
-    return layout;
-  }
-  return new URLSearchParams(window.location.search).get("preview") === "mobile"
-    ? "overlay"
-    : "stable";
 }

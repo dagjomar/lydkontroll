@@ -187,3 +187,17 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   global controls, and tabs separated operation from setup most cleanly.
 - Next: operator selects or combines a prototype, then `TASK-013` promotes it
   to the production layout before preflight work resumes.
+
+## 2026-06-18 — Overlay iPhone layout adopted
+
+- Recorded ADR-011 after the operator selected the expanding now-playing
+  overlay from the three functional prototypes.
+- Made overlay the sole production mobile layout and removed query selection,
+  the comparison switcher, discarded cue-first/tab code, and the prototype
+  guide.
+- Capped the overlay below the cue grid and scroll only its active list in
+  crowded states, preserving direct cue interaction underneath.
+- At 390x844 with nine active rows, verified a 321-pixel overlay, internal
+  scrolling, an uncovered and triggerable first cue, and 44-pixel action
+  targets.
+- Next: refine `TASK-009` event preflight and operator diagnostics.

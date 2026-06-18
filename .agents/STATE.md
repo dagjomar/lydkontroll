@@ -4,13 +4,13 @@ Last updated: 2026-06-18
 
 ## Phase
 
-Three functional iPhone layout prototypes are ready for operator comparison
-before one becomes the production layout.
+The expanding now-playing overlay is the production iPhone layout; event
+preflight planning is next.
 
 ## Current Focus
 
-Choose between `overlay`, `controls`, and `tabs` for `TASK-013`. Event preflight
-planning resumes after the production mobile layout is selected.
+Refine `TASK-009` into an implementation-ready event preflight and operator
+diagnostics slice.
 
 ## Working Software
 
@@ -42,11 +42,8 @@ A runnable Tauri 2 application with:
   graceful-shutdown coverage.
 - a dedicated iPhone Safari projection with touch-safe controls, persistent
   connection/acknowledgement status, fresh-snapshot reconnects, stale-socket
-  guards, duplicate in-flight action suppression, a fixed-height playback
-  status region, and stable cue positions across playback changes.
-- three query-selectable, functional iPhone layout prototypes sharing the real
-  command/state path: expanding overlay, cue-first controls-below, and
-  cues/status tabs.
+  guards, duplicate in-flight action suppression, and an expanding,
+  viewport-capped now-playing overlay that leaves the cue grid interactive.
 
 ## Known Blockers
 
@@ -61,8 +58,9 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Promote the operator-selected iPhone prototype through `TASK-013`, then refine
-`TASK-009` event preflight around the space and navigation that choice creates.
+The operator can verify control-server readiness, managed audio, output
+expectations, mobile access, and safe test playback before the event through
+`TASK-009`.
 
 ## Accepted Foundation
 
@@ -84,7 +82,6 @@ Promote the operator-selected iPhone prototype through `TASK-013`, then refine
 
 - packaged macOS visibility of the Tailscale CLI;
 - Safari reconnect behavior during real Wi-Fi/mobile transitions;
-- final choice among the overlay, cue-first, and tabbed iPhone layouts;
 - keeping desktop, mobile, and Rust state/protocol definitions synchronized;
 - macOS analog output behavior and fade correctness under overlapping playback;
 - ensuring imported files survive source-file moves and app restarts.
