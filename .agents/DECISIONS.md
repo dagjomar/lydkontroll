@@ -212,3 +212,25 @@ sequential ID and link the relevant task or plan.
 - **Alternatives:** Controls below cues made emergency actions slower to reach.
   Tabs created a useful future settings boundary but added navigation during
   live operation. The fixed region wasted too much permanent vertical space.
+
+## ADR-012: Refresh preflight facts in Rust and render operator guidance
+
+- **Date:** 2026-06-18
+- **Status:** accepted
+- **Task:** TASK-009
+- **Context:** Event readiness combines managed-file storage, audio backend
+  initialization, fail-closed Tailscale binding, mobile access, and a safe
+  playback check. React cannot inspect those adapter-owned facts reliably.
+- **Decision:** Add a desktop refresh boundary that recomputes managed-file
+  diagnostics in Rust and republishes one revisioned `PreflightFacts`
+  projection. Represent manual checks as warnings, keep hard failures
+  unavailable, and let React render the operator view, local QR code, and a
+  three-second instance-scoped test play through the normal command path.
+- **Consequences:** Readiness severity stays consistent with authoritative
+  state and missing files can name affected cues. Version one gives a clear
+  manual output-selection step instead of claiming a device name the current
+  adapter cannot expose. Automatic Tailscale rebinding remains release
+  hardening work.
+- **Alternatives:** React-owned file and network checks were rejected because
+  they duplicate adapter truth. Treating manual output verification as ready
+  was rejected because it hides an event-critical human check.

@@ -4,13 +4,13 @@ Last updated: 2026-06-18
 
 ## Phase
 
-The expanding now-playing overlay is the production iPhone layout; event
-preflight planning is next.
+Event preflight and operator diagnostics are complete; release hardening,
+packaging, and rehearsal planning are next.
 
 ## Current Focus
 
-Refine `TASK-009` into an implementation-ready event preflight and operator
-diagnostics slice.
+Refine `TASK-010` into a reproducible release, rehearsal, recovery, and
+event-day operator plan.
 
 ## Working Software
 
@@ -44,6 +44,9 @@ A runnable Tauri 2 application with:
   connection/acknowledgement status, fresh-snapshot reconnects, stale-socket
   guards, duplicate in-flight action suppression, and an expanding,
   viewport-capped now-playing overlay that leaves the cue grid interactive.
+- a desktop preflight panel with Rust-refreshed managed-file and control-server
+  facts, cue-specific missing-file blockers, manual output warnings, mobile
+  URL/QR presentation, and instance-scoped three-second test playback.
 
 ## Known Blockers
 
@@ -58,9 +61,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-The operator can verify control-server readiness, managed audio, output
-expectations, mobile access, and safe test playback before the event through
-`TASK-009`.
+A reproducible Apple Silicon build, rehearsal matrix, recovery guide, and
+event-day checklist are completed through `TASK-010`.
 
 ## Accepted Foundation
 

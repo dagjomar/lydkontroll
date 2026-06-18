@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import QRCode from "qrcode";
 import type { AppSnapshot } from "../generated/AppSnapshot";
 import type { Command } from "../generated/Command";
+import type { ControlServerInfo } from "../generated/ControlServerInfo";
 import type { Cue } from "../generated/Cue";
 import type { CueLibrary } from "../generated/CueLibrary";
+import type { PreflightStatus } from "../generated/PreflightStatus";
 import type { Scene } from "../generated/Scene";
 import { desktopApi, type DesktopApi } from "../services/desktopApi";
 import { createUuid } from "../services/uuid";
@@ -19,7 +22,14 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
   const [draft, setDraft] = useState<CueLibrary | null>(null);
   const [selectedSceneId, setSelectedSceneId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [preflightBusy, setPreflightBusy] = useState(false);
+  const [testBusy, setTestBusy] = useState(false);
+  const [testCueId, setTestCueId] = useState<string>("");
+  const [controlServerInfo, setControlServerInfo] =
+    useState<ControlServerInfo | null>(null);
+  const [qrCode, setQrCode] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const testTimer = useRef<number | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -33,19 +43,65 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
             }
           : libraryFromSnapshot(next),
       );
+      return next;
     } catch (error) {
       setMessage(errorMessage(error));
+      return undefined;
+    }
+  }, [api]);
+
+  const refreshPreflight = useCallback(async () => {
+    setPreflightBusy(true);
+    try {
+      const [next, serverInfo] = await Promise.all([
+        api.refreshPreflight(),
+        api.getControlServerInfo(),
+      ]);
+      setSnapshot(next);
+      setControlServerInfo(serverInfo);
+      setDraft((current) =>
+        current
+          ? {
+              ...current,
+              audioFiles: next.audioFiles,
+            }
+          : libraryFromSnapshot(next),
+      );
+    } catch (error) {
+      setMessage(errorMessage(error));
+    } finally {
+      setPreflightBusy(false);
     }
   }, [api]);
 
   useEffect(() => {
-    void refresh();
+    void refreshPreflight();
     if (pollIntervalMs <= 0) {
       return;
     }
     const timer = window.setInterval(() => void refresh(), pollIntervalMs);
     return () => window.clearInterval(timer);
-  }, [pollIntervalMs, refresh]);
+  }, [pollIntervalMs, refresh, refreshPreflight]);
+
+  useEffect(() => {
+    if (!controlServerInfo) {
+      setQrCode(null);
+      return;
+    }
+    let current = true;
+    void QRCode.toDataURL(controlServerInfo.url, {
+      errorCorrectionLevel: "M",
+      margin: 1,
+      width: 180,
+    }).then((dataUrl) => {
+      if (current) {
+        setQrCode(dataUrl);
+      }
+    });
+    return () => {
+      current = false;
+    };
+  }, [controlServerInfo]);
 
   useEffect(() => {
     if (!draft?.scenes.length) {
@@ -61,6 +117,16 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
     () => draft?.scenes.find((scene) => scene.id === selectedSceneId) ?? null,
     [draft, selectedSceneId],
   );
+  const savedCues = useMemo(
+    () => snapshot?.scenes.flatMap((scene) => scene.cues) ?? [],
+    [snapshot],
+  );
+
+  useEffect(() => {
+    if (!savedCues.some((cue) => cue.id === testCueId)) {
+      setTestCueId(savedCues[0]?.id ?? "");
+    }
+  }, [savedCues, testCueId]);
 
   const run = useCallback(
     async (command: Command) => {
@@ -109,6 +175,58 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
       setMessage(errorMessage(error));
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function testPlayback() {
+    if (!testCueId || testBusy) {
+      return;
+    }
+    if (snapshot?.activePlayback.length) {
+      setMessage("Stopp aktiv lyd før du starter en testavspilling.");
+      return;
+    }
+    setTestBusy(true);
+    setMessage("Testavspilling kjører i tre sekunder.");
+    try {
+      const acknowledgement = await api.execute({
+        type: "triggerCue",
+        cueId: testCueId,
+      });
+      if (acknowledgement.outcome.status === "failure") {
+        setMessage(commandErrorMessage(acknowledgement.outcome.error));
+        setTestBusy(false);
+        return;
+      }
+      const next = await refresh();
+      const testPlayback = next?.activePlayback.find(
+        (playback) => playback.cueId === testCueId,
+      );
+      if (!testPlayback) {
+        setMessage("Testlyden startet ikke som forventet.");
+        setTestBusy(false);
+        return;
+      }
+      testTimer.current = window.setTimeout(() => {
+        void (async () => {
+          try {
+            await api.execute({
+              type: "fadePlayback",
+              playbackId: testPlayback.id,
+            });
+            await refresh();
+            setMessage("Testavspillingen er fullført.");
+          } catch (error) {
+            setMessage(errorMessage(error));
+          } finally {
+            setTestBusy(false);
+            testTimer.current = null;
+          }
+        })();
+      }, 3000);
+    } catch (error) {
+      setMessage(errorMessage(error));
+      setTestBusy(false);
     }
   }
 
@@ -237,6 +355,19 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
           ))}
         </section>
       ) : null}
+
+      <PreflightPanel
+        snapshot={snapshot}
+        serverInfo={controlServerInfo}
+        qrCode={qrCode}
+        savedCues={savedCues}
+        selectedCueId={testCueId}
+        busy={preflightBusy}
+        testBusy={testBusy}
+        onSelectedCueChange={setTestCueId}
+        onRefresh={() => void refreshPreflight()}
+        onTest={() => void testPlayback()}
+      />
 
       <section className="transport" aria-label="Hovedkontroller">
         <label>
@@ -520,6 +651,188 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
       </div>
     </main>
   );
+}
+
+interface PreflightPanelProps {
+  snapshot: AppSnapshot;
+  serverInfo: ControlServerInfo | null;
+  qrCode: string | null;
+  savedCues: Cue[];
+  selectedCueId: string;
+  busy: boolean;
+  testBusy: boolean;
+  onSelectedCueChange: (cueId: string) => void;
+  onRefresh: () => void;
+  onTest: () => void;
+}
+
+function PreflightPanel({
+  snapshot,
+  serverInfo,
+  qrCode,
+  savedCues,
+  selectedCueId,
+  busy,
+  testBusy,
+  onSelectedCueChange,
+  onRefresh,
+  onTest,
+}: PreflightPanelProps) {
+  const testStatus: PreflightStatus = savedCues.length
+    ? { status: "ready" }
+    : {
+        status: "warning",
+        message: "Lagre minst én cue før du tester avspilling.",
+      };
+  const mobileStatus: PreflightStatus = serverInfo
+    ? { status: "ready" }
+    : snapshot.preflight.controlServer;
+  const statuses = [
+    snapshot.preflight.audioFiles,
+    snapshot.preflight.audioOutput,
+    snapshot.preflight.controlServer,
+    mobileStatus,
+    testStatus,
+  ];
+  const blockers = statuses.filter(
+    (status) => status.status === "unavailable",
+  ).length;
+  const warnings = statuses.filter(
+    (status) => status.status === "warning" || status.status === "unknown",
+  ).length;
+
+  return (
+    <section className="preflight" aria-labelledby="preflight-title">
+      <div className="preflight-heading">
+        <div>
+          <p className="eyebrow">Før arrangementet</p>
+          <h2 id="preflight-title">Preflight</h2>
+          <p className="preflight-summary">
+            {blockers
+              ? `${blockers} blokkering${blockers === 1 ? "" : "er"} må løses.`
+              : warnings
+                ? `Ingen blokkeringer. ${warnings} manuell${
+                    warnings === 1 ? "" : "e"
+                  } sjekk${warnings === 1 ? "" : "er"} gjenstår.`
+                : "Alle automatiske sjekker er klare."}
+          </p>
+        </div>
+        <button type="button" onClick={onRefresh} disabled={busy}>
+          {busy ? "Sjekker …" : "Kjør sjekk på nytt"}
+        </button>
+      </div>
+
+      <div className="preflight-grid">
+        <PreflightCheck
+          title="Administrerte lydfiler"
+          status={snapshot.preflight.audioFiles}
+          readyMessage={`${snapshot.audioFiles.length} importert${
+            snapshot.audioFiles.length === 1 ? " fil" : "e filer"
+          } er tilgjengelig.`}
+        />
+        <PreflightCheck
+          title="Mac-ens lydutgang"
+          status={snapshot.preflight.audioOutput}
+          readyMessage="Lydmotoren er klar."
+        />
+        <PreflightCheck
+          title="Tailscale og kontrollserver"
+          status={snapshot.preflight.controlServer}
+          readyMessage={
+            serverInfo
+              ? `Kjører på ${serverInfo.address}:${serverInfo.port}.`
+              : "Kontrollserveren kjører."
+          }
+        />
+        <article className={`preflight-check ${mobileStatus.status}`}>
+          <StatusBadge status={mobileStatus} />
+          <h3>Mobiltilgang</h3>
+          {serverInfo ? (
+            <div className="mobile-access">
+              {qrCode ? (
+                <img src={qrCode} alt="QR-kode for mobilkontroll" />
+              ) : null}
+              <div>
+                <p>Skann med iPhone koblet til Tailscale.</p>
+                <a href={serverInfo.url}>{serverInfo.url}</a>
+              </div>
+            </div>
+          ) : (
+            <p>{statusMessage(mobileStatus, "Mobiladressen er klar.")}</p>
+          )}
+        </article>
+        <article className={`preflight-check test-play ${testStatus.status}`}>
+          <StatusBadge status={testStatus} />
+          <h3>Testavspilling</h3>
+          {savedCues.length ? (
+            <>
+              <label>
+                Lagret cue
+                <select
+                  aria-label="Cue for testavspilling"
+                  value={selectedCueId}
+                  onChange={(event) => onSelectedCueChange(event.target.value)}
+                >
+                  {savedCues.map((cue) => (
+                    <option key={cue.id} value={cue.id}>
+                      {cue.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                type="button"
+                onClick={onTest}
+                disabled={testBusy || snapshot.activePlayback.length > 0}
+              >
+                {testBusy ? "Tester …" : "Spill i 3 sekunder"}
+              </button>
+              <p>Testen fader automatisk med cue-ens lagrede fade-tid.</p>
+            </>
+          ) : (
+            <p>{statusMessage(testStatus, "")}</p>
+          )}
+        </article>
+      </div>
+    </section>
+  );
+}
+
+function PreflightCheck({
+  title,
+  status,
+  readyMessage,
+}: {
+  title: string;
+  status: PreflightStatus;
+  readyMessage: string;
+}) {
+  return (
+    <article className={`preflight-check ${status.status}`}>
+      <StatusBadge status={status} />
+      <h3>{title}</h3>
+      <p>{statusMessage(status, readyMessage)}</p>
+    </article>
+  );
+}
+
+function StatusBadge({ status }: { status: PreflightStatus }) {
+  const label =
+    status.status === "ready"
+      ? "Klar"
+      : status.status === "warning"
+        ? "Sjekk manuelt"
+        : status.status === "unavailable"
+          ? "Blokkert"
+          : "Ukjent";
+  return <span className={`status-badge ${status.status}`}>{label}</span>;
+}
+
+function statusMessage(status: PreflightStatus, readyMessage: string): string {
+  if ("message" in status) {
+    return status.message;
+  }
+  return status.status === "unknown" ? "Ikke kontrollert ennå." : readyMessage;
 }
 
 function libraryFromSnapshot(snapshot: AppSnapshot): CueLibrary {

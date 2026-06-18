@@ -201,3 +201,20 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   scrolling, an uncovered and triggerable first cue, and 44-pixel action
   targets.
 - Next: refine `TASK-009` event preflight and operator diagnostics.
+
+## 2026-06-18 — Event preflight and operator diagnostics completed
+
+- Accepted ADR-012 and the `TASK-009` plan for Rust-owned refreshed readiness
+  facts with React-owned operator guidance and safe actions.
+- Added cue-specific managed-file blockers, distinct manual warnings, current
+  Tailscale server address, mobile URL, and a locally generated QR code.
+- Added a safe test-play workflow that requires idle playback, triggers a saved
+  cue through the shared command path, and fades only its own instance after
+  three seconds.
+- Added Rust and React regression coverage for file diagnostics, severity,
+  mobile access, and bounded test playback.
+- Verified the preflight layout at 1280px and 760px without horizontal
+  overflow.
+- Validated Vitest, Cargo tests, production build, ESLint, Prettier, generated
+  bindings, rustfmt, Clippy, Ralph metadata, and diff hygiene.
+- Next: refine `TASK-010` release rehearsal and recovery planning.

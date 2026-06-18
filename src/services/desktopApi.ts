@@ -11,6 +11,7 @@ import { createUuid } from "./uuid";
 export interface DesktopApi {
   mode: "desktop" | "mobile";
   getSnapshot(): Promise<AppSnapshot>;
+  refreshPreflight(): Promise<AppSnapshot>;
   getControlServerInfo(): Promise<ControlServerInfo | null>;
   execute(command: Command): Promise<CommandAck>;
   saveLibrary(library: CueLibrary): Promise<AppSnapshot>;
@@ -26,6 +27,9 @@ const tauriDesktopApi: DesktopApi = {
   mode: "desktop",
   getSnapshot() {
     return invoke<AppSnapshot>("get_snapshot");
+  },
+  refreshPreflight() {
+    return invoke<AppSnapshot>("refresh_preflight");
   },
   getControlServerInfo() {
     return invoke<ControlServerInfo | null>("get_control_server_info");
@@ -200,6 +204,7 @@ export function createRemoteApi(): DesktopApi {
   return {
     mode: "mobile",
     getSnapshot,
+    refreshPreflight: getSnapshot,
     subscribeConnection(listener) {
       connectionListeners.add(listener);
       listener(connectionStatus);
@@ -303,6 +308,9 @@ function createPreviewApi(mode: "desktop" | "mobile"): DesktopApi {
       return () => undefined;
     },
     async getSnapshot() {
+      return snapshot;
+    },
+    async refreshPreflight() {
       return snapshot;
     },
     async getControlServerInfo() {

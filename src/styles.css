@@ -167,6 +167,127 @@ h1 {
   margin: 0.2rem 0;
 }
 
+.preflight {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 1.2rem;
+  background: rgb(28 25 22 / 92%);
+}
+
+.preflight-heading {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.preflight-heading h2 {
+  font-size: 1.8rem;
+}
+
+.preflight-summary {
+  margin: 0.45rem 0 0;
+  color: #cfc8bd;
+}
+
+.preflight-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.preflight-check {
+  display: grid;
+  gap: 0.65rem;
+  align-content: start;
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-top: 0.3rem solid #777069;
+  border-radius: 0.9rem;
+  background: #211e1b;
+}
+
+.preflight-check.ready {
+  border-top-color: #79c58d;
+}
+
+.preflight-check.warning {
+  border-top-color: #e5a85a;
+}
+
+.preflight-check.unavailable {
+  border-top-color: #df776f;
+}
+
+.preflight-check h3,
+.preflight-check p {
+  margin: 0;
+}
+
+.preflight-check h3 {
+  font-size: 1rem;
+}
+
+.preflight-check p,
+.preflight-check a {
+  overflow-wrap: anywhere;
+  color: #bdb4a8;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.preflight-check a {
+  color: #efc6a8;
+}
+
+.status-badge {
+  width: fit-content;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  color: #cfc8bd;
+  background: rgb(255 255 255 / 8%);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.status-badge.ready {
+  color: #a9d5b5;
+  background: rgb(111 160 126 / 17%);
+}
+
+.status-badge.warning {
+  color: #f0c27c;
+  background: rgb(213 161 78 / 17%);
+}
+
+.status-badge.unavailable {
+  color: #f0a49d;
+  background: rgb(126 48 45 / 28%);
+}
+
+.mobile-access {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.mobile-access img {
+  width: min(100%, 9rem);
+  aspect-ratio: 1;
+  padding: 0.3rem;
+  border-radius: 0.45rem;
+  background: #fff;
+}
+
+.test-play button {
+  width: 100%;
+}
+
 .transport {
   justify-content: flex-end;
   margin-bottom: 1rem;
@@ -524,6 +645,14 @@ h1 {
     flex-direction: column;
   }
 
+  .preflight-heading {
+    flex-direction: column;
+  }
+
+  .preflight-grid {
+    grid-template-columns: 1fr;
+  }
+
   .workspace {
     grid-template-columns: 1fr;
   }
@@ -531,6 +660,12 @@ h1 {
   .scene-list,
   .editor {
     min-height: auto;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1200px) {
+  .preflight-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

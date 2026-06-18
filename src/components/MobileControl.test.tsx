@@ -156,6 +156,7 @@ function createHarness() {
   const api: DesktopApi = {
     mode: "mobile",
     getSnapshot: vi.fn(async () => snapshot),
+    refreshPreflight: vi.fn(async () => snapshot),
     getControlServerInfo: vi.fn(async () => null),
     execute,
     saveLibrary: vi.fn(async () => snapshot),

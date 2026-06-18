@@ -134,6 +134,7 @@ impl Default for PreflightFacts {
 pub enum PreflightStatus {
     Unknown,
     Ready,
+    Warning { message: String },
     Unavailable { message: String },
 }
 

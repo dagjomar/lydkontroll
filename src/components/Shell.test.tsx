@@ -1,12 +1,28 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, test, vi } from "vitest";
+import { afterEach, expect, test, vi } from "vitest";
 import type { AppSnapshot } from "../generated/AppSnapshot";
 import type { CommandAck } from "../generated/CommandAck";
 import type { CueLibrary } from "../generated/CueLibrary";
 import type { ManagedAudioFile } from "../generated/ManagedAudioFile";
 import type { DesktopApi } from "../services/desktopApi";
 import { Shell } from "./Shell";
+
+vi.mock("qrcode", () => ({
+  default: {
+    toDataURL: vi.fn(async () => "data:image/png;base64,preflight"),
+  },
+}));
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 test("creates, edits, reorders, and saves scenes", async () => {
   const user = userEvent.setup();
@@ -97,6 +113,87 @@ test("shows recoverable command failures to the operator", async () => {
   ).toBeVisible();
 });
 
+test("shows blocking failures, manual checks, and the mobile access QR", async () => {
+  const harness = createHarness(
+    {
+      preflight: {
+        controlServer: { status: "ready" },
+        audioOutput: {
+          status: "warning",
+          message: "Kontroller valgt lydutgang.",
+        },
+        audioFiles: {
+          status: "unavailable",
+          message: "Mangler administrert lydfil for: Introduksjon.",
+        },
+      },
+    },
+    {
+      address: "100.64.0.10",
+      port: 17321,
+      url: "http://100.64.0.10:17321/",
+    },
+  );
+
+  render(<Shell api={harness.api} pollIntervalMs={0} />);
+
+  expect(await screen.findByText("1 blokkering må løses.")).toBeVisible();
+  expect(screen.getByText("Kontroller valgt lydutgang.")).toBeVisible();
+  expect(
+    screen.getByText("Mangler administrert lydfil for: Introduksjon."),
+  ).toBeVisible();
+  expect(await screen.findByAltText("QR-kode for mobilkontroll")).toBeVisible();
+  expect(
+    screen.getByRole("link", { name: "http://100.64.0.10:17321/" }),
+  ).toBeVisible();
+});
+
+test("safe test play triggers a saved cue and fades it after three seconds", async () => {
+  vi.useFakeTimers();
+  const harness = createHarness({
+    scenes: [
+      {
+        id: "scene-1",
+        name: "Fest",
+        cues: [
+          {
+            id: "cue-1",
+            name: "Introduksjon",
+            color: "#d88c68",
+            audioFileId: "audio-1",
+            volume: 0.8,
+            mode: "overlap",
+            fadeMs: 500,
+          },
+        ],
+      },
+    ],
+    audioFiles: [audioFile],
+  });
+
+  render(<Shell api={harness.api} pollIntervalMs={0} />);
+  await act(async () => {
+    await Promise.resolve();
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Spill i 3 sekunder" }));
+  await act(async () => {
+    await Promise.resolve();
+  });
+
+  expect(harness.execute).toHaveBeenCalledWith({
+    type: "triggerCue",
+    cueId: "cue-1",
+  });
+
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(3000);
+  });
+  expect(harness.execute).toHaveBeenCalledWith({
+    type: "fadePlayback",
+    playbackId: "test-playback",
+  });
+});
+
 const audioFile: ManagedAudioFile = {
   id: "audio-1",
   fileName: "audio-1.wav",
@@ -105,7 +202,12 @@ const audioFile: ManagedAudioFile = {
   byteLength: 44,
 };
 
-function createHarness(overrides: Partial<AppSnapshot> = {}): {
+function createHarness(
+  overrides: Partial<AppSnapshot> = {},
+  controlServerInfo: Awaited<
+    ReturnType<DesktopApi["getControlServerInfo"]>
+  > = null,
+): {
   api: DesktopApi;
   execute: ReturnType<typeof vi.fn<DesktopApi["execute"]>>;
   saveLibrary: ReturnType<typeof vi.fn<DesktopApi["saveLibrary"]>>;
@@ -125,7 +227,23 @@ function createHarness(overrides: Partial<AppSnapshot> = {}): {
     errors: [],
     ...overrides,
   };
-  const execute = vi.fn<DesktopApi["execute"]>(async () => successAck());
+  const execute = vi.fn<DesktopApi["execute"]>(async (command) => {
+    if (command.type === "triggerCue") {
+      snapshot = {
+        ...snapshot,
+        activePlayback: [
+          {
+            id: "test-playback",
+            cueId: command.cueId,
+            volume: 0.8,
+            fadeMs: 500,
+            status: "playing",
+          },
+        ],
+      };
+    }
+    return successAck();
+  });
   const saveLibrary = vi.fn<DesktopApi["saveLibrary"]>(async (library) => {
     snapshot = {
       ...snapshot,
@@ -138,7 +256,8 @@ function createHarness(overrides: Partial<AppSnapshot> = {}): {
   const api: DesktopApi = {
     mode: "desktop",
     getSnapshot: vi.fn(async () => snapshot),
-    getControlServerInfo: vi.fn(async () => null),
+    refreshPreflight: vi.fn(async () => snapshot),
+    getControlServerInfo: vi.fn(async () => controlServerInfo),
     execute,
     saveLibrary,
     importAudio: vi.fn(async () => {

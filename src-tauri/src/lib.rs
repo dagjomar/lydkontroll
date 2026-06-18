@@ -14,7 +14,10 @@ use adapters::{
         discover_tailscale_ipv4, local_ipv4_addresses, start_control_server, ControlServerRuntime,
         NetworkApplication, SystemProcessRunner, DEFAULT_TAILSCALE_TIMEOUT,
     },
-    tauri::{load_or_create_library, persistence_repository, DesktopCoordinator, TauriWebAssets},
+    tauri::{
+        load_or_create_library, managed_audio_preflight, persistence_repository,
+        DesktopCoordinator, TauriWebAssets,
+    },
 };
 use application::{OperatorErrorKind, PreflightFacts, PreflightStatus};
 use std::sync::Arc;
@@ -35,8 +38,12 @@ pub fn configure<R: Runtime>(builder: Builder<R>) -> Builder<R> {
                 Some(message) => PreflightStatus::Unavailable {
                     message: message.to_owned(),
                 },
-                None => PreflightStatus::Ready,
+                None => PreflightStatus::Warning {
+                    message: "Kontroller valgt lydutgang i Systeminnstillinger på Mac-en."
+                        .to_owned(),
+                },
             };
+            let audio_files = managed_audio_preflight(&repository, &library);
             let coordinator = DesktopCoordinator::new(repository, library, backend);
             let shared_service = coordinator.shared_service();
             let control_result = local_ipv4_addresses()
@@ -72,7 +79,7 @@ pub fn configure<R: Runtime>(builder: Builder<R>) -> Builder<R> {
             coordinator.service().set_preflight(PreflightFacts {
                 control_server: control_server_preflight,
                 audio_output,
-                audio_files: PreflightStatus::Ready,
+                audio_files,
             })?;
             if let Some(message) = startup_error {
                 coordinator
@@ -89,6 +96,7 @@ pub fn configure<R: Runtime>(builder: Builder<R>) -> Builder<R> {
             adapters::tauri::save_library,
             adapters::tauri::import_audio,
             adapters::tauri::get_control_server_info,
+            adapters::tauri::refresh_preflight,
         ])
 }
 
