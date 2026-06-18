@@ -2,7 +2,7 @@
 id: TASK-006
 title: Serve authenticated-by-Tailscale mobile control transport
 status: idea
-priority: P0
+priority: P1
 type: feature
 owner: unassigned
 depends_on: [TASK-005]
@@ -50,3 +50,7 @@ python3 scripts/ralph.py check
 Create the linked threat/failure-mode plan before marking this task ready.
 Follow ADR-004 and ADR-005; packaged CLI path discovery must be verified on the
 target Mac and must fail closed.
+
+- 2026-06-18: Reprioritized after `TASK-007` so local Mac editing and playback
+  can be tested before remote transport is introduced. Its technical dependency
+  remains `TASK-005`; this is delivery ordering rather than a new coupling.

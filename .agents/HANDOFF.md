@@ -4,19 +4,19 @@ Updated: 2026-06-18
 
 ## What Just Happened
 
-`TASK-005` was completed. Versioned commands, acknowledgements, generated
-TypeScript contracts, revisioned snapshots, bounded retries/errors, polling,
-and playback mutation now live behind one serialized `ApplicationService`.
+`TASK-005` was completed, then delivery order was changed to make local Mac
+testing the next milestone. `TASK-007` is now P0 and `needs-planning`;
+`TASK-006` remote transport is P1 and follows it.
 
 ## Exact Next Action
 
-Claim `TASK-006` for refinement. Replace its placeholder plan with the exact
-Tailscale probe/refresh, local-address validation, bind refusal, server
-lifecycle, embedded-assets, WebSocket bootstrap, and reconnect semantics. Move
-it to `ready`, then start implementation.
+Claim `TASK-007` for planning. Define the local vertical slice from managed
+audio import and library mutation through Tauri commands to desktop cue
+triggering, active playback, stop/fade, and visible errors. Create a linked
+plan, move the task to `ready`, then implement it.
 
 ```text
-python3 scripts/ralph.py claim TASK-006 --owner "<agent/session>"
+python3 scripts/ralph.py claim TASK-007 --owner "<agent/session>"
 ```
 
 ## Important Context
@@ -33,8 +33,14 @@ python3 scripts/ralph.py claim TASK-006 --owner "<agent/session>"
 - Backend polling must remain serialized through `ApplicationService::poll()`;
   WebSocket handlers must never call `PlaybackEngine` or Kira directly.
 - `set_preflight()` is the service seam for publishing Tailscale/server facts.
-- The existing `TASK-006` plan is still a placeholder and must be completed
-  before implementation.
+- `TASK-007` must extend the shared service rather than introducing
+  React-owned library or playback state.
+- Persistence already exposes `LibraryRepository` and `AudioImporter`, but
+  library mutation/import commands are not yet part of `ApplicationService`.
+- The first useful manual checkpoint is: import one WAV/MP3, create a cue,
+  trigger it locally, then stop/fade it on the Mac.
+- `TASK-006` remains independent at the code level but is deliberately queued
+  after the desktop workflow.
 - Real analog playback and output-loss recovery remain documented target-Mac
   rehearsal gates rather than automated proof.
 

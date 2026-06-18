@@ -4,14 +4,14 @@ Last updated: 2026-06-18
 
 ## Phase
 
-Authoritative local command/state core complete; Tailscale-only mobile
-transport is next.
+Authoritative local command/state core complete; desktop editing and local
+control are next.
 
 ## Current Focus
 
-Refine the existing `TASK-006` control-server plan, then implement fail-closed
-Tailscale address discovery, explicit binding, embedded mobile assets, and a
-WebSocket adapter around the shared `ApplicationService`.
+Plan `TASK-007` around the smallest end-to-end Mac workflow, then wire cue
+library editing, managed audio import, and local playback controls through the
+shared `ApplicationService`. Remote transport follows after local testing.
 
 ## Working Software
 
@@ -54,8 +54,8 @@ A runnable Tauri 2 shell with:
 
 ## Next Milestone
 
-Mobile assets and WebSocket control served only on the validated active
-Tailscale address at port `17321`.
+A Mac operator can import audio, create a cue, trigger it through the selected
+system output, and stop or fade it without Tailscale or an iPhone.
 
 ## Accepted Foundation
 

@@ -78,3 +78,14 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Validated Rust/frontend tests, frontend build, generated binding drift,
   formatting, ESLint, and Clippy.
 - Next: refine `TASK-006` and implement the fail-closed Tailscale/Axum transport.
+
+## 2026-06-18 — Local Mac workflow promoted
+
+- Reordered delivery so `TASK-007` desktop editing/local control is the next P0
+  milestone and `TASK-006` remote transport follows at P1.
+- Marked `TASK-007` `needs-planning` with an explicit end-to-end local
+  checkpoint: import audio, create a cue, play it, and stop/fade it on the Mac
+  without Tailscale.
+- Kept the technical dependency graph honest; remote transport is postponed by
+  priority, not coupled to the desktop UI.
+- Next: plan and implement `TASK-007`.
