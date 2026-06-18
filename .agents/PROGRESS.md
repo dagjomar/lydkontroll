@@ -124,3 +124,13 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Validated Cargo tests, Vitest, production build, generated bindings,
   formatting, ESLint, Clippy, Ralph metadata, and diff hygiene.
 - Next: refine and implement `TASK-008` reconnecting iPhone controls.
+
+## 2026-06-18 — Safari transport runtime corrected
+
+- Reproduced the iPhone failure where the embedded frontend called Tauri's
+  native `invoke` bridge from ordinary Safari.
+- Added runtime selection so the native window keeps Tauri commands while
+  Safari uses `/ws` for snapshots, acknowledgements, commands, timeouts, and
+  reconnect backoff.
+- Rebuilt the production assets and validated Vitest, TypeScript/Vite build,
+  ESLint, Prettier, generated bindings, rustfmt, and Clippy.

@@ -27,6 +27,9 @@ python3 scripts/ralph.py claim TASK-008 --owner "<agent/session>"
 - `adapters/network/server.rs` sends `{type:"snapshot"}` on connect, accepts
   Rust-owned `CommandEnvelope` JSON, sends `{type:"acknowledgement"}`, then
   publishes the current snapshot. Protocol errors are tagged and recoverable.
+- `src/services/desktopApi.ts` selects Tauri only when
+  `window.__TAURI_INTERNALS__` exists; ordinary Safari uses the WebSocket
+  adapter with command timeouts and reconnect backoff.
 - Reconnect intentionally starts from a fresh full snapshot. There is no delta
   replay; duplicate command IDs are handled by `ApplicationService`.
 - HTTP uses `TauriWebAssets`, backed by Tauri's embedded production

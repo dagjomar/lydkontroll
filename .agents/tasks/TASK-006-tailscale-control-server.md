@@ -72,3 +72,6 @@ target Mac and must fail closed.
 - 2026-06-18: Implemented and validated fail-closed Tailscale discovery,
   embedded Axum HTTP/WebSocket transport, reconnect snapshots, idempotent
   acknowledgements, graceful lifecycle, and desktop URL data.
+- 2026-06-18: Fixed the embedded Safari runtime to select WebSocket commands
+  instead of Tauri `invoke`; remote snapshots, acknowledgements, command
+  timeouts, and reconnect backoff now work in an ordinary browser.

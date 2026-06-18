@@ -50,7 +50,159 @@ const tauriDesktopApi: DesktopApi = {
 export const desktopApi =
   new URLSearchParams(window.location.search).get("preview") === "1"
     ? createPreviewApi()
-    : tauriDesktopApi;
+    : isTauriRuntime()
+      ? tauriDesktopApi
+      : createRemoteApi();
+
+function isTauriRuntime(): boolean {
+  return "__TAURI_INTERNALS__" in window;
+}
+
+type ServerMessage =
+  | { type: "snapshot"; snapshot: AppSnapshot }
+  | { type: "acknowledgement"; acknowledgement: CommandAck }
+  | { type: "protocolError"; message: string };
+
+function createRemoteApi(): DesktopApi {
+  let socket: WebSocket | null = null;
+  let snapshot: AppSnapshot | null = null;
+  let reconnectTimer: number | null = null;
+  let reconnectDelayMs = 250;
+  const snapshotWaiters = new Set<{
+    resolve: (value: AppSnapshot) => void;
+    reject: (reason: Error) => void;
+  }>();
+  const acknowledgementWaiters = new Map<
+    string,
+    {
+      resolve: (value: CommandAck) => void;
+      reject: (reason: Error) => void;
+      timeout: number;
+    }
+  >();
+
+  function connect(): WebSocket {
+    if (
+      socket?.readyState === WebSocket.OPEN ||
+      socket?.readyState === WebSocket.CONNECTING
+    ) {
+      return socket;
+    }
+    const scheme = window.location.protocol === "https:" ? "wss:" : "ws:";
+    socket = new WebSocket(`${scheme}//${window.location.host}/ws`);
+    socket.addEventListener("open", () => {
+      reconnectDelayMs = 250;
+    });
+    socket.addEventListener("message", (event) => {
+      try {
+        const message = JSON.parse(String(event.data)) as ServerMessage;
+        if (message.type === "snapshot") {
+          snapshot = message.snapshot;
+          for (const waiter of snapshotWaiters) {
+            waiter.resolve(message.snapshot);
+          }
+          snapshotWaiters.clear();
+          return;
+        }
+        if (message.type === "acknowledgement") {
+          const waiter = acknowledgementWaiters.get(
+            message.acknowledgement.commandId,
+          );
+          if (waiter) {
+            window.clearTimeout(waiter.timeout);
+            acknowledgementWaiters.delete(message.acknowledgement.commandId);
+            waiter.resolve(message.acknowledgement);
+          }
+          return;
+        }
+        rejectAll(new Error(message.message));
+      } catch {
+        rejectAll(new Error("Mac-en sendte et ugyldig svar."));
+      }
+    });
+    socket.addEventListener("close", () => {
+      socket = null;
+      rejectAll(new Error("Forbindelsen til Mac-en ble brutt."));
+      if (reconnectTimer === null) {
+        reconnectTimer = window.setTimeout(() => {
+          reconnectTimer = null;
+          connect();
+        }, reconnectDelayMs);
+        reconnectDelayMs = Math.min(reconnectDelayMs * 2, 5000);
+      }
+    });
+    socket.addEventListener("error", () => {
+      socket?.close();
+    });
+    return socket;
+  }
+
+  function rejectAll(error: Error) {
+    for (const waiter of snapshotWaiters) {
+      waiter.reject(error);
+    }
+    snapshotWaiters.clear();
+    for (const waiter of acknowledgementWaiters.values()) {
+      window.clearTimeout(waiter.timeout);
+      waiter.reject(error);
+    }
+    acknowledgementWaiters.clear();
+  }
+
+  async function getSnapshot(): Promise<AppSnapshot> {
+    connect();
+    if (snapshot) {
+      return snapshot;
+    }
+    return new Promise<AppSnapshot>((resolve, reject) => {
+      snapshotWaiters.add({ resolve, reject });
+    });
+  }
+
+  return {
+    getSnapshot,
+    async getControlServerInfo() {
+      return {
+        address: window.location.hostname,
+        port: Number(
+          window.location.port || (location.protocol === "https:" ? 443 : 80),
+        ),
+        url: window.location.origin,
+      };
+    },
+    async execute(command) {
+      const activeSocket = connect();
+      if (activeSocket.readyState !== WebSocket.OPEN) {
+        await getSnapshot();
+      }
+      if (socket?.readyState !== WebSocket.OPEN) {
+        throw new Error("Kan ikke koble til Mac-en.");
+      }
+      const commandId = crypto.randomUUID();
+      const acknowledgement = new Promise<CommandAck>((resolve, reject) => {
+        const timeout = window.setTimeout(() => {
+          acknowledgementWaiters.delete(commandId);
+          reject(new Error("Mac-en svarte ikke på kommandoen."));
+        }, 5000);
+        acknowledgementWaiters.set(commandId, { resolve, reject, timeout });
+      });
+      socket.send(
+        JSON.stringify({
+          protocolVersion: 1,
+          commandId,
+          command,
+        }),
+      );
+      return acknowledgement;
+    },
+    async saveLibrary() {
+      throw new Error("Oppsettet kan bare redigeres på Mac-en.");
+    },
+    async importAudio() {
+      throw new Error("Lydfiler kan bare importeres på Mac-en.");
+    },
+  };
+}
 
 function createPreviewApi(): DesktopApi {
   let snapshot: AppSnapshot = {
