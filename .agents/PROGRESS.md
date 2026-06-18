@@ -61,3 +61,20 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   frontend tests, build, bindings, formatting, ESLint, and Clippy.
 - Next: implement `TASK-005` authoritative commands, revisions,
   deduplication, and snapshots around the playback engine.
+
+## 2026-06-18 — Authoritative command and state core completed
+
+- Accepted ADR-008 and the `TASK-005` plan for mutex-serialized commands,
+  polling, revisions, retry deduplication, snapshot publication, and bounded
+  recoverable errors.
+- Added versioned Rust/ts-rs commands, acknowledgements, failures, preflight
+  facts, operator errors, playback projections, and complete snapshots.
+- Added one `ApplicationService` shared through thin adapters, with cue lookup,
+  managed-path resolution, deterministic playback mutation, backend polling,
+  256-command FIFO deduplication, and revisioned subscribers.
+- Added seven integration tests for serialized concurrent callers, retries and
+  eviction, typed validation/backend failures, transition revisions, polling,
+  preflight publication, and thin Tauri adapter use.
+- Validated Rust/frontend tests, frontend build, generated binding drift,
+  formatting, ESLint, and Clippy.
+- Next: refine `TASK-006` and implement the fail-closed Tailscale/Axum transport.

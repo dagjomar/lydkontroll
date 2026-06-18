@@ -4,36 +4,37 @@ Updated: 2026-06-18
 
 ## What Just Happened
 
-`TASK-004` was completed. Playback semantics now live in a deterministic
-application-owned engine, with a fake-backend test suite and a Kira 0.12/CPAL
-adapter for managed MP3/WAV streaming through the macOS default output.
+`TASK-005` was completed. Versioned commands, acknowledgements, generated
+TypeScript contracts, revisioned snapshots, bounded retries/errors, polling,
+and playback mutation now live behind one serialized `ApplicationService`.
 
 ## Exact Next Action
 
-Claim `TASK-005` for refinement. Resolve the service ownership, bounded
-deduplication, polling, revision, and error-publication details in its task
-notes or a linked plan, move it to `ready`, then start implementation.
+Claim `TASK-006` for refinement. Replace its placeholder plan with the exact
+Tailscale probe/refresh, local-address validation, bind refusal, server
+lifecycle, embedded-assets, WebSocket bootstrap, and reconnect semantics. Move
+it to `ready`, then start implementation.
 
 ```text
-python3 scripts/ralph.py claim TASK-005 --owner "<agent/session>"
+python3 scripts/ralph.py claim TASK-006 --owner "<agent/session>"
 ```
 
 ## Important Context
 
-- `PlaybackEngine<B>` in `src-tauri/src/application/mod.rs` requires mutable
-  serialized access and owns active/pending playback state.
-- `AudioBackend` in `src-tauri/src/ports/mod.rs` is the only playback adapter
-  boundary; transports must never invoke Kira directly.
-- Retrigger stops the old same-cue instance immediately. Exclusive cues wait
-  for all active configured fades to complete, and a newer pending exclusive
-  replaces the old request.
-- `poll()` converts backend completion/failure into engine events and may start
-  a pending exclusive cue. `TASK-005` must serialize polling with commands and
-  increment revisions for resulting state changes.
-- Managed paths must be resolved from persistence metadata beneath the
-  repository audio directory before constructing `CuePlaybackRequest`.
-- Keep Tauri/Axum adapters thin. Tailscale and WebSocket behavior remain
-  `TASK-006`.
+- `ApplicationService<B>` in `src-tauri/src/application/service.rs` is the only
+  command, polling, retry, revision, error, and snapshot owner.
+- `CommandEnvelope`, `CommandAck`, and `AppSnapshot` are Rust-owned contracts
+  under `src-tauri/src/application/protocol.rs`; generated files must not be
+  edited manually.
+- Duplicate command IDs return the original acknowledgement from a 256-entry
+  FIFO cache without replaying side effects.
+- `subscribe()` immediately sends the current complete snapshot, then ordered
+  updates after snapshot-visible transitions.
+- Backend polling must remain serialized through `ApplicationService::poll()`;
+  WebSocket handlers must never call `PlaybackEngine` or Kira directly.
+- `set_preflight()` is the service seam for publishing Tailscale/server facts.
+- The existing `TASK-006` plan is still a placeholder and must be completed
+  before implementation.
 - Real analog playback and output-loss recovery remain documented target-Mac
   rehearsal gates rather than automated proof.
 

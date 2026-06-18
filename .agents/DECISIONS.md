@@ -130,3 +130,24 @@ sequential ID and link the relevant task or plan.
   rejected because it couples authoritative state to an adapter. Timer-based
   fade completion was rejected because wall-clock guesses can diverge from the
   actual audio backend.
+
+## ADR-008: Serialize commands, polling, revisions, and retries in one service
+
+- **Date:** 2026-06-18
+- **Status:** accepted
+- **Task:** TASK-005
+- **Context:** Tauri and future WebSocket callers can race with each other and
+  with audio-backend completion polling. Retried mobile commands must not
+  replay playback side effects.
+- **Decision:** Share one `ApplicationService` through `Arc` and protect its
+  complete mutable state with one mutex. Retain the 256 most recent command
+  acknowledgements in FIFO order, increment one monotonic revision per
+  snapshot-visible transition, publish complete snapshots after transitions,
+  and retain at most 64 recoverable operator errors.
+- **Consequences:** Commands and backend events have one deterministic order,
+  retries are idempotent inside a bounded window, and transports remain thin.
+  Slow adapter work must stay outside the service lock, and mutex poisoning is
+  reported as a typed unavailable error.
+- **Alternatives:** A Tokio actor was deferred because the current ports are
+  synchronous and do not need runtime lifecycle. Per-transport locks and retry
+  caches were rejected because behavior would diverge.

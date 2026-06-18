@@ -2,12 +2,23 @@
 
 use std::{collections::BTreeMap, fmt, path::PathBuf, time::Duration};
 
+use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::{
     domain::CueMode,
     ports::{AudioBackend, AudioBackendEvent, BackendPlaybackId},
 };
+
+mod protocol;
+mod service;
+
+pub use protocol::{
+    AppSnapshot, Command, CommandAck, CommandEnvelope, CommandError, CommandOutcome, OperatorError,
+    OperatorErrorKind, PreflightFacts, PreflightStatus, APPLICATION_PROTOCOL_VERSION,
+};
+pub use service::{ApplicationService, ApplicationServiceError};
 
 /// Everything required to start one cue from managed storage.
 #[derive(Debug, Clone, PartialEq)]
@@ -20,14 +31,18 @@ pub struct CuePlaybackRequest {
 }
 
 /// Operator-visible lifecycle of one playback instance.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export)]
 pub enum PlaybackStatus {
     Playing,
     Fading,
 }
 
 /// Authoritative playback data owned by the engine.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export)]
 pub struct PlaybackInstance {
     pub id: String,
     pub cue_id: String,
