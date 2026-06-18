@@ -19,3 +19,15 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Refined `TASK-002` through `TASK-006` to encode the accepted boundaries and
   observable acceptance criteria.
 - Moved `TASK-002` to `ready`; Ralph validation passes.
+
+## 2026-06-18 — Runnable Tauri shell completed
+
+- Scaffolded Tauri 2, Vite, React, strict TypeScript, and the Rust
+  domain/application/ports/adapters boundaries.
+- Added frontend behavior coverage, a Tauri mock-runtime smoke test, and a
+  deterministic committed ts-rs contract with drift detection.
+- Added npm/Cargo lock files and unified ESLint, Prettier, rustfmt, Clippy,
+  build, and test commands with Rust-1.85-aware dependency resolution.
+- Validated all automated commands and launched the native macOS app; the user
+  visually confirmed the shell.
+- Next: implement `TASK-003` persistence and managed audio import.

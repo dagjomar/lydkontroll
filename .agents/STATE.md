@@ -4,29 +4,34 @@ Last updated: 2026-06-18
 
 ## Phase
 
-Planning and foundation.
+Foundation complete; persistence implementation is next.
 
 ## Current Focus
 
-Start `TASK-002`: scaffold the runnable Tauri 2, Vite, React, TypeScript, and
-Rust shell using the accepted foundation architecture.
+Start `TASK-003`: implement versioned cue/scene persistence and managed MP3/WAV
+import using the accepted storage architecture.
 
 ## Working Software
 
-None yet. The repository contains product planning and the Ralph-loop project
-harness only.
+A runnable Tauri 2 shell with:
+
+- a strict React/TypeScript/Vite frontend and native macOS window;
+- a Rust library composition root plus minimal executable;
+- domain/application/ports/adapters module boundaries;
+- Vitest/React Testing Library and Tauri mock-runtime smoke tests;
+- deterministic ts-rs output under `src/generated/`;
+- ESLint, Prettier, rustfmt, Clippy, frontend build, and Rust test commands.
 
 ## Known Blockers
 
-- The Tauri application has not been scaffolded.
-- Native Tauri desktop WebDriver is unavailable on macOS; the accepted test
-  strategy uses mock-runtime tests, standalone Playwright WebKit coverage, and
-  manual native checks instead.
+- No current implementation blocker.
+- Native Tauri desktop WebDriver remains unavailable on macOS; use mock-runtime
+  tests, standalone Playwright WebKit coverage, and manual native checks.
 
 ## Next Milestone
 
-A runnable Tauri 2 application shell with frontend and Rust tests, linting, and
-build commands exposed through `package.json`.
+Versioned scene/cue persistence and managed MP3/WAV import with atomic writes,
+backup recovery, generated contracts, and integration tests.
 
 ## Accepted Foundation
 

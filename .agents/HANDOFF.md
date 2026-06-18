@@ -4,37 +4,37 @@ Updated: 2026-06-18
 
 ## What Just Happened
 
-`TASK-001` was completed. The accepted foundation plan and ADR-001 through
-ADR-006 now define the audio, persistence, command/state, server, Tailscale, and
-test architecture. Downstream foundation tasks were refined, and `TASK-002` is
-ready.
+`TASK-002` was completed. The repository now has a runnable and tested Tauri 2,
+Vite, React, TypeScript, and Rust shell. All automated validation passes, the
+native macOS app launched successfully, and the user visually confirmed it.
 
 ## Exact Next Action
 
-Start `TASK-002`, then scaffold the five slices listed in the TASK-001 plan.
+Start `TASK-003` and implement versioned scene/cue persistence plus managed
+MP3/WAV import.
 
 ```text
-python3 scripts/ralph.py start TASK-002 --owner "<agent/session>"
+python3 scripts/ralph.py start TASK-003 --owner "<agent/session>"
 ```
 
 ## Important Context
 
-- Keep `src-tauri/src/lib.rs` as the composition root and `main.rs` minimal.
-- Establish domain/application/ports/adapters boundaries without implementing
-  audio, persistence, Axum, or Tailscale behavior yet.
-- Use Vite, strict TypeScript, npm lock files, Vitest/React Testing Library,
-  Rust tests with a Tauri mock-runtime smoke test, and a deterministic ts-rs
-  generated-binding location.
-- Read ADR-001 through ADR-006 and the TASK-002 slice in
-  `.agents/plans/TASK-001-foundation-architecture.md` before scaffolding.
+- Follow ADR-002 and ADR-003 plus the storage layout in the accepted TASK-001
+  foundation plan.
+- Keep Tauri app-data path resolution in an adapter and inject a root directory
+  for integration tests.
+- Rust contracts export deterministically to `src/generated/`; run
+  `npm run bindings:check` after changing shared types.
+- Cargo uses MSRV-aware dependency fallback so the committed graph works with
+  Rust 1.85.
+- Do not add playback, Axum, or Tailscale behavior in the persistence slice.
 
 ## Validation to Run
 
 ```text
-npm run build
-npm test
-npm run lint
 cargo test --manifest-path src-tauri/Cargo.toml
+npm run bindings:check
+npm run lint
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next
 ```

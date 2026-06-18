@@ -32,7 +32,8 @@ separate hand-written backlog table.
 
 ## Project Structure & Module Organization
 
-This repository is currently in the planning stage; `PLAN.md` is the product and architecture source of truth. The intended implementation is a Tauri 2 desktop application with a React/TypeScript frontend and a Rust backend.
+`PLAN.md` is the product source of truth. The implementation is a Tauri 2
+desktop application with a React/TypeScript frontend and a Rust backend.
 
 When scaffolding the project, keep this layout:
 
@@ -47,17 +48,18 @@ Keep playback and networking logic out of React components. Shared command and s
 
 ## Build, Test, and Development Commands
 
-After the Tauri project is scaffolded, expose these scripts through `package.json`:
-
 - `npm install`: install JavaScript dependencies.
 - `npm run tauri dev`: run the desktop app with hot reload.
 - `npm run build`: type-check and build the frontend.
 - `npm run tauri build`: create the macOS application bundle.
 - `npm test`: run frontend tests.
 - `cargo test --manifest-path src-tauri/Cargo.toml`: run Rust tests.
-- `npm run lint`: check TypeScript and React code.
-
-Update this section if the actual scaffold uses different commands.
+- `npm run lint`: run ESLint, Prettier checks, generated-binding drift checks,
+  `cargo fmt --check`, and Clippy with warnings denied.
+- `npm run format`: format frontend, configuration, Markdown, and Rust files.
+- `npm run bindings:generate`: regenerate committed TypeScript contracts from
+  Rust.
+- `npm run bindings:check`: fail if committed generated contracts are stale.
 
 ## Coding Style & Naming Conventions
 

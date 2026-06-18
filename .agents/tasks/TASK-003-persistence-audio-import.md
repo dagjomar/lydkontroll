@@ -1,7 +1,7 @@
 ---
 id: TASK-003
 title: Persist cue scenes and import audio into managed storage
-status: idea
+status: ready
 priority: P0
 type: feature
 owner: unassigned
@@ -46,3 +46,5 @@ python3 scripts/ralph.py check
 
 Follow ADR-002 and ADR-003. Inject the app-data root in tests and keep Tauri path
 resolution in an adapter.
+
+- 2026-06-18: TASK-002 dependency completed; ADR-002/003 and the accepted foundation plan fully constrain this implementation slice.
