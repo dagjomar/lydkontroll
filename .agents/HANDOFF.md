@@ -4,35 +4,31 @@ Updated: 2026-06-18
 
 ## What Just Happened
 
-`TASK-008` is complete. iPhone Safari now receives a dedicated touch-safe
-projection with visible connection and acknowledgement state, authoritative
-fresh-snapshot reconnects, stale-socket guards, and duplicate in-flight action
-suppression.
+`TASK-011` was added from real iPhone Safari feedback. The conditional
+`Spiller nå` section currently shifts cue positions when playback begins,
+creating an accidental-trigger risk.
 
 ## Exact Next Action
 
-Refine `TASK-009` into a plan for event preflight and operator diagnostics,
-move it to `ready`, then implement it.
+Start and implement the ready P0 layout-safety bug.
 
 ```text
-python3 scripts/ralph.py claim TASK-009 --owner "<agent/session>"
+python3 scripts/ralph.py start TASK-011 --owner "<agent/session>"
 ```
 
 ## Important Context
 
-- `AppSnapshot.preflight` already contains control-server, audio-output, and
-  audio-file readiness facts, but `TASK-009` must refine how they are refreshed
-  and presented as blocking failures versus warnings.
-- `get_control_server_info` exposes the mobile URL. `TASK-009` owns desktop QR
-  presentation and periodic Tailscale re-probing/rebind orchestration.
-- Managed storage already validates imports and missing files on load. Preflight
-  must identify affected cues rather than duplicate persistence ownership.
-- macOS output naming may not be available through the current CPAL boundary;
-  the task explicitly permits a clear manual verification step.
-- Keep safe test playback on the shared command path and do not weaken the
-  fail-closed Tailscale bind policy.
-- Real iPhone transitions, packaged CLI paths, analog output, and output
-  switching/loss remain release-rehearsal gates.
+- Keep the playback-status section mounted in both idle and active states with
+  a fixed outer height.
+- Give idle playback a quiet empty state instead of removing the section.
+- Multiple active sounds must remain usable inside the reserved space without
+  pushing the scene tabs or cue grid.
+- Make `Fade alt` and `Stopp alt` shorter, but retain at least 44-point touch
+  targets and obvious emergency-control styling.
+- Add tests around idle-to-playing and playing-to-idle state changes.
+- Use the mobile preview at 390x844 to compare cue coordinates before and after
+  playback changes.
+- After `TASK-011`, return to refining `TASK-009` event preflight.
 
 ## Validation to Run
 
@@ -40,7 +36,6 @@ python3 scripts/ralph.py claim TASK-009 --owner "<agent/session>"
 npm test -- --run
 npm run build
 npm run lint
-cargo test --manifest-path src-tauri/Cargo.toml
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next
 ```

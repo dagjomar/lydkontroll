@@ -4,14 +4,13 @@ Last updated: 2026-06-18
 
 ## Phase
 
-The reconnecting iPhone control interface is complete; event preflight and
-operator diagnostics are next.
+The reconnecting iPhone control interface is complete; stabilizing cue
+positions during playback is next.
 
 ## Current Focus
 
-Refine `TASK-009` around managed-file validation, Tailscale/server status,
-audio-output guidance, QR presentation, safe test playback, and blocking versus
-warning diagnostics.
+Implement `TASK-011`: reserve a fixed-height mobile playback-status region and
+compact the emergency controls so cues never move when playback state changes.
 
 ## Working Software
 
@@ -58,9 +57,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-An event preflight view identifies blocking and warning conditions for managed
-files, Tailscale/control-server readiness, audio output, QR/mobile access, and
-safe test playback.
+The iPhone cue grid remains at fixed screen coordinates through idle, playing,
+fading, and stopped states. Event preflight follows as `TASK-009`.
 
 ## Accepted Foundation
 
@@ -82,6 +80,7 @@ safe test playback.
 
 - packaged macOS visibility of the Tailscale CLI;
 - Safari reconnect behavior during real Wi-Fi/mobile transitions;
+- mobile cue positions must remain stable as active playback changes;
 - keeping desktop, mobile, and Rust state/protocol definitions synchronized;
 - macOS analog output behavior and fade correctness under overlapping playback;
 - ensuring imported files survive source-file moves and app restarts.

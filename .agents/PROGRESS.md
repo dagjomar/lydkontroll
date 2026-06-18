@@ -150,3 +150,12 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Validated Vitest, production build, lint, Ralph metadata, diff hygiene, and a
   390x844 rendered cue interaction.
 - Next: refine and implement `TASK-009` event preflight and diagnostics.
+
+## 2026-06-18 — Mobile cue-layout safety follow-up added
+
+- Added `TASK-011` from operator feedback: the conditional `Spiller nå` region
+  shifts cue positions when playback starts and risks an accidental cue tap.
+- Classified it as a ready P0 bug after `TASK-008`, ahead of preflight work.
+- Defined a fixed-height idle/active playback region, compact touch-safe
+  emergency controls, automated state coverage, and a 390x844 position check.
+- Next: implement `TASK-011`, then return to `TASK-009`.
