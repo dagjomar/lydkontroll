@@ -114,6 +114,7 @@ test("shows recoverable command failures to the operator", async () => {
 });
 
 test("shows blocking failures, manual checks, and the mobile access QR", async () => {
+  const user = userEvent.setup();
   const harness = createHarness(
     {
       preflight: {
@@ -137,6 +138,13 @@ test("shows blocking failures, manual checks, and the mobile access QR", async (
 
   render(<Shell api={harness.api} pollIntervalMs={0} />);
 
+  const status = await screen.findByRole("button", {
+    name: /Tiltak kreves Vis innstillinger/,
+  });
+  expect(status).toHaveAttribute("aria-expanded", "false");
+  expect(screen.queryByText("1 blokkering må løses.")).not.toBeInTheDocument();
+
+  await user.click(status);
   expect(await screen.findByText("1 blokkering må løses.")).toBeVisible();
   expect(screen.getByText("Kontroller valgt lydutgang.")).toBeVisible();
   expect(
@@ -146,6 +154,26 @@ test("shows blocking failures, manual checks, and the mobile access QR", async (
   expect(
     screen.getByRole("link", { name: "http://100.64.0.10:17321/" }),
   ).toBeVisible();
+});
+
+test("keeps ready preflight details collapsed until requested", async () => {
+  const user = userEvent.setup();
+  const harness = createHarness();
+
+  render(<Shell api={harness.api} pollIntervalMs={0} />);
+
+  const status = await screen.findByRole("button", {
+    name: /System klart Vis innstillinger/,
+  });
+  expect(status).toHaveAttribute("aria-expanded", "false");
+  expect(screen.queryByRole("heading", { name: "Preflight" })).toBeNull();
+
+  await user.click(status);
+  expect(status).toHaveAttribute("aria-expanded", "true");
+  expect(screen.getByRole("heading", { name: "Preflight" })).toBeVisible();
+
+  await user.click(status);
+  expect(screen.queryByRole("heading", { name: "Preflight" })).toBeNull();
 });
 
 test("safe test play triggers a saved cue and fades it after three seconds", async () => {
@@ -175,6 +203,11 @@ test("safe test play triggers a saved cue and fades it after three seconds", asy
   await act(async () => {
     await Promise.resolve();
   });
+  fireEvent.click(
+    screen.getByRole("button", {
+      name: /System klart Vis innstillinger/,
+    }),
+  );
   fireEvent.click(screen.getByRole("button", { name: "Spill i 3 sekunder" }));
   await act(async () => {
     await Promise.resolve();

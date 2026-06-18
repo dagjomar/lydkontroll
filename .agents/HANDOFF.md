@@ -4,26 +4,24 @@ Updated: 2026-06-18
 
 ## What Just Happened
 
-`TASK-010` is complete. The operator confirmed that every target-hardware
-rehearsal gate passed, including the 60-minute run, iPhone/Tailscale failure
-injection, Mac-local fallback, and analog-output recovery. The result is
-recorded in `.agents/REHEARSAL.md` against the exact commit and executable
-checksum.
+`TASK-014` replaces the permanently expanded desktop preflight area with a
+compact system-status pill. It is green when no blocking check exists, red when
+action is required, and expands to the unchanged diagnostics, QR, refresh, and
+test-play tools.
 
 ## Exact Next Action
 
-Preserve and use the rehearsed candidate for the event. Follow the event-day
-checklist in `RELEASE_RUNBOOK.md`. If code or release configuration changes,
-create a new task, rebuild the candidate, and repeat the rehearsal before use.
+Build the new candidate and perform a short desktop regression check: confirm
+the preflight panel starts collapsed, expands from the status pill, shows the
+QR, refreshes, and runs the three-second test play. Record the new commit and
+checksum before replacing the previously rehearsed build.
 
 ## Important Context
 
-- Rehearsed commit:
-  `885422112d554da5f22001a39115d2afcdf30e46`.
-- Rehearsed executable SHA-256:
-  `1347aacdd57fa9b6639114b6595c997c4b9ceac128796759074ec4a96b228c61`.
-- The build is arm64 and ad-hoc signed; no Apple signing credentials are
-  required for the known event Mac.
+- The previously rehearsed commit remains `8854221` until this UI-only change
+  is rebuilt and checked.
+- `TASK-014` does not change Rust preflight facts, audio behavior, networking,
+  or the iPhone interface.
 - The release bundle and local audio/data remain ignored and must not be
   committed.
 - Mac-local control is the fallback for any phone/network failure. Do not
@@ -32,6 +30,9 @@ create a new task, rebuild the candidate, and repeat the rehearsal before use.
 ## Validation to Run
 
 ```text
+npm test
+npm run build
+npm run lint
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next
 git diff --check

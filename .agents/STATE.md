@@ -4,15 +4,15 @@ Last updated: 2026-06-18
 
 ## Phase
 
-The first event release candidate is complete. Release automation, Apple
-Silicon packaging, recovery guidance, and the target-hardware rehearsal all
-pass.
+The first event release candidate and its target-hardware rehearsal are
+complete. The desktop operator workspace now keeps preflight tools available
+behind a compact system-status control.
 
 ## Current Focus
 
-Preserve the rehearsed build identity and use the event-day checklist. Start a
-new task for any behavior change so a replacement candidate is rebuilt and
-rehearsed before use.
+Review and rehearse the compact desktop status control before treating this UI
+change as the event candidate. Preserve the previously rehearsed build until
+the replacement passes.
 
 ## Working Software
 
@@ -65,8 +65,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Operate the rehearsed release at the event. Any code or configuration change
-that affects the candidate requires a new release build and rehearsal record.
+Build and briefly rehearse the replacement candidate containing `TASK-014`,
+then record its new commit and executable checksum before event use.
 
 ## Accepted Foundation
 

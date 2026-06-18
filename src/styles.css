@@ -167,6 +167,46 @@ h1 {
   margin: 0.2rem 0;
 }
 
+.preflight-toggle-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.preflight-toggle {
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: center;
+  min-height: 2.6rem;
+  padding: 0.55rem 0.8rem;
+  border-color: rgb(255 255 255 / 12%);
+  border-radius: 999px;
+  background: rgb(28 25 22 / 88%);
+}
+
+.preflight-toggle:hover {
+  border-color: rgb(255 255 255 / 25%);
+}
+
+.status-light {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: #79c58d;
+  box-shadow: 0 0 0 0.2rem rgb(121 197 141 / 13%);
+}
+
+.preflight-toggle.blocked .status-light {
+  background: #df776f;
+  box-shadow: 0 0 0 0.2rem rgb(223 119 111 / 15%);
+}
+
+.preflight-toggle-detail {
+  color: #a9a096;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .preflight {
   display: grid;
   gap: 1rem;

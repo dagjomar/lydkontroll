@@ -23,6 +23,7 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
   const [selectedSceneId, setSelectedSceneId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [preflightBusy, setPreflightBusy] = useState(false);
+  const [preflightOpen, setPreflightOpen] = useState(false);
   const [testBusy, setTestBusy] = useState(false);
   const [testCueId, setTestCueId] = useState<string>("");
   const [controlServerInfo, setControlServerInfo] =
@@ -318,6 +319,10 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
     ...(message ? [message] : []),
     ...snapshot.errors.map((error) => error.message),
   ];
+  const preflightBlocked = Object.values(snapshot.preflight).some(
+    (status) => status.status === "unavailable",
+  );
+  const preflightLabel = preflightBlocked ? "Tiltak kreves" : "System klart";
 
   return (
     <main className="operator-shell">
@@ -356,18 +361,38 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
         </section>
       ) : null}
 
-      <PreflightPanel
-        snapshot={snapshot}
-        serverInfo={controlServerInfo}
-        qrCode={qrCode}
-        savedCues={savedCues}
-        selectedCueId={testCueId}
-        busy={preflightBusy}
-        testBusy={testBusy}
-        onSelectedCueChange={setTestCueId}
-        onRefresh={() => void refreshPreflight()}
-        onTest={() => void testPlayback()}
-      />
+      <div className="preflight-toggle-row">
+        <button
+          className={`preflight-toggle ${
+            preflightBlocked ? "blocked" : "ready"
+          }`}
+          type="button"
+          aria-expanded={preflightOpen}
+          aria-controls="preflight-panel"
+          onClick={() => setPreflightOpen((open) => !open)}
+        >
+          <span className="status-light" aria-hidden="true" />
+          <span>{preflightLabel}</span>
+          <span className="preflight-toggle-detail">
+            {preflightOpen ? "Skjul innstillinger" : "Vis innstillinger"}
+          </span>
+        </button>
+      </div>
+
+      {preflightOpen ? (
+        <PreflightPanel
+          snapshot={snapshot}
+          serverInfo={controlServerInfo}
+          qrCode={qrCode}
+          savedCues={savedCues}
+          selectedCueId={testCueId}
+          busy={preflightBusy}
+          testBusy={testBusy}
+          onSelectedCueChange={setTestCueId}
+          onRefresh={() => void refreshPreflight()}
+          onTest={() => void testPlayback()}
+        />
+      ) : null}
 
       <section className="transport" aria-label="Hovedkontroller">
         <label>
@@ -702,7 +727,11 @@ function PreflightPanel({
   ).length;
 
   return (
-    <section className="preflight" aria-labelledby="preflight-title">
+    <section
+      id="preflight-panel"
+      className="preflight"
+      aria-labelledby="preflight-title"
+    >
       <div className="preflight-heading">
         <div>
           <p className="eyebrow">Før arrangementet</p>

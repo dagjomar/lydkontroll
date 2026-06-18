@@ -246,3 +246,17 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Closed `TASK-010`; there are no remaining implementation or release blockers.
 - Next: preserve and operate the rehearsed candidate; rebuild and rehearse
   before using any changed release.
+
+## 2026-06-18 — Compact desktop preflight control completed
+
+- Replaced the permanently expanded desktop preflight area with a compact
+  status pill that leaves the cue workspace unobstructed.
+- The status light is green when there are no blocking readiness failures and
+  red when an unavailable check needs attention.
+- The existing refresh, diagnostics, QR access, and safe test playback remain
+  available by expanding the control.
+- Added regression coverage for collapsed ready/blocked states and preserved
+  panel behavior; frontend tests, build, lint, bindings, rustfmt, and Clippy
+  pass.
+- Next: build and briefly rehearse this changed candidate before replacing the
+  previously rehearsed event build.
