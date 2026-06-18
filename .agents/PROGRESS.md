@@ -159,3 +159,17 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Defined a fixed-height idle/active playback region, compact touch-safe
   emergency controls, automated state coverage, and a 390x844 position check.
 - Next: implement `TASK-011`, then return to `TASK-009`.
+
+## 2026-06-18 — Stable iPhone cue layout completed
+
+- Kept the `Spiller nå` panel mounted with a fixed outer height, a quiet idle
+  state, and internal scrolling for multiple active sounds.
+- Compacted emergency and playback actions while preserving measured 44-pixel
+  touch targets.
+- Added idle-to-playing-to-idle regression coverage and made the mobile preview
+  simulate playback commands for rendered checks.
+- At 390x844, verified the first cue remained at document position
+  585.9296875 pixels through idle, playing, and stopped states.
+- Validated Vitest, production build, ESLint, Prettier, generated bindings,
+  rustfmt, Clippy, Ralph metadata, and diff hygiene.
+- Next: refine `TASK-009` event preflight and operator diagnostics.

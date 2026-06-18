@@ -4,13 +4,13 @@ Last updated: 2026-06-18
 
 ## Phase
 
-The reconnecting iPhone control interface is complete; stabilizing cue
-positions during playback is next.
+The reconnecting iPhone control interface and stable mobile cue layout are
+complete; event preflight planning is next.
 
 ## Current Focus
 
-Implement `TASK-011`: reserve a fixed-height mobile playback-status region and
-compact the emergency controls so cues never move when playback state changes.
+Refine `TASK-009` into an implementation-ready event preflight and operator
+diagnostics slice.
 
 ## Working Software
 
@@ -42,7 +42,8 @@ A runnable Tauri 2 application with:
   graceful-shutdown coverage.
 - a dedicated iPhone Safari projection with touch-safe controls, persistent
   connection/acknowledgement status, fresh-snapshot reconnects, stale-socket
-  guards, and duplicate in-flight action suppression.
+  guards, duplicate in-flight action suppression, a fixed-height playback
+  status region, and stable cue positions across playback changes.
 
 ## Known Blockers
 
@@ -57,8 +58,9 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-The iPhone cue grid remains at fixed screen coordinates through idle, playing,
-fading, and stopped states. Event preflight follows as `TASK-009`.
+The operator can verify control-server readiness, managed audio, output
+expectations, mobile access, and safe test playback before the event through
+`TASK-009`.
 
 ## Accepted Foundation
 
@@ -80,7 +82,6 @@ fading, and stopped states. Event preflight follows as `TASK-009`.
 
 - packaged macOS visibility of the Tailscale CLI;
 - Safari reconnect behavior during real Wi-Fi/mobile transitions;
-- mobile cue positions must remain stable as active playback changes;
 - keeping desktop, mobile, and Rust state/protocol definitions synchronized;
 - macOS analog output behavior and fade correctness under overlapping playback;
 - ensuring imported files survive source-file moves and app restarts.

@@ -67,6 +67,57 @@ test("disables stale controls while reconnecting and renders the fresh snapshot"
   );
 });
 
+test("keeps the playback region mounted while playback starts and stops", async () => {
+  const harness = createHarness();
+  render(<MobileControl api={harness.api} pollIntervalMs={0} />);
+
+  const cue = await screen.findByRole("button", { name: /Første dans/ });
+  const playbackRegion = screen.getByRole("region", { name: "Aktiv lyd" });
+  expect(screen.getByText("Ingen lyd spiller.")).toBeVisible();
+
+  act(() => {
+    harness.setSnapshot({
+      ...baseSnapshot,
+      revision: 4,
+      activePlayback: [
+        {
+          id: "playback-1",
+          cueId: "cue-1",
+          volume: 0.8,
+          fadeMs: 500,
+          status: "playing",
+        },
+        {
+          id: "playback-2",
+          cueId: "cue-1",
+          volume: 0.8,
+          fadeMs: 500,
+          status: "fading",
+        },
+      ],
+    });
+    harness.setConnection("connected");
+  });
+
+  expect(await screen.findByText("Første dans · spiller")).toBeVisible();
+  expect(screen.getByText("Første dans · fader")).toBeVisible();
+  expect(screen.getByRole("region", { name: "Aktiv lyd" })).toBe(
+    playbackRegion,
+  );
+  expect(screen.getByRole("button", { name: /Første dans/ })).toBe(cue);
+
+  act(() => {
+    harness.setSnapshot({ ...baseSnapshot, revision: 5 });
+    harness.setConnection("connected");
+  });
+
+  expect(await screen.findByText("Ingen lyd spiller.")).toBeVisible();
+  expect(screen.getByRole("region", { name: "Aktiv lyd" })).toBe(
+    playbackRegion,
+  );
+  expect(screen.getByRole("button", { name: /Første dans/ })).toBe(cue);
+});
+
 const baseSnapshot: AppSnapshot = {
   revision: 3,
   scenes: [

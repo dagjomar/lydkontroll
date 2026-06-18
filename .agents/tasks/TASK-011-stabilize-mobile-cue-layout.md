@@ -1,10 +1,10 @@
 ---
 id: TASK-011
 title: Keep iPhone cue positions stable during playback
-status: ready
+status: done
 priority: P0
 type: bug
-owner: unassigned
+owner: codex-2026-06-18-stable-mobile-layout
 depends_on: [TASK-008]
 plan: none
 updated: 2026-06-18
@@ -41,16 +41,16 @@ changes, fades, stops, or becomes idle.
 
 ## Acceptance Criteria
 
-- [ ] The first cue has the same vertical position with zero, one, or multiple
+- [x] The first cue has the same vertical position with zero, one, or multiple
       active playback instances.
-- [ ] The playback-status region has a useful empty state and fixed outer
+- [x] The playback-status region has a useful empty state and fixed outer
       height.
-- [ ] Multiple active sounds remain readable and controllable within the fixed
+- [x] Multiple active sounds remain readable and controllable within the fixed
       region without pushing cues.
-- [ ] `Fade alt` and `Stopp alt` use less vertical space while retaining at
+- [x] `Fade alt` and `Stopp alt` use less vertical space while retaining at
       least 44-point touch targets.
-- [ ] Automated tests cover idle-to-playing and playing-to-idle layout states.
-- [ ] A 390x844 rendered check confirms cue positions do not move.
+- [x] Automated tests cover idle-to-playing and playing-to-idle layout states.
+- [x] A 390x844 rendered check confirms cue positions do not move.
 
 ## Validation
 
@@ -67,3 +67,13 @@ python3 scripts/ralph.py check
   This is a safety/usability bug and should be completed before preflight work.
 - The behavior and constraints are sufficiently specific for direct
   implementation; no separate planning task is required.
+
+- 2026-06-18: Task claimed.
+- 2026-06-18: Kept the playback panel mounted at a fixed 148-pixel rendered
+  height with an internal scrolling list and quiet idle state. Emergency and
+  per-playback controls render at 44 pixels. At 390x844, the first cue's
+  document position remained 585.9296875 pixels through idle, playing, and
+  stopped states.
+- 2026-06-18: `npm test -- --run`, `npm run build`, and `npm run lint` passed.
+- 2026-06-18: Fixed-height playback region, 44px controls, regression
+  coverage, and 390x844 rendered position check completed.

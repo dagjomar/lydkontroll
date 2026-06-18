@@ -309,9 +309,46 @@ function createPreviewApi(mode: "desktop" | "mobile"): DesktopApi {
       return null;
     },
     async execute(command) {
+      const activePlayback =
+        command.type === "triggerCue"
+          ? [
+              ...snapshot.activePlayback,
+              {
+                id: createUuid(),
+                cueId: command.cueId,
+                volume:
+                  snapshot.scenes
+                    .flatMap((scene) => scene.cues)
+                    .find((cue) => cue.id === command.cueId)?.volume ?? 1,
+                fadeMs:
+                  snapshot.scenes
+                    .flatMap((scene) => scene.cues)
+                    .find((cue) => cue.id === command.cueId)?.fadeMs ?? 500,
+                status: "playing" as const,
+              },
+            ]
+          : command.type === "stopPlayback"
+            ? snapshot.activePlayback.filter(
+                (playback) => playback.id !== command.playbackId,
+              )
+            : command.type === "fadePlayback"
+              ? snapshot.activePlayback.map((playback) =>
+                  playback.id === command.playbackId
+                    ? { ...playback, status: "fading" as const }
+                    : playback,
+                )
+              : command.type === "stopAll"
+                ? []
+                : command.type === "fadeAll"
+                  ? snapshot.activePlayback.map((playback) => ({
+                      ...playback,
+                      status: "fading" as const,
+                    }))
+                  : snapshot.activePlayback;
       snapshot = {
         ...snapshot,
         revision: snapshot.revision + 1,
+        activePlayback,
         masterVolume:
           command.type === "setMasterVolume"
             ? command.volume

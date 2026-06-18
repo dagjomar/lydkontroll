@@ -169,49 +169,53 @@ export function MobileControl({
         </div>
       </section>
 
-      {snapshot.activePlayback.length ? (
-        <section className="mobile-active" aria-label="Aktiv lyd">
-          <h2>Spiller nå</h2>
-          {snapshot.activePlayback.map((playback) => (
-            <article key={playback.id}>
-              <span>
-                {cueNames.get(playback.cueId) ?? "Ukjent cue"} ·{" "}
-                {playback.status === "fading" ? "fader" : "spiller"}
-              </span>
-              <button
-                type="button"
-                disabled={controlsDisabled}
-                onClick={() =>
-                  void run(
-                    {
-                      type: "fadePlayback",
-                      playbackId: playback.id,
-                    },
-                    `fade ${cueNames.get(playback.cueId) ?? "cue"}`,
-                  )
-                }
-              >
-                Fade
-              </button>
-              <button
-                type="button"
-                disabled={controlsDisabled}
-                onClick={() =>
-                  void run(
-                    {
-                      type: "stopPlayback",
-                      playbackId: playback.id,
-                    },
-                    `stopp ${cueNames.get(playback.cueId) ?? "cue"}`,
-                  )
-                }
-              >
-                Stopp
-              </button>
-            </article>
-          ))}
-        </section>
-      ) : null}
+      <section className="mobile-active" aria-label="Aktiv lyd">
+        <h2>Spiller nå</h2>
+        <div className="mobile-active-list">
+          {snapshot.activePlayback.length ? (
+            snapshot.activePlayback.map((playback) => (
+              <article key={playback.id}>
+                <span>
+                  {cueNames.get(playback.cueId) ?? "Ukjent cue"} ·{" "}
+                  {playback.status === "fading" ? "fader" : "spiller"}
+                </span>
+                <button
+                  type="button"
+                  disabled={controlsDisabled}
+                  onClick={() =>
+                    void run(
+                      {
+                        type: "fadePlayback",
+                        playbackId: playback.id,
+                      },
+                      `fade ${cueNames.get(playback.cueId) ?? "cue"}`,
+                    )
+                  }
+                >
+                  Fade
+                </button>
+                <button
+                  type="button"
+                  disabled={controlsDisabled}
+                  onClick={() =>
+                    void run(
+                      {
+                        type: "stopPlayback",
+                        playbackId: playback.id,
+                      },
+                      `stopp ${cueNames.get(playback.cueId) ?? "cue"}`,
+                    )
+                  }
+                >
+                  Stopp
+                </button>
+              </article>
+            ))
+          ) : (
+            <p className="mobile-active-empty">Ingen lyd spiller.</p>
+          )}
+        </div>
+      </section>
 
       <nav className="mobile-scenes" aria-label="Scener">
         {snapshot.scenes.map((scene) => (

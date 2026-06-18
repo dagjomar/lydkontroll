@@ -4,38 +4,38 @@ Updated: 2026-06-18
 
 ## What Just Happened
 
-`TASK-011` was added from real iPhone Safari feedback. The conditional
-`Spiller nå` section currently shifts cue positions when playback begins,
-creating an accidental-trigger risk.
+`TASK-011` is complete. The iPhone view now keeps a fixed-height `Spiller nå`
+region mounted in idle and active states, scrolls multiple active rows inside
+that region, and keeps emergency/playback actions at measured 44-pixel touch
+targets. The first cue stayed at the same document position in a 390x844
+idle-playing-stopped check.
 
 ## Exact Next Action
 
-Start and implement the ready P0 layout-safety bug.
+Claim and refine the event-preflight idea into a dependency-safe implementation
+plan.
 
 ```text
-python3 scripts/ralph.py start TASK-011 --owner "<agent/session>"
+python3 scripts/ralph.py claim TASK-009 --owner "<agent/session>"
 ```
 
 ## Important Context
 
-- Keep the playback-status section mounted in both idle and active states with
-  a fixed outer height.
-- Give idle playback a quiet empty state instead of removing the section.
-- Multiple active sounds must remain usable inside the reserved space without
-  pushing the scene tabs or cue grid.
-- Make `Fade alt` and `Stopp alt` shorter, but retain at least 44-point touch
-  targets and obvious emergency-control styling.
-- Add tests around idle-to-playing and playing-to-idle state changes.
-- Use the mobile preview at 390x844 to compare cue coordinates before and after
-  playback changes.
-- After `TASK-011`, return to refining `TASK-009` event preflight.
+- `TASK-009` is still an `idea`; use `.agents/plans/TEMPLATE.md`, accepted
+  architecture decisions, and the existing `PreflightFacts` projection before
+  moving it to `ready`.
+- The preflight outcome must cover managed files, validated Tailscale binding
+  and reachability, mobile URL/QR presentation, audio-output expectations, safe
+  test playback, and blocking-versus-warning diagnostics.
+- Preserve the accepted boundary: Rust owns facts and readiness; React renders
+  operator guidance and actions.
+- Hardware-dependent output naming may require an explicit manual verification
+  step if the supported platform APIs cannot expose it reliably.
 
 ## Validation to Run
 
 ```text
-npm test -- --run
-npm run build
-npm run lint
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next
+git diff --check
 ```

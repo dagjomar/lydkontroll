@@ -397,12 +397,25 @@ h1 {
 }
 
 .mobile-emergency button {
-  min-height: 4rem;
-  font-size: 1rem;
+  min-height: 2.75rem;
+  padding-block: 0.45rem;
+  font-size: 0.95rem;
+}
+
+.mobile-active {
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 9.25rem;
 }
 
 .mobile-active h2 {
   font-size: 1.25rem;
+}
+
+.mobile-active-list {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .mobile-active article {
@@ -410,6 +423,11 @@ h1 {
   grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 0.45rem;
   align-items: center;
+  min-height: 3rem;
+}
+
+.mobile-active article + article {
+  margin-top: 0.45rem;
 }
 
 .mobile-active article span {
@@ -421,7 +439,17 @@ h1 {
 }
 
 .mobile-active button {
-  min-height: 3rem;
+  min-height: 2.75rem;
+  padding: 0.45rem 0.65rem;
+}
+
+.mobile-active-empty {
+  display: grid;
+  height: 100%;
+  margin: 0;
+  place-items: center;
+  color: #8f887f;
+  font-size: 0.9rem;
 }
 
 .mobile-scenes {
