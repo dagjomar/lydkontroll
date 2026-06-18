@@ -4,67 +4,60 @@ Last updated: 2026-06-18
 
 ## Phase
 
-Local Mac editing and playback control are complete; Tailscale-only transport
-is next.
+Fail-closed Tailscale transport is complete; the reconnecting iPhone control
+interface is next.
 
 ## Current Focus
 
-Refine `TASK-006` around fail-closed Tailscale discovery, Axum lifecycle,
-embedded mobile assets, WebSocket acknowledgements/snapshots, and QR URL data.
+Refine `TASK-008` around a mobile projection of the existing production
+frontend, visible connection/acknowledgement state, reconnect backoff, stale
+socket handling, and touch-safe cue/playback controls.
 
 ## Working Software
 
-A runnable Tauri 2 shell with:
+A runnable Tauri 2 application with:
 
-- a strict React/TypeScript/Vite frontend and native macOS window;
-- a Rust library composition root plus minimal executable;
-- domain/application/ports/adapters module boundaries;
-- Vitest/React Testing Library and Tauri mock-runtime smoke tests;
-- deterministic ts-rs output under `src/generated/`;
-- ESLint, Prettier, rustfmt, Clippy, frontend build, and Rust test commands;
-- a schema-v1 scene/cue/audio aggregate owned by Rust with generated TypeScript
-  contracts;
-- atomic JSON save/backup/recovery under the app-data root;
-- staged, decoder-validated MP3/WAV import into managed storage;
-- typed corrupt/future schema, missing-file, invalid-audio, and reference
-  errors;
-- a deterministic `PlaybackEngine` for overlap, exclusive barriers, retrigger,
-  stop, per-cue fade, fade-all, master volume, completion, and backend failure;
-- a Kira 0.12/CPAL streaming adapter for managed MP3/WAV files through the
-  selected macOS system output;
-- hardware-free playback coverage using a recording fake backend;
-- versioned cue/playback command envelopes with UUID acknowledgements and typed
-  failures;
-- one mutex-serialized `ApplicationService` owning cue lookup, playback,
-  backend polling, revision changes, and complete snapshot publication;
-- a bounded 256-command retry cache and bounded recoverable operator errors;
-- authoritative snapshots containing scenes, active/pending playback, master
-  volume, preflight facts, and recoverable errors;
-- generated TypeScript contracts and thin Tauri adapter helpers for the shared
-  command/state path.
-- a Tauri-managed desktop coordinator that persists complete library candidates
-  before publishing them through `ApplicationService`;
-- native MP3/WAV selection through the official Tauri dialog plugin;
-- a responsive Mac operator UI for scene/cue CRUD and ordering, managed audio
-  import, color/volume/mode/fade configuration, triggering, active playback,
-  per-instance stop/fade, stop/fade all, and master volume;
-- resilient audio-output startup and missing-managed-file recovery that keep
-  the editor available with visible operator errors;
-- a standalone preview mode and component/state-flow coverage for the critical
-  local workflow.
+- strict React/TypeScript/Vite frontend and native macOS shell;
+- Rust-owned schema-v1 cue persistence and managed MP3/WAV import;
+- deterministic Kira/CPAL playback behind an application-owned engine;
+- one mutex-serialized `ApplicationService` owning commands, retries,
+  revisions, snapshots, polling, preflight facts, and recoverable errors;
+- responsive Mac scene/cue editing and local playback controls;
+- injectable, timeout-bounded `tailscale ip -4` discovery with explicit CLI
+  candidates, exactly-one-address parsing, `100.64.0.0/10` validation, and
+  local-interface confirmation;
+- fail-closed binding only to the validated Tailscale IPv4 address on port
+  `17321`, with no wildcard, loopback, or LAN fallback;
+- a gracefully stoppable Axum task on Tauri's async runtime whose failure
+  leaves local playback and editing operational;
+- HTTP serving through Tauri's embedded production `frontendDist` asset
+  resolver;
+- WebSocket initial snapshots, command acknowledgements, authoritative
+  post-command snapshots, revision polling, malformed-frame errors, and
+  reconnect-from-current-state behavior;
+- application-service deduplication preserving idempotency across retried
+  command IDs;
+- generated `ControlServerInfo` and a desktop command exposing the mobile URL
+  for QR presentation;
+- hardware-free discovery, HTTP, WebSocket, bind-failure, reconnect, and
+  graceful-shutdown coverage.
 
 ## Known Blockers
 
 - No current implementation blocker.
-- Native Tauri desktop WebDriver remains unavailable on macOS; use mock-runtime
-  tests, standalone Playwright WebKit coverage, and manual native checks.
-- Real analog playback, output switching/loss, and recovery are documented but
-  remain target-Mac rehearsal gates.
+- Network tests need permission to bind temporary loopback ports in restricted
+  environments.
+- Native Tauri desktop WebDriver remains unavailable on macOS; use
+  mock-runtime tests, standalone Playwright WebKit coverage, and manual native
+  checks.
+- Actual packaged Tailscale CLI path, iPhone connectivity, analog playback,
+  output switching/loss, and recovery remain target-Mac rehearsal gates.
 
 ## Next Milestone
 
-An iPhone can connect over Tailscale, receive the authoritative snapshot, send
-idempotent commands, and reconnect without disrupting Mac playback.
+An iPhone Safari view renders the authoritative state, sends commands with
+visible acknowledgement status, reconnects from a fresh snapshot, and remains
+usable through mobile-network transitions without disrupting Mac playback.
 
 ## Accepted Foundation
 
@@ -78,14 +71,14 @@ idempotent commands, and reconnect without disrupting Mac playback.
 - Axum on Tauri's async runtime, sharing one `ApplicationService`.
 - Timeout-bounded `tailscale ip -4` discovery with local-address validation and
   no insecure bind fallback.
+- Tauri's production asset resolver as the embedded HTTP asset boundary.
 - Vitest/React Testing Library, Rust integration/mock-runtime tests, Playwright
   WebKit mobile coverage, and explicit target-hardware rehearsal.
 
 ## Risk Watchlist
 
-- macOS analog output behavior and fade correctness under real overlapping
-  playback;
-- discovering and binding only the active Tailscale address;
+- packaged macOS visibility of the Tailscale CLI;
+- Safari reconnect behavior during real Wi-Fi/mobile transitions;
 - keeping desktop, mobile, and Rust state/protocol definitions synchronized;
-- Safari reconnect behavior during real mobile-network transitions;
+- macOS analog output behavior and fade correctness under overlapping playback;
 - ensuring imported files survive source-file moves and app restarts.

@@ -1,7 +1,7 @@
 ---
 id: TASK-006
 title: Serve authenticated-by-Tailscale mobile control transport
-status: needs-planning
+status: done
 priority: P1
 type: feature
 owner: unassigned
@@ -24,19 +24,19 @@ address at port 17321, with acknowledgements, snapshots, and reconnect support.
 
 ## Acceptance Criteria
 
-- [ ] An injectable, timeout-bounded `tailscale ip -4` probe returns exactly one
+- [x] An injectable, timeout-bounded `tailscale ip -4` probe returns exactly one
       locally assigned address in `100.64.0.0/10` or a typed diagnostic.
-- [ ] The server refuses to bind when no valid Tailscale address is available.
-- [ ] It never binds wildcard, loopback-only, or ordinary LAN interfaces as a
+- [x] The server refuses to bind when no valid Tailscale address is available.
+- [x] It never binds wildcard, loopback-only, or ordinary LAN interfaces as a
       fallback.
-- [ ] Axum runs as a gracefully stoppable/rebindable task on Tauri's async
+- [x] Axum runs as a gracefully stoppable/rebindable task on Tauri's async
       runtime and a server failure does not stop local playback.
-- [ ] HTTP serves mobile control assets embedded from the production frontend
+- [x] HTTP serves mobile control assets embedded from the production frontend
       build.
-- [ ] WebSocket commands use the TASK-005 command/state core.
-- [ ] Connect/reconnect obtains an authoritative current-state snapshot and
+- [x] WebSocket commands use the TASK-005 command/state core.
+- [x] Connect/reconnect obtains an authoritative current-state snapshot and
       duplicate command IDs do not replay side effects.
-- [ ] QR-code URL data is exposed to the desktop app.
+- [x] QR-code URL data is exposed to the desktop app.
 
 ## Validation
 
@@ -54,3 +54,21 @@ target Mac and must fail closed.
 - 2026-06-18: Reprioritized after `TASK-007` so local Mac editing and playback
   can be tested before remote transport is introduced. Its technical dependency
   remains `TASK-005`; this is delivery ordering rather than a new coupling.
+- 2026-06-18: Planning resolved CLI candidates and timeout behavior, strict
+  local CGNAT validation, graceful Axum lifecycle, embedded asset boundaries,
+  fresh-snapshot reconnects, idempotent command acknowledgements, and QR URL
+  data. Automatic periodic re-probing is deferred to `TASK-009`.
+- 2026-06-18: Task claimed.
+- 2026-06-18: Added strict Tailscale CLI discovery with explicit executable
+  candidates, three-second timeout, exactly-one-address parsing, CGNAT and
+  local-interface validation, and typed diagnostics.
+- 2026-06-18: Added Axum HTTP/WebSocket transport over the shared
+  `ApplicationService`, Tauri-embedded production asset serving, initial and
+  revisioned snapshots, acknowledgements, idempotent retries, malformed-frame
+  recovery, graceful shutdown, and desktop URL/QR payload access.
+- 2026-06-18: Rust tests, Vitest, production build, generated bindings,
+  formatting, ESLint, Clippy, Ralph validation, and diff hygiene pass.
+  Loopback transport tests require permission to bind temporary local ports.
+- 2026-06-18: Implemented and validated fail-closed Tailscale discovery,
+  embedded Axum HTTP/WebSocket transport, reconnect snapshots, idempotent
+  acknowledgements, graceful lifecycle, and desktop URL data.

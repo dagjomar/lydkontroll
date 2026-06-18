@@ -10,9 +10,14 @@ pub mod ports;
 
 use adapters::{
     audio::LocalAudioBackend,
-    tauri::{load_or_create_library, persistence_repository, DesktopCoordinator},
+    network::{
+        discover_tailscale_ipv4, local_ipv4_addresses, start_control_server, ControlServerRuntime,
+        NetworkApplication, SystemProcessRunner, DEFAULT_TAILSCALE_TIMEOUT,
+    },
+    tauri::{load_or_create_library, persistence_repository, DesktopCoordinator, TauriWebAssets},
 };
 use application::{OperatorErrorKind, PreflightFacts, PreflightStatus};
+use std::sync::Arc;
 use tauri::{Builder, Manager, Runtime};
 
 /// Applies all application wiring to a supplied Tauri builder.
@@ -33,8 +38,39 @@ pub fn configure<R: Runtime>(builder: Builder<R>) -> Builder<R> {
                 None => PreflightStatus::Ready,
             };
             let coordinator = DesktopCoordinator::new(repository, library, backend);
+            let shared_service = coordinator.shared_service();
+            let control_result = local_ipv4_addresses()
+                .and_then(|local_addresses| {
+                    discover_tailscale_ipv4(
+                        &SystemProcessRunner,
+                        None,
+                        &local_addresses,
+                        DEFAULT_TAILSCALE_TIMEOUT,
+                    )
+                })
+                .map_err(|error| error.to_string())
+                .and_then(|address| {
+                    let application: Arc<dyn NetworkApplication> = shared_service.clone();
+                    let assets = Arc::new(TauriWebAssets::new(app.handle().clone()));
+                    tauri::async_runtime::block_on(start_control_server(
+                        address,
+                        application,
+                        assets,
+                    ))
+                    .map_err(|error| error.to_string())
+                });
+            let (control_server, control_server_preflight) = match control_result {
+                Ok(server) => (
+                    ControlServerRuntime::running(server),
+                    PreflightStatus::Ready,
+                ),
+                Err(error) => (
+                    ControlServerRuntime::unavailable(error.clone()),
+                    PreflightStatus::Unavailable { message: error },
+                ),
+            };
             coordinator.service().set_preflight(PreflightFacts {
-                control_server: PreflightStatus::Unknown,
+                control_server: control_server_preflight,
                 audio_output,
                 audio_files: PreflightStatus::Ready,
             })?;
@@ -44,6 +80,7 @@ pub fn configure<R: Runtime>(builder: Builder<R>) -> Builder<R> {
                     .report_error(OperatorErrorKind::Persistence, message)?;
             }
             app.manage(coordinator);
+            app.manage(control_server);
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -51,6 +88,7 @@ pub fn configure<R: Runtime>(builder: Builder<R>) -> Builder<R> {
             adapters::tauri::execute_desktop_command,
             adapters::tauri::save_library,
             adapters::tauri::import_audio,
+            adapters::tauri::get_control_server_info,
         ])
 }
 

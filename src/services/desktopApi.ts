@@ -3,11 +3,13 @@ import { open } from "@tauri-apps/plugin-dialog";
 import type { AppSnapshot } from "../generated/AppSnapshot";
 import type { Command } from "../generated/Command";
 import type { CommandAck } from "../generated/CommandAck";
+import type { ControlServerInfo } from "../generated/ControlServerInfo";
 import type { CueLibrary } from "../generated/CueLibrary";
 import type { ManagedAudioFile } from "../generated/ManagedAudioFile";
 
 export interface DesktopApi {
   getSnapshot(): Promise<AppSnapshot>;
+  getControlServerInfo(): Promise<ControlServerInfo | null>;
   execute(command: Command): Promise<CommandAck>;
   saveLibrary(library: CueLibrary): Promise<AppSnapshot>;
   importAudio(): Promise<ManagedAudioFile | null>;
@@ -16,6 +18,9 @@ export interface DesktopApi {
 const tauriDesktopApi: DesktopApi = {
   getSnapshot() {
     return invoke<AppSnapshot>("get_snapshot");
+  },
+  getControlServerInfo() {
+    return invoke<ControlServerInfo | null>("get_control_server_info");
   },
   execute(command) {
     return invoke<CommandAck>("execute_desktop_command", {
@@ -65,6 +70,9 @@ function createPreviewApi(): DesktopApi {
   return {
     async getSnapshot() {
       return snapshot;
+    },
+    async getControlServerInfo() {
+      return null;
     },
     async execute(command) {
       snapshot = {

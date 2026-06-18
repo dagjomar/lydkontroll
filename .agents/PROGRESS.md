@@ -105,3 +105,22 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Validated Cargo tests, Vitest, production build, ESLint, Prettier, generated
   bindings, rustfmt, Clippy, Ralph metadata, and diff hygiene.
 - Next: refine and implement `TASK-006` Tailscale-only control transport.
+
+## 2026-06-18 — Fail-closed Tailscale control transport completed
+
+- Accepted the `TASK-006` threat/failure plan for explicit CLI candidates,
+  bounded discovery, local CGNAT validation, listener lifecycle, embedded
+  assets, reconnect, acknowledgements, and QR URL data.
+- Added typed `tailscale ip -4` discovery with a three-second timeout and no
+  wildcard, loopback, LAN, or invalid-address fallback.
+- Added a gracefully stoppable Axum server that serves Tauri's embedded
+  production assets and routes WebSocket commands through the shared
+  `ApplicationService`.
+- Added initial/current snapshots, acknowledgements, retry idempotency,
+  malformed-frame recovery, revision polling, reconnect coverage, bind
+  refusal, and graceful listener release tests.
+- Exposed generated `ControlServerInfo` to the desktop for mobile URL/QR
+  presentation and made startup failure a visible local-only preflight state.
+- Validated Cargo tests, Vitest, production build, generated bindings,
+  formatting, ESLint, Clippy, Ralph metadata, and diff hygiene.
+- Next: refine and implement `TASK-008` reconnecting iPhone controls.

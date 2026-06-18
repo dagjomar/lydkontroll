@@ -2,7 +2,7 @@
 
 use std::{
     path::{Path, PathBuf},
-    sync::Mutex,
+    sync::{Arc, Mutex},
 };
 
 use tauri::{AppHandle, Manager, Runtime, State};
@@ -10,6 +10,7 @@ use tauri::{AppHandle, Manager, Runtime, State};
 use crate::{
     adapters::{
         audio::LocalAudioBackend,
+        network::{ControlServerInfo, ControlServerRuntime, EmbeddedWebAsset, WebAssetProvider},
         persistence::{JsonLibraryRepository, PersistenceError},
     },
     application::{
@@ -21,11 +22,34 @@ use crate::{
 
 pub type DesktopApplicationService = ApplicationService<LocalAudioBackend>;
 
+pub struct TauriWebAssets<R: Runtime> {
+    app: AppHandle<R>,
+}
+
+impl<R: Runtime> TauriWebAssets<R> {
+    pub fn new(app: AppHandle<R>) -> Self {
+        Self { app }
+    }
+}
+
+impl<R: Runtime> WebAssetProvider for TauriWebAssets<R> {
+    fn get(&self, path: &str) -> Option<EmbeddedWebAsset> {
+        self.app
+            .asset_resolver()
+            .get(path.to_owned())
+            .map(|asset| EmbeddedWebAsset {
+                bytes: asset.bytes,
+                mime_type: asset.mime_type,
+                csp_header: asset.csp_header,
+            })
+    }
+}
+
 /// Serializes local library imports/saves around the shared authoritative core.
 pub struct DesktopCoordinator {
     operations: Mutex<()>,
     repository: JsonLibraryRepository,
-    service: DesktopApplicationService,
+    service: Arc<DesktopApplicationService>,
 }
 
 impl DesktopCoordinator {
@@ -38,12 +62,16 @@ impl DesktopCoordinator {
         Self {
             operations: Mutex::new(()),
             repository,
-            service: ApplicationService::new(library, audio_dir, backend),
+            service: Arc::new(ApplicationService::new(library, audio_dir, backend)),
         }
     }
 
     pub fn service(&self) -> &DesktopApplicationService {
         &self.service
+    }
+
+    pub fn shared_service(&self) -> Arc<DesktopApplicationService> {
+        Arc::clone(&self.service)
     }
 
     pub fn snapshot(&self) -> Result<AppSnapshot, String> {
@@ -149,6 +177,13 @@ pub fn import_audio(
     source_path: PathBuf,
 ) -> Result<ManagedAudioFile, String> {
     state.import_audio(&source_path)
+}
+
+#[tauri::command]
+pub fn get_control_server_info(
+    state: State<'_, ControlServerRuntime>,
+) -> Option<ControlServerInfo> {
+    state.info()
 }
 
 /// Generic helpers retained for transport-level tests.

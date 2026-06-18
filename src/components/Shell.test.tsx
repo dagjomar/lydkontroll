@@ -137,6 +137,7 @@ function createHarness(overrides: Partial<AppSnapshot> = {}): {
   });
   const api: DesktopApi = {
     getSnapshot: vi.fn(async () => snapshot),
+    getControlServerInfo: vi.fn(async () => null),
     execute,
     saveLibrary,
     importAudio: vi.fn(async () => {
