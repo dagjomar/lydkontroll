@@ -1,7 +1,7 @@
 ---
 id: TASK-006
 title: Serve authenticated-by-Tailscale mobile control transport
-status: idea
+status: needs-planning
 priority: P1
 type: feature
 owner: unassigned

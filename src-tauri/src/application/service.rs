@@ -162,6 +162,22 @@ where
         Ok(self.lock_state()?.snapshot())
     }
 
+    pub fn library(&self) -> Result<CueLibrary, ApplicationServiceError> {
+        Ok(self.lock_state()?.library.clone())
+    }
+
+    pub fn replace_library(
+        &self,
+        library: CueLibrary,
+    ) -> Result<AppSnapshot, ApplicationServiceError> {
+        let mut state = self.lock_state()?;
+        if state.library != library {
+            state.library = library;
+            state.advance_revision();
+        }
+        Ok(state.snapshot())
+    }
+
     pub fn subscribe(&self) -> Result<Receiver<AppSnapshot>, ApplicationServiceError> {
         let (sender, receiver) = mpsc::channel();
         let mut state = self.lock_state()?;
@@ -181,6 +197,22 @@ where
             state.preflight = preflight;
             state.advance_revision();
         }
+        Ok(state.snapshot())
+    }
+
+    pub fn report_error(
+        &self,
+        kind: OperatorErrorKind,
+        message: impl Into<String>,
+    ) -> Result<AppSnapshot, ApplicationServiceError> {
+        let mut state = self.lock_state()?;
+        state.push_error(OperatorError {
+            id: Uuid::new_v4().to_string(),
+            kind,
+            message: message.into(),
+            playback_id: None,
+        });
+        state.advance_revision();
         Ok(state.snapshot())
     }
 
@@ -306,6 +338,7 @@ where
         AppSnapshot {
             revision: self.revision,
             scenes: self.library.scenes.clone(),
+            audio_files: self.library.audio_files.clone(),
             active_playback: self.playback.active(),
             pending_cue_id: self
                 .playback

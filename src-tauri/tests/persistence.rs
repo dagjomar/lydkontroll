@@ -200,6 +200,10 @@ fn missing_managed_files_are_reported_without_losing_metadata() {
         Err(PersistenceError::MissingManagedFile { file_name })
             if file_name == "audio-1.wav"
     ));
+    let metadata = repository
+        .load_metadata()
+        .expect("valid metadata remains available for recovery");
+    assert_eq!(metadata.audio_files[0].original_name, "missing.wav");
 }
 
 #[test]

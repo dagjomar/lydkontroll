@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
-use crate::domain::Scene;
+use crate::domain::{ManagedAudioFile, Scene};
 
 use super::PlaybackInstance;
 
@@ -101,6 +101,7 @@ pub struct AppSnapshot {
     #[ts(type = "number")]
     pub revision: u64,
     pub scenes: Vec<Scene>,
+    pub audio_files: Vec<ManagedAudioFile>,
     pub active_playback: Vec<PlaybackInstance>,
     pub pending_cue_id: Option<String>,
     pub master_volume: f32,
@@ -152,4 +153,5 @@ pub struct OperatorError {
 pub enum OperatorErrorKind {
     AudioBackend,
     PlaybackFailed,
+    Persistence,
 }

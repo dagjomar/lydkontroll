@@ -40,6 +40,31 @@ pub struct KiraAudioBackend {
     handles: BTreeMap<BackendPlaybackId, StreamingSoundHandle<FromFileError>>,
 }
 
+pub enum LocalAudioBackend {
+    Ready(KiraAudioBackend),
+    Unavailable(String),
+}
+
+impl LocalAudioBackend {
+    pub fn new(audio_dir: impl Into<PathBuf>) -> Self {
+        match KiraAudioBackend::new(audio_dir) {
+            Ok(backend) => Self::Ready(backend),
+            Err(error) => Self::Unavailable(error.to_string()),
+        }
+    }
+
+    pub fn is_ready(&self) -> bool {
+        matches!(self, Self::Ready(_))
+    }
+
+    pub fn unavailable_message(&self) -> Option<&str> {
+        match self {
+            Self::Ready(_) => None,
+            Self::Unavailable(message) => Some(message),
+        }
+    }
+}
+
 impl KiraAudioBackend {
     pub fn new(audio_dir: impl Into<PathBuf>) -> Result<Self, KiraAudioError> {
         let manager = AudioManager::<DefaultBackend>::new(AudioManagerSettings::default())
@@ -128,6 +153,38 @@ impl AudioBackend for KiraAudioBackend {
             self.handles.remove(id);
         }
         events
+    }
+}
+
+impl AudioBackend for LocalAudioBackend {
+    type Error = KiraAudioError;
+
+    fn play(&mut self, managed_path: &Path, volume: f32) -> Result<BackendPlaybackId, Self::Error> {
+        match self {
+            Self::Ready(backend) => backend.play(managed_path, volume),
+            Self::Unavailable(message) => Err(KiraAudioError::Initialize(message.clone())),
+        }
+    }
+
+    fn stop(&mut self, backend_id: &BackendPlaybackId, fade: Duration) -> Result<(), Self::Error> {
+        match self {
+            Self::Ready(backend) => backend.stop(backend_id, fade),
+            Self::Unavailable(message) => Err(KiraAudioError::Initialize(message.clone())),
+        }
+    }
+
+    fn set_master_volume(&mut self, volume: f32) -> Result<(), Self::Error> {
+        match self {
+            Self::Ready(backend) => backend.set_master_volume(volume),
+            Self::Unavailable(message) => Err(KiraAudioError::Initialize(message.clone())),
+        }
+    }
+
+    fn poll_events(&mut self) -> Vec<AudioBackendEvent> {
+        match self {
+            Self::Ready(backend) => backend.poll_events(),
+            Self::Unavailable(_) => Vec::new(),
+        }
     }
 }
 

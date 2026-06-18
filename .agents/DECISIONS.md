@@ -151,3 +151,25 @@ sequential ID and link the relevant task or plan.
 - **Alternatives:** A Tokio actor was deferred because the current ports are
   synchronous and do not need runtime lifecycle. Per-transport locks and retry
   caches were rejected because behavior would diverge.
+
+## ADR-009: Persist desktop library candidates before publishing them
+
+- **Date:** 2026-06-18
+- **Status:** accepted
+- **Task:** TASK-007
+- **Context:** The desktop editor must import managed files and mutate scenes
+  and cues without making React authoritative or exposing unsaved state to
+  playback and future remote subscribers.
+- **Decision:** Serialize local save/import operations in a thin Tauri-managed
+  desktop coordinator. Save a complete candidate through
+  `JsonLibraryRepository` first, then replace the library held by
+  `ApplicationService` and publish its revisioned snapshot. Use Tauri's native
+  dialog plugin only to choose an MP3/WAV source path; Rust performs validation,
+  copying, metadata creation, and persistence.
+- **Consequences:** Failed writes leave the previous authoritative snapshot
+  intact, and desktop playback still uses the shared command path. Complete
+  library saves are intentionally coarse-grained; if remote editing is added,
+  mutations should become versioned service commands with conflict handling.
+- **Alternatives:** React-owned persistence was rejected because it duplicates
+  authoritative state. Publishing edits before saving was rejected because
+  playback could reference data that does not survive restart.

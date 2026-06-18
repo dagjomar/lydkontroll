@@ -89,3 +89,19 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Kept the technical dependency graph honest; remote transport is postponed by
   priority, not coupled to the desktop UI.
 - Next: plan and implement `TASK-007`.
+
+## 2026-06-18 — Desktop local-control workflow completed
+
+- Accepted the `TASK-007` plan and ADR-009: desktop import/save operations are
+  serialized, persisted first, then published through `ApplicationService`.
+- Added native MP3/WAV selection, concrete Tauri-managed service wiring,
+  resilient audio startup, missing-file recovery, and revisioned managed-audio
+  metadata in authoritative snapshots.
+- Replaced the scaffold with a responsive operator UI for scene/cue CRUD and
+  ordering, cue configuration, import, trigger, active playback, stop/fade,
+  master volume, and visible recoverable errors.
+- Added Rust service/persistence coverage, three critical frontend state-flow
+  tests, and a standalone browser preview used for visual QA.
+- Validated Cargo tests, Vitest, production build, ESLint, Prettier, generated
+  bindings, rustfmt, Clippy, Ralph metadata, and diff hygiene.
+- Next: refine and implement `TASK-006` Tailscale-only control transport.

@@ -388,6 +388,50 @@ fn preflight_updates_are_revisioned_and_published() {
 }
 
 #[test]
+fn externally_detected_operator_errors_are_revisioned_and_published() {
+    let service = service();
+    let updates = service.subscribe().expect("subscribe");
+    updates.recv().expect("initial");
+
+    let snapshot = service
+        .report_error(
+            OperatorErrorKind::Persistence,
+            "managed audio file is missing",
+        )
+        .expect("report error");
+
+    assert_eq!(snapshot.revision, 1);
+    assert_eq!(snapshot.errors[0].kind, OperatorErrorKind::Persistence);
+    assert_eq!(updates.recv().expect("published"), snapshot);
+}
+
+#[test]
+fn persisted_library_replacement_is_revisioned_and_published() {
+    let service = service();
+    let updates = service.subscribe().expect("subscribe");
+    updates.recv().expect("initial");
+    let mut library = service.library().expect("library");
+    library.scenes[0].name = "Dinner".to_owned();
+
+    let snapshot = service
+        .replace_library(library.clone())
+        .expect("replace library");
+
+    assert_eq!(snapshot.revision, 1);
+    assert_eq!(snapshot.scenes[0].name, "Dinner");
+    assert_eq!(snapshot.audio_files, library.audio_files);
+    assert_eq!(updates.recv().expect("published"), snapshot);
+    assert_eq!(
+        service
+            .replace_library(library)
+            .expect("unchanged replacement")
+            .revision,
+        1
+    );
+    assert!(updates.try_recv().is_err());
+}
+
+#[test]
 fn concurrent_callers_are_serialized_behind_the_in_flight_command() {
     let gate = Arc::new((Mutex::new(GateState::default()), Condvar::new()));
     let service = Arc::new(ApplicationService::new(

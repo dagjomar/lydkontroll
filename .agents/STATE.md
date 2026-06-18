@@ -4,14 +4,13 @@ Last updated: 2026-06-18
 
 ## Phase
 
-Authoritative local command/state core complete; desktop editing and local
-control are next.
+Local Mac editing and playback control are complete; Tailscale-only transport
+is next.
 
 ## Current Focus
 
-Plan `TASK-007` around the smallest end-to-end Mac workflow, then wire cue
-library editing, managed audio import, and local playback controls through the
-shared `ApplicationService`. Remote transport follows after local testing.
+Refine `TASK-006` around fail-closed Tailscale discovery, Axum lifecycle,
+embedded mobile assets, WebSocket acknowledgements/snapshots, and QR URL data.
 
 ## Working Software
 
@@ -43,6 +42,16 @@ A runnable Tauri 2 shell with:
   volume, preflight facts, and recoverable errors;
 - generated TypeScript contracts and thin Tauri adapter helpers for the shared
   command/state path.
+- a Tauri-managed desktop coordinator that persists complete library candidates
+  before publishing them through `ApplicationService`;
+- native MP3/WAV selection through the official Tauri dialog plugin;
+- a responsive Mac operator UI for scene/cue CRUD and ordering, managed audio
+  import, color/volume/mode/fade configuration, triggering, active playback,
+  per-instance stop/fade, stop/fade all, and master volume;
+- resilient audio-output startup and missing-managed-file recovery that keep
+  the editor available with visible operator errors;
+- a standalone preview mode and component/state-flow coverage for the critical
+  local workflow.
 
 ## Known Blockers
 
@@ -54,8 +63,8 @@ A runnable Tauri 2 shell with:
 
 ## Next Milestone
 
-A Mac operator can import audio, create a cue, trigger it through the selected
-system output, and stop or fade it without Tailscale or an iPhone.
+An iPhone can connect over Tailscale, receive the authoritative snapshot, send
+idempotent commands, and reconnect without disrupting Mac playback.
 
 ## Accepted Foundation
 

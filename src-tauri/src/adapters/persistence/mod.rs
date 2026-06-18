@@ -141,6 +141,7 @@ impl JsonLibraryRepository {
         &self,
         path: &Path,
         backup_available: bool,
+        require_managed_files: bool,
     ) -> Result<CueLibrary, PersistenceError> {
         let file = File::open(path).map_err(|error| {
             if error.kind() == io::ErrorKind::NotFound {
@@ -179,11 +180,15 @@ impl JsonLibraryRepository {
                 message: error.to_string(),
                 backup_available,
             })?;
-        self.validate_managed_files(&library)?;
+        self.validate_managed_files(&library, require_managed_files)?;
         Ok(library)
     }
 
-    fn validate_managed_files(&self, library: &CueLibrary) -> Result<(), PersistenceError> {
+    fn validate_managed_files(
+        &self,
+        library: &CueLibrary,
+        require_managed_files: bool,
+    ) -> Result<(), PersistenceError> {
         let mut audio_ids = HashSet::with_capacity(library.audio_files.len());
         for audio in &library.audio_files {
             let relative = Path::new(&audio.file_name);
@@ -195,7 +200,7 @@ impl JsonLibraryRepository {
                 });
             }
             audio_ids.insert(audio.id.as_str());
-            if !self.paths.audio_dir().join(&audio.file_name).is_file() {
+            if require_managed_files && !self.paths.audio_dir().join(&audio.file_name).is_file() {
                 return Err(PersistenceError::MissingManagedFile {
                     file_name: audio.file_name.clone(),
                 });
@@ -219,17 +224,22 @@ impl JsonLibraryRepository {
         replace_file(&temporary, &self.paths.library())?;
         sync_directory(self.paths.root())
     }
+
+    /// Loads valid metadata even when one or more managed files were deleted.
+    pub fn load_metadata(&self) -> Result<CueLibrary, PersistenceError> {
+        self.read_library(&self.paths.library(), self.paths.backup().is_file(), false)
+    }
 }
 
 impl LibraryRepository for JsonLibraryRepository {
     type Error = PersistenceError;
 
     fn load(&self) -> Result<CueLibrary, Self::Error> {
-        self.read_library(&self.paths.library(), self.paths.backup().is_file())
+        self.read_library(&self.paths.library(), self.paths.backup().is_file(), true)
     }
 
     fn load_backup(&self) -> Result<CueLibrary, Self::Error> {
-        self.read_library(&self.paths.backup(), false)
+        self.read_library(&self.paths.backup(), false, true)
     }
 
     fn recover_backup(&self) -> Result<CueLibrary, Self::Error> {
@@ -246,7 +256,7 @@ impl LibraryRepository for JsonLibraryRepository {
                 backup_available: self.paths.backup().is_file(),
             });
         }
-        self.validate_managed_files(library)?;
+        self.validate_managed_files(library, true)?;
         self.ensure_directories()?;
 
         let temporary = self.paths.root().join(TEMP_LIBRARY_FILE);
@@ -255,7 +265,7 @@ impl LibraryRepository for JsonLibraryRepository {
         let primary = self.paths.library();
         if primary.is_file() {
             // Only a readable, supported primary is eligible to become backup.
-            self.read_library(&primary, self.paths.backup().is_file())?;
+            self.read_library(&primary, self.paths.backup().is_file(), true)?;
             replace_file(&primary, &self.paths.backup())?;
         }
         replace_file(&temporary, &primary)?;
