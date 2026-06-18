@@ -234,3 +234,15 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   diff hygiene.
 - Next: run and record the rehearsal on the event Mac, iPhone cellular/Tailscale
   path, production cue library, and analog output.
+
+## 2026-06-18 — Target-hardware rehearsal passed
+
+- Recorded the operator-confirmed manual rehearsal against commit
+  `885422112d554da5f22001a39115d2afcdf30e46`, app version `0.1.0`, and the
+  arm64 executable checksum in `.agents/REHEARSAL.md`.
+- Every release-runbook gate passed, including the 60-minute run, real
+  MP3/WAV playback, phone and network failure injection, Mac-local fallback,
+  analog cable recovery, and macOS output recovery.
+- Closed `TASK-010`; there are no remaining implementation or release blockers.
+- Next: preserve and operate the rehearsed candidate; rebuild and rehearse
+  before using any changed release.

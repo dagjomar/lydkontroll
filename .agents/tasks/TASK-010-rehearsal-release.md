@@ -1,7 +1,7 @@
 ---
 id: TASK-010
 title: Harden, package, and rehearse the event release
-status: blocked
+status: done
 priority: P0
 type: chore
 owner: codex-2026-06-18-release
@@ -21,8 +21,8 @@ rehearsal with iPhone on mobile data, Mac on Wi-Fi, Tailscale, and analog audio.
 
 - [x] Release build succeeds for Apple Silicon macOS.
 - [x] Automated tests cover persistence, playback, protocol, and reconnect.
-- [ ] Phone/network loss does not interrupt active audio or local controls.
-- [ ] The full manual rehearsal checklist is completed and recorded.
+- [x] Phone/network loss does not interrupt active audio or local controls.
+- [x] The full manual rehearsal checklist is completed and recorded.
 - [x] Recovery steps and an event-day operator checklist are documented.
 - [x] No credentials, audio files, local data, or generated bundles are tracked.
 
@@ -52,3 +52,9 @@ python3 scripts/ralph.py check
   Tailscale path, production audio library, and analog output.
 
 - 2026-06-18: Automated release build and runbook are complete; finishing requires the documented 60-minute rehearsal on the event Mac with iPhone cellular/Tailscale, production cues, and analog output.
+
+- 2026-06-18: The operator confirmed that every manual target-hardware
+  rehearsal gate passed. Recorded the exact commit, app version, arm64
+  executable checksum, all checklist results, and the absence of blocking
+  failures in `.agents/REHEARSAL.md`. Hardware details not supplied by the
+  operator are explicitly marked as not recorded.

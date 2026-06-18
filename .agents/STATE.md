@@ -4,13 +4,15 @@ Last updated: 2026-06-18
 
 ## Phase
 
-Release automation, Apple Silicon packaging, rehearsal planning, recovery, and
-event-day operating guidance are complete. Target-hardware rehearsal remains.
+The first event release candidate is complete. Release automation, Apple
+Silicon packaging, recovery guidance, and the target-hardware rehearsal all
+pass.
 
 ## Current Focus
 
-Run the `TASK-010` rehearsal on the event Mac/iPhone/analog-output setup and
-record the result against the exact committed build.
+Preserve the rehearsed build identity and use the event-day checklist. Start a
+new task for any behavior change so a replacement candidate is rebuilt and
+rehearsed before use.
 
 ## Working Software
 
@@ -54,21 +56,17 @@ A runnable Tauri 2 application with:
 
 ## Known Blockers
 
-- No current implementation blocker.
-- `TASK-010` cannot finish without a manual rehearsal using the target event
-  Mac, iPhone on cellular/Tailscale, production cue library, and analog output.
+- No current implementation or release blocker.
 - Network tests need permission to bind temporary loopback ports in restricted
   environments.
 - Native Tauri desktop WebDriver remains unavailable on macOS; use
   mock-runtime tests, standalone Playwright WebKit coverage, and manual native
   checks.
-- Actual packaged Tailscale CLI path, iPhone connectivity, analog playback,
-  output switching/loss, and recovery remain target-Mac rehearsal gates.
 
 ## Next Milestone
 
-The exact committed release candidate passes the recorded target-hardware
-rehearsal and `TASK-010` is closed.
+Operate the rehearsed release at the event. Any code or configuration change
+that affects the candidate requires a new release build and rehearsal record.
 
 ## Accepted Foundation
 
