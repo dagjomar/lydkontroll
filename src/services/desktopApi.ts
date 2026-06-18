@@ -6,6 +6,7 @@ import type { CommandAck } from "../generated/CommandAck";
 import type { ControlServerInfo } from "../generated/ControlServerInfo";
 import type { CueLibrary } from "../generated/CueLibrary";
 import type { ManagedAudioFile } from "../generated/ManagedAudioFile";
+import { createUuid } from "./uuid";
 
 export interface DesktopApi {
   getSnapshot(): Promise<AppSnapshot>;
@@ -26,7 +27,7 @@ const tauriDesktopApi: DesktopApi = {
     return invoke<CommandAck>("execute_desktop_command", {
       envelope: {
         protocolVersion: 1,
-        commandId: crypto.randomUUID(),
+        commandId: createUuid(),
         command,
       },
     });
@@ -178,7 +179,7 @@ function createRemoteApi(): DesktopApi {
       if (socket?.readyState !== WebSocket.OPEN) {
         throw new Error("Kan ikke koble til Mac-en.");
       }
-      const commandId = crypto.randomUUID();
+      const commandId = createUuid();
       const acknowledgement = new Promise<CommandAck>((resolve, reject) => {
         const timeout = window.setTimeout(() => {
           acknowledgementWaiters.delete(commandId);
@@ -237,7 +238,7 @@ function createPreviewApi(): DesktopApi {
       };
       return {
         protocolVersion: 1,
-        commandId: crypto.randomUUID(),
+        commandId: createUuid(),
         outcome: { status: "success", revision: snapshot.revision },
       };
     },
@@ -252,7 +253,7 @@ function createPreviewApi(): DesktopApi {
     },
     async importAudio() {
       const audio: ManagedAudioFile = {
-        id: crypto.randomUUID(),
+        id: createUuid(),
         fileName: "preview.wav",
         originalName: "forhandsvisning.wav",
         format: "wav",

@@ -5,6 +5,7 @@ import type { Cue } from "../generated/Cue";
 import type { CueLibrary } from "../generated/CueLibrary";
 import type { Scene } from "../generated/Scene";
 import { desktopApi, type DesktopApi } from "../services/desktopApi";
+import { createUuid } from "../services/uuid";
 
 interface ShellProps {
   api?: DesktopApi;
@@ -119,7 +120,7 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
 
   function addScene() {
     const scene: Scene = {
-      id: crypto.randomUUID(),
+      id: createUuid(),
       name: "Ny scene",
       cues: [],
     };
@@ -148,7 +149,7 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
       return;
     }
     const cue: Cue = {
-      id: crypto.randomUUID(),
+      id: createUuid(),
       name: "Ny cue",
       color: DEFAULT_COLOR,
       audioFileId: audio.id,

@@ -134,3 +134,5 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   reconnect backoff.
 - Rebuilt the production assets and validated Vitest, TypeScript/Vite build,
   ESLint, Prettier, generated bindings, rustfmt, and Clippy.
+- Added and tested a UUID-v4 fallback for Safari versions where
+  `crypto.randomUUID` is unavailable.

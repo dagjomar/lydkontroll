@@ -30,6 +30,8 @@ python3 scripts/ralph.py claim TASK-008 --owner "<agent/session>"
 - `src/services/desktopApi.ts` selects Tauri only when
   `window.__TAURI_INTERNALS__` exists; ordinary Safari uses the WebSocket
   adapter with command timeouts and reconnect backoff.
+- Frontend identifiers must use `createUuid` from `src/services/uuid.ts`; it
+  supports Safari versions without `crypto.randomUUID`.
 - Reconnect intentionally starts from a fresh full snapshot. There is no delta
   replay; duplicate command IDs are handled by `ApplicationService`.
 - HTTP uses `TauriWebAssets`, backed by Tauri's embedded production

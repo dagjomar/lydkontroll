@@ -75,3 +75,6 @@ target Mac and must fail closed.
 - 2026-06-18: Fixed the embedded Safari runtime to select WebSocket commands
   instead of Tauri `invoke`; remote snapshots, acknowledgements, command
   timeouts, and reconnect backoff now work in an ordinary browser.
+- 2026-06-18: Added a frontend UUID-v4 compatibility helper for Safari versions
+  without `crypto.randomUUID`, using `crypto.getRandomValues` when available
+  and preserving valid command IDs for Rust protocol validation.
