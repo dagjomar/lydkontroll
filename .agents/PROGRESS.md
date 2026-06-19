@@ -276,3 +276,18 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   checksum in `.agents/CANDIDATE.md`.
 - Next: the user performs the short native launch and audible test-play check
   in `TASK-016`; keep the previously rehearsed candidate until it passes.
+
+## 2026-06-19 — Smooth iPhone master volume candidate built
+
+- Fixed Safari's interrupted master-volume drag by keeping the thumb local and
+  enabled while commands are acknowledged.
+- Serialized volume writes to one in flight and coalesced rapid input to the
+  latest queued value while retaining authoritative revision reconciliation.
+- Added regressions for continuous input, bounded command traffic, latest-value
+  delivery, post-ack stability, and external idle updates.
+- Passed 14 frontend tests, 63 Rust tests, production build, lint, generated
+  bindings, rustfmt, Clippy, release-tree safety, arm64 packaging, and a 390x844
+  responsive render check.
+- Replaced `.agents/CANDIDATE.md` with commit and checksum identity for the new
+  bundle.
+- Next: run the five-point `TASK-016` smoke check on the event Mac and iPhone.

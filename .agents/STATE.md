@@ -1,18 +1,19 @@
 # Current State
 
-Last updated: 2026-06-18
+Last updated: 2026-06-19
 
 ## Phase
 
-The compact-status replacement candidate is built and automatically verified.
-The previously rehearsed event candidate remains the fallback until one short
-native desktop and audible-output smoke check passes.
+The compact-status and smooth-iPhone-slider replacement candidate is built and
+automatically verified. The previously rehearsed event candidate remains the
+fallback until one short native desktop, audible-output, and physical iPhone
+Safari smoke check passes.
 
 ## Current Focus
 
-Complete `TASK-016` on the event Mac: launch the packaged replacement, check the
-collapsed/expanded status UI, QR and refresh, then hear the three-second test
-play fade.
+Complete `TASK-016` on the event Mac and phone: launch the packaged replacement,
+check the collapsed/expanded status UI, QR and refresh, hear the three-second
+test-play fade, then drag master volume continuously in iPhone Safari.
 
 ## Working Software
 
@@ -46,6 +47,9 @@ A runnable Tauri 2 application with:
   connection/acknowledgement status, fresh-snapshot reconnects, stale-socket
   guards, duplicate in-flight action suppression, and an expanding,
   viewport-capped now-playing overlay that leaves the cue grid interactive.
+- an optimistic iPhone master-volume projection that remains draggable while
+  one command is in flight, coalesces rapid changes to the newest queued value,
+  and reconciles with authoritative snapshots without snapback.
 - a desktop preflight panel with Rust-refreshed managed-file and control-server
   facts, cue-specific missing-file blockers, manual output warnings, mobile
   URL/QR presentation, and instance-scoped three-second test playback.
@@ -56,8 +60,9 @@ A runnable Tauri 2 application with:
 
 ## Known Blockers
 
-- `TASK-016` needs a human at the Mac because native Tauri UI automation is not
-  available on macOS and audible output cannot be inferred from mocks.
+- `TASK-016` needs a human at the Mac and iPhone because native Tauri UI
+  automation is not available on macOS, audible output cannot be inferred from
+  mocks, and physical Safari touch gestures cannot be fully reproduced here.
 - Network tests need permission to bind temporary loopback ports in restricted
   environments.
 - Native Tauri desktop WebDriver remains unavailable on macOS; use
@@ -66,8 +71,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Pass the short native smoke check in `TASK-016`, then promote the replacement
-candidate recorded in `.agents/CANDIDATE.md` for event use.
+Pass the short native and phone smoke check in `TASK-016`, then promote the
+replacement candidate recorded in `.agents/CANDIDATE.md` for event use.
 
 ## Accepted Foundation
 
