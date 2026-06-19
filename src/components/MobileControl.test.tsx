@@ -1,4 +1,10 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 import type { AppSnapshot } from "../generated/AppSnapshot";
@@ -116,6 +122,62 @@ test("shows an expanding playback overlay only while audio is active", async () 
     ).not.toBeInTheDocument(),
   );
   expect(screen.getByRole("button", { name: /Første dans/ })).toBe(cue);
+});
+
+test("keeps master volume draggable and coalesces changes while awaiting acknowledgement", async () => {
+  const first = deferred<CommandAck>();
+  const second = deferred<CommandAck>();
+  const harness = createHarness();
+  harness.execute
+    .mockReturnValueOnce(first.promise)
+    .mockReturnValueOnce(second.promise);
+
+  render(<MobileControl api={harness.api} pollIntervalMs={0} />);
+  const slider = await screen.findByRole("slider", { name: "Mastervolum" });
+
+  fireEvent.input(slider, { target: { value: "0.8" } });
+  fireEvent.input(slider, { target: { value: "0.6" } });
+  fireEvent.input(slider, { target: { value: "0.4" } });
+
+  expect(slider).toBeEnabled();
+  expect(slider).toHaveValue("0.4");
+  expect(harness.execute).toHaveBeenCalledTimes(1);
+  expect(harness.execute).toHaveBeenLastCalledWith({
+    type: "setMasterVolume",
+    volume: 0.8,
+  });
+
+  first.resolve(successAck(4));
+  await waitFor(() => expect(harness.execute).toHaveBeenCalledTimes(2));
+  expect(harness.execute).toHaveBeenLastCalledWith({
+    type: "setMasterVolume",
+    volume: 0.4,
+  });
+  expect(slider).toBeEnabled();
+  expect(slider).toHaveValue("0.4");
+
+  second.resolve(successAck(5));
+  expect(
+    await screen.findByText(/Mastervolum 40 % · revisjon 5/),
+  ).toBeVisible();
+  expect(slider).toHaveValue("0.4");
+});
+
+test("shows authoritative master volume changes while locally idle", async () => {
+  const harness = createHarness();
+  render(<MobileControl api={harness.api} pollIntervalMs={0} />);
+  const slider = await screen.findByRole("slider", { name: "Mastervolum" });
+
+  act(() => {
+    harness.setSnapshot({
+      ...baseSnapshot,
+      revision: 4,
+      masterVolume: 0.35,
+    });
+    harness.setConnection("connected");
+  });
+
+  await waitFor(() => expect(slider).toHaveValue("0.35"));
 });
 
 const baseSnapshot: AppSnapshot = {

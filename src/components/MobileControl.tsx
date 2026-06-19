@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AppSnapshot } from "../generated/AppSnapshot";
 import type { Command } from "../generated/Command";
 import type { ConnectionStatus, DesktopApi } from "../services/desktopApi";
@@ -25,6 +25,11 @@ export function MobileControl({
     state: "idle",
     message: "Klar for kommando",
   });
+  const [displayedMasterVolume, setDisplayedMasterVolume] = useState(1);
+  const queuedMasterVolume = useRef<number | null>(null);
+  const optimisticMasterVolume = useRef<number | null>(null);
+  const authoritativeMasterVolume = useRef(1);
+  const masterVolumeCommandActive = useRef(false);
 
   const refresh = useCallback(async () => {
     try {
@@ -74,6 +79,80 @@ export function MobileControl({
   const controlsDisabled =
     connection !== "connected" || commandStatus.state === "pending";
 
+  useEffect(() => {
+    if (snapshot) {
+      authoritativeMasterVolume.current = snapshot.masterVolume;
+    }
+    if (snapshot && optimisticMasterVolume.current !== null) {
+      if (
+        Math.abs(snapshot.masterVolume - optimisticMasterVolume.current) <
+        0.0001
+      ) {
+        optimisticMasterVolume.current = null;
+        setDisplayedMasterVolume(snapshot.masterVolume);
+      }
+      return;
+    }
+    if (
+      snapshot &&
+      !masterVolumeCommandActive.current &&
+      queuedMasterVolume.current === null
+    ) {
+      setDisplayedMasterVolume(snapshot.masterVolume);
+    }
+  }, [snapshot]);
+
+  const flushMasterVolume = useCallback(async () => {
+    if (masterVolumeCommandActive.current || connection !== "connected") {
+      return;
+    }
+    masterVolumeCommandActive.current = true;
+    try {
+      while (queuedMasterVolume.current !== null) {
+        const volume = queuedMasterVolume.current;
+        queuedMasterVolume.current = null;
+        const acknowledgement = await api.execute({
+          type: "setMasterVolume",
+          volume,
+        });
+        if (acknowledgement.outcome.status === "failure") {
+          queuedMasterVolume.current = null;
+          optimisticMasterVolume.current = null;
+          setDisplayedMasterVolume(authoritativeMasterVolume.current);
+          setCommandStatus({
+            state: "error",
+            message: commandErrorMessage(acknowledgement.outcome.error),
+          });
+          return;
+        }
+        setCommandStatus({
+          state: "success",
+          message: `Mastervolum ${Math.round(volume * 100)} % · revisjon ${
+            acknowledgement.outcome.revision
+          }`,
+        });
+      }
+      void refresh();
+    } catch (error) {
+      queuedMasterVolume.current = null;
+      optimisticMasterVolume.current = null;
+      setDisplayedMasterVolume(authoritativeMasterVolume.current);
+      setCommandStatus({ state: "error", message: errorMessage(error) });
+    } finally {
+      masterVolumeCommandActive.current = false;
+    }
+  }, [api, connection, refresh]);
+
+  const changeMasterVolume = useCallback(
+    (volume: number) => {
+      setDisplayedMasterVolume(volume);
+      queuedMasterVolume.current = volume;
+      optimisticMasterVolume.current = volume;
+      void flushMasterVolume();
+    },
+    [flushMasterVolume],
+  );
+
   const run = useCallback(
     async (command: Command, label: string) => {
       if (connection !== "connected" || commandStatus.state === "pending") {
@@ -120,8 +199,10 @@ export function MobileControl({
     <main className="mobile-shell">
       <MobileHeader connection={connection} commandStatus={commandStatus} />
       <MasterControls
-        snapshot={snapshot}
+        masterVolume={displayedMasterVolume}
         controlsDisabled={controlsDisabled}
+        volumeDisabled={connection !== "connected"}
+        changeMasterVolume={changeMasterVolume}
         run={run}
       />
       <CueControls
@@ -165,34 +246,32 @@ function MobileHeader({
 }
 
 function MasterControls({
-  snapshot,
+  masterVolume,
   controlsDisabled,
+  volumeDisabled,
+  changeMasterVolume,
   run,
 }: {
-  snapshot: AppSnapshot;
+  masterVolume: number;
   controlsDisabled: boolean;
+  volumeDisabled: boolean;
+  changeMasterVolume: (volume: number) => void;
   run: RunCommand;
 }) {
   return (
     <section className="mobile-master" aria-label="Hovedkontroller">
       <label>
-        Mastervolum {Math.round(snapshot.masterVolume * 100)} %
+        Mastervolum {Math.round(masterVolume * 100)} %
         <input
           aria-label="Mastervolum"
           type="range"
           min="0"
           max="1"
           step="0.05"
-          value={snapshot.masterVolume}
-          disabled={controlsDisabled}
-          onChange={(event) =>
-            void run(
-              {
-                type: "setMasterVolume",
-                volume: Number(event.target.value),
-              },
-              "mastervolum",
-            )
+          value={masterVolume}
+          disabled={volumeDisabled}
+          onInput={(event) =>
+            changeMasterVolume(Number(event.currentTarget.value))
           }
         />
       </label>
