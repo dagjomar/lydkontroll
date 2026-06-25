@@ -95,6 +95,7 @@ pub fn configure<R: Runtime>(builder: Builder<R>) -> Builder<R> {
             adapters::tauri::execute_desktop_command,
             adapters::tauri::save_library,
             adapters::tauri::import_audio,
+            adapters::tauri::delete_managed_audio,
             adapters::tauri::get_control_server_info,
             adapters::tauri::refresh_preflight,
         ])

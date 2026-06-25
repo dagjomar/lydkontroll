@@ -5,6 +5,7 @@ import type { Command } from "../generated/Command";
 import type { ControlServerInfo } from "../generated/ControlServerInfo";
 import type { Cue } from "../generated/Cue";
 import type { CueLibrary } from "../generated/CueLibrary";
+import type { ManagedAudioFile } from "../generated/ManagedAudioFile";
 import type { PreflightStatus } from "../generated/PreflightStatus";
 import type { Scene } from "../generated/Scene";
 import { desktopApi, type DesktopApi } from "../services/desktopApi";
@@ -172,6 +173,40 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
         await refresh();
         setMessage(`${imported.originalName} er importert.`);
       }
+    } catch (error) {
+      setMessage(errorMessage(error));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function deleteManagedAudio(audio: ManagedAudioFile) {
+    if (!snapshot || !draft) {
+      return;
+    }
+    const cueNames = audioCueNames(audio.id, snapshot.scenes, draft.scenes);
+    if (cueNames.length) {
+      setMessage(
+        `${audio.originalName} brukes av: ${cueNames.join(", ")}. Fjern referansene og lagre oppsettet først.`,
+      );
+      return;
+    }
+    if (
+      !window.confirm(
+        `Slett ${audio.originalName} permanent fra administrert lagring?`,
+      )
+    ) {
+      return;
+    }
+    setBusy(true);
+    setMessage(null);
+    try {
+      const next = await api.deleteManagedAudio(audio.id);
+      setSnapshot(next);
+      setDraft((current) =>
+        current ? { ...current, audioFiles: next.audioFiles } : current,
+      );
+      setMessage(`${audio.originalName} er slettet.`);
     } catch (error) {
       setMessage(errorMessage(error));
     } finally {
@@ -426,6 +461,53 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
           Stopp alt
         </button>
       </section>
+
+      <details className="audio-library">
+        <summary>
+          Administrerte lydfiler <span>{draft.audioFiles.length}</span>
+        </summary>
+        {draft.audioFiles.length ? (
+          <div className="audio-file-list">
+            {draft.audioFiles.map((audio) => {
+              const cueNames = audioCueNames(
+                audio.id,
+                snapshot.scenes,
+                draft.scenes,
+              );
+              return (
+                <article className="audio-file-row" key={audio.id}>
+                  <div>
+                    <strong>{audio.originalName}</strong>
+                    <small>
+                      {audio.format.toUpperCase()} ·{" "}
+                      {formatBytes(audio.byteLength)} ·{" "}
+                      {managedFileLabel(audio.fileName)}
+                    </small>
+                    {cueNames.length ? (
+                      <p>Brukes av: {cueNames.join(", ")}</p>
+                    ) : (
+                      <p>Ikke i bruk av lagrede eller ulagrede cues.</p>
+                    )}
+                  </div>
+                  <button
+                    className="danger"
+                    type="button"
+                    disabled={busy || cueNames.length > 0}
+                    aria-label={`Slett ${audio.originalName} (${managedFileLabel(
+                      audio.fileName,
+                    )})`}
+                    onClick={() => void deleteManagedAudio(audio)}
+                  >
+                    Slett fil
+                  </button>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="empty">Ingen lydfiler er importert.</p>
+        )}
+      </details>
 
       <div className="workspace">
         <aside className="scene-list" aria-label="Scener">
@@ -870,6 +952,40 @@ function libraryFromSnapshot(snapshot: AppSnapshot): CueLibrary {
     scenes: snapshot.scenes,
     audioFiles: snapshot.audioFiles,
   };
+}
+
+function audioCueNames(
+  audioFileId: string,
+  ...sceneGroups: Scene[][]
+): string[] {
+  return [
+    ...new Set(
+      sceneGroups
+        .flat()
+        .flatMap((scene) => scene.cues)
+        .filter((cue) => cue.audioFileId === audioFileId)
+        .map((cue) => cue.name),
+    ),
+  ];
+}
+
+function managedFileLabel(fileName: string): string {
+  const [stem, extension] = fileName.split(".");
+  return `${stem.slice(-8)}.${extension ?? ""}`;
+}
+
+function formatBytes(byteLength: number): string {
+  if (byteLength < 1024) {
+    return `${byteLength} B`;
+  }
+  const units = ["kB", "MB", "GB"];
+  let value = byteLength / 1024;
+  let unit = units[0];
+  for (let index = 1; index < units.length && value >= 1024; index += 1) {
+    value /= 1024;
+    unit = units[index];
+  }
+  return `${value.toFixed(value >= 10 ? 0 : 1)} ${unit}`;
 }
 
 function moveItem<T extends { id: string }>(

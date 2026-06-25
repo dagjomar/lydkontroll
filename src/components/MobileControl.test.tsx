@@ -223,6 +223,7 @@ function createHarness() {
     execute,
     saveLibrary: vi.fn(async () => snapshot),
     importAudio: vi.fn(async () => null),
+    deleteManagedAudio: vi.fn(async () => snapshot),
     subscribeConnection(nextListener) {
       listener = nextListener;
       nextListener("connected");

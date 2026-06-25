@@ -16,6 +16,7 @@ export interface DesktopApi {
   execute(command: Command): Promise<CommandAck>;
   saveLibrary(library: CueLibrary): Promise<AppSnapshot>;
   importAudio(): Promise<ManagedAudioFile | null>;
+  deleteManagedAudio(audioFileId: string): Promise<AppSnapshot>;
   subscribeConnection?(
     listener: (status: ConnectionStatus) => void,
   ): () => void;
@@ -56,6 +57,9 @@ const tauriDesktopApi: DesktopApi = {
       return null;
     }
     return invoke<ManagedAudioFile>("import_audio", { sourcePath });
+  },
+  deleteManagedAudio(audioFileId) {
+    return invoke<AppSnapshot>("delete_managed_audio", { audioFileId });
   },
 };
 
@@ -250,6 +254,9 @@ export function createRemoteApi(): DesktopApi {
     async importAudio() {
       throw new Error("Lydfiler kan bare importeres på Mac-en.");
     },
+    async deleteManagedAudio() {
+      throw new Error("Lydfiler kan bare slettes på Mac-en.");
+    },
   };
 }
 
@@ -391,6 +398,16 @@ function createPreviewApi(mode: "desktop" | "mobile"): DesktopApi {
         audioFiles: [...snapshot.audioFiles, audio],
       };
       return audio;
+    },
+    async deleteManagedAudio(audioFileId) {
+      snapshot = {
+        ...snapshot,
+        revision: snapshot.revision + 1,
+        audioFiles: snapshot.audioFiles.filter(
+          (audio) => audio.id !== audioFileId,
+        ),
+      };
+      return snapshot;
     },
   };
 }

@@ -300,6 +300,88 @@ fn missing_sources_and_unsupported_extensions_are_typed() {
     ));
 }
 
+#[test]
+fn deletes_only_unreferenced_managed_audio_and_persists_the_result() {
+    let temp = TempDir::new().expect("temp directory");
+    let repository = JsonLibraryRepository::new(temp.path().join("app-data"));
+    let first_source = temp.path().join("version.wav");
+    let second_source = temp.path().join("other").join("version.wav");
+    fs::create_dir_all(second_source.parent().expect("source parent")).expect("source directory");
+    write_test_wav(&first_source);
+    write_test_wav(&second_source);
+    let referenced = repository.import(&first_source).expect("first import");
+    let obsolete = repository.import(&second_source).expect("second import");
+    let library = CueLibrary {
+        schema_version: LIBRARY_SCHEMA_VERSION,
+        scenes: vec![Scene {
+            id: "scene-1".to_owned(),
+            name: "Fest".to_owned(),
+            cues: vec![Cue {
+                id: "cue-1".to_owned(),
+                name: "Introduksjon".to_owned(),
+                color: "#ffffff".to_owned(),
+                audio_file_id: referenced.id.clone(),
+                volume: 1.0,
+                mode: CueMode::Overlap,
+                fade_ms: 500,
+            }],
+        }],
+        audio_files: vec![referenced.clone(), obsolete.clone()],
+    };
+    repository.save(&library).expect("library save");
+
+    let blocked = repository.delete_managed_audio(&library, &referenced.id);
+    assert!(matches!(
+        blocked,
+        Err(PersistenceError::ManagedAudioFileInUse {
+            cue_names,
+            ..
+        }) if cue_names == "Introduksjon"
+    ));
+    assert!(repository
+        .paths()
+        .audio_dir()
+        .join(&referenced.file_name)
+        .is_file());
+
+    let updated = repository
+        .delete_managed_audio(&library, &obsolete.id)
+        .expect("unreferenced file deletes");
+    assert_eq!(updated.audio_files, vec![referenced.clone()]);
+    assert!(!repository
+        .paths()
+        .audio_dir()
+        .join(&obsolete.file_name)
+        .exists());
+    assert_eq!(repository.load().expect("reopened library"), updated);
+}
+
+#[test]
+fn failed_delete_save_restores_the_managed_file_and_metadata() {
+    let temp = TempDir::new().expect("temp directory");
+    let repository = JsonLibraryRepository::new(temp.path().join("app-data"));
+    let source = temp.path().join("obsolete.wav");
+    write_test_wav(&source);
+    let audio = repository.import(&source).expect("audio import");
+    let library = CueLibrary {
+        audio_files: vec![audio.clone()],
+        ..CueLibrary::default()
+    };
+    repository.save(&library).expect("library save");
+    fs::create_dir(repository.paths().root().join("library.json.tmp"))
+        .expect("block temporary library file");
+
+    assert!(repository
+        .delete_managed_audio(&library, &audio.id)
+        .is_err());
+    assert!(repository
+        .paths()
+        .audio_dir()
+        .join(&audio.file_name)
+        .is_file());
+    assert_eq!(repository.load().expect("unchanged library"), library);
+}
+
 fn write_test_wav(path: &Path) {
     let samples = [0_i16, 1000, -1000, 0];
     let data_size = (samples.len() * size_of::<i16>()) as u32;

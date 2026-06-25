@@ -4,6 +4,7 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, test, vi } from "vitest";
@@ -68,6 +69,95 @@ test("imports audio, configures a cue, and triggers shared playback", async () =
   expect(harness.execute).toHaveBeenCalledWith(
     expect.objectContaining({ type: "triggerCue" }),
   );
+});
+
+test("lists duplicate-name imports and deletes only an unreferenced confirmed file", async () => {
+  const user = userEvent.setup();
+  const referenced = {
+    ...audioFile,
+    fileName: "11111111-1111-1111-1111-111111111111.wav",
+  };
+  const obsolete = {
+    ...audioFile,
+    id: "audio-2",
+    fileName: "22222222-2222-2222-2222-222222222222.wav",
+  };
+  const harness = createHarness({
+    scenes: [
+      {
+        id: "scene-1",
+        name: "Fest",
+        cues: [
+          {
+            id: "cue-1",
+            name: "Introduksjon",
+            color: "#d88c68",
+            audioFileId: referenced.id,
+            volume: 0.8,
+            mode: "overlap",
+            fadeMs: 500,
+          },
+        ],
+      },
+    ],
+    audioFiles: [referenced, obsolete],
+  });
+  const confirm = vi.spyOn(window, "confirm").mockReturnValue(true);
+
+  render(<Shell api={harness.api} pollIntervalMs={0} />);
+  await user.click(
+    await screen.findByText("Administrerte lydfiler", { exact: false }),
+  );
+
+  const audioLibrary = screen
+    .getByText("Administrerte lydfiler", { exact: false })
+    .closest("details");
+  expect(audioLibrary).not.toBeNull();
+  expect(
+    within(audioLibrary as HTMLElement).getAllByText("first-dance.wav"),
+  ).toHaveLength(2);
+  expect(screen.getByText("Brukes av: Introduksjon")).toBeVisible();
+  expect(
+    screen.getByRole("button", {
+      name: "Slett first-dance.wav (11111111.wav)",
+    }),
+  ).toBeDisabled();
+
+  await user.click(
+    screen.getByRole("button", {
+      name: "Slett first-dance.wav (22222222.wav)",
+    }),
+  );
+
+  expect(confirm).toHaveBeenCalledWith(
+    "Slett first-dance.wav permanent fra administrert lagring?",
+  );
+  expect(harness.deleteManagedAudio).toHaveBeenCalledWith("audio-2");
+  expect(await screen.findByText("first-dance.wav er slettet.")).toBeVisible();
+  expect(
+    within(audioLibrary as HTMLElement).getAllByText("first-dance.wav"),
+  ).toHaveLength(1);
+  confirm.mockRestore();
+});
+
+test("cancelling managed audio deletion changes nothing", async () => {
+  const user = userEvent.setup();
+  const harness = createHarness({ audioFiles: [audioFile] });
+  const confirm = vi.spyOn(window, "confirm").mockReturnValue(false);
+
+  render(<Shell api={harness.api} pollIntervalMs={0} />);
+  await user.click(
+    await screen.findByText("Administrerte lydfiler", { exact: false }),
+  );
+  await user.click(
+    screen.getByRole("button", {
+      name: "Slett first-dance.wav (audio-1.wav)",
+    }),
+  );
+
+  expect(harness.deleteManagedAudio).not.toHaveBeenCalled();
+  expect(screen.getByText("first-dance.wav")).toBeVisible();
+  confirm.mockRestore();
 });
 
 test("shows recoverable command failures to the operator", async () => {
@@ -249,6 +339,9 @@ function createHarness(
   api: DesktopApi;
   execute: ReturnType<typeof vi.fn<DesktopApi["execute"]>>;
   saveLibrary: ReturnType<typeof vi.fn<DesktopApi["saveLibrary"]>>;
+  deleteManagedAudio: ReturnType<
+    typeof vi.fn<DesktopApi["deleteManagedAudio"]>
+  >;
 } {
   let snapshot: AppSnapshot = {
     revision: 0,
@@ -291,6 +384,18 @@ function createHarness(
     };
     return snapshot;
   });
+  const deleteManagedAudio = vi.fn<DesktopApi["deleteManagedAudio"]>(
+    async (audioFileId) => {
+      snapshot = {
+        ...snapshot,
+        revision: snapshot.revision + 1,
+        audioFiles: snapshot.audioFiles.filter(
+          (audio) => audio.id !== audioFileId,
+        ),
+      };
+      return snapshot;
+    },
+  );
   const api: DesktopApi = {
     mode: "desktop",
     getSnapshot: vi.fn(async () => snapshot),
@@ -306,8 +411,9 @@ function createHarness(
       };
       return audioFile;
     }),
+    deleteManagedAudio,
   };
-  return { api, execute, saveLibrary };
+  return { api, execute, saveLibrary, deleteManagedAudio };
 }
 
 function successAck(): CommandAck {

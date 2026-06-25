@@ -135,6 +135,39 @@ separate backlog table to keep synchronized.
 > priority, dependencies, scope, non-goals, acceptance criteria, and validation.
 > Split it if it is too large. Do not implement it yet.
 
+### Add Feedback, a Bug, or a Missing Feature
+
+Use this when you have one concrete observation:
+
+> Follow `AGENTS.md` and use the Ralph harness to capture this feedback:
+> [describe what happened, what you expected, and why it matters]. Check for an
+> existing task before creating a duplicate. Create or update the appropriate
+> bug, feature, chore, or research task; preserve my observation in its context;
+> assess priority and dependencies; define the observable outcome, scope,
+> non-goals, acceptance criteria, and validation. Move it to `ready` if it is
+> sufficiently understood, or `needs-planning` with a linked plan and explicit
+> open questions if investigation or a product decision is still required. Do
+> not implement it yet. Update the durable project records and run
+> `python3 scripts/ralph.py check`.
+
+Use this when you have several rough notes and want the agent to organize them:
+
+> Follow `AGENTS.md` and perform feedback intake using the Ralph harness. Here
+> are my raw notes: [paste all bugs, annoyances, ideas, and missing features].
+> Compare them with PLAN.md, the existing backlog, and completed work. Deduplicate
+> them, ask me only about product choices that materially affect the outcome,
+> and create one task per independently schedulable result. Classify each task,
+> set justified priorities and dependencies, preserve the original observations,
+> and add testable acceptance criteria and validation. Split large items and
+> link related tasks where useful. Leave clear items `ready` and uncertain items
+> `needs-planning`; do not implement product code. Update STATE.md only if the
+> project focus or known risks changed, append PROGRESS.md, replace HANDOFF.md
+> with the recommended next action, and run `python3 scripts/ralph.py check`.
+
+After intake, return to the normal loop prompt. Ralph will select the highest
+priority dependency-safe task. If you want one particular item handled first,
+ask the agent to reprioritize it before starting implementation.
+
 ### Reprioritize
 
 > Review the current backlog against PLAN.md and this new priority: [describe
@@ -206,6 +239,6 @@ agent to close, replace, or document them so project history remains legible.
 
 ## Current Starting Point
 
-At the time this guide was created, the next work was `TASK-001`: research and
-record foundational architecture decisions. Run `python3 scripts/ralph.py next`
-for the current answer rather than relying on this sentence later.
+The app may have no remaining implementation work until new feedback is added.
+Run `python3 scripts/ralph.py next` for the current answer rather than relying
+on a task number written in this guide.

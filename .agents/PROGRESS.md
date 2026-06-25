@@ -291,3 +291,47 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Replaced `.agents/CANDIDATE.md` with commit and checksum identity for the new
   bundle.
 - Next: run the five-point `TASK-016` smoke check on the event Mac and iPhone.
+
+## 2026-06-25 — Audio and managed-file feedback triaged
+
+- Deduplicated the feedback into two independently schedulable results.
+- Added P0 bug `TASK-019` for controlled diagnosis of phase-sensitive or
+  channel-cancelled playback through the event mixer's line input.
+- Recorded that the current Kira adapter uses the selected macOS output and
+  applies volume only; it does not invert, downmix, or M/S-process channels.
+- Left `TASK-019` in needs-planning with a draft evidence-first plan because
+  the correction scope depends on file analysis and the exact cable/mixer path.
+- Added P1 ready feature `TASK-020` for safe deletion of unreferenced managed
+  audio, explicitly blocking deletion of files still used by cues.
+- Next: claim and refine `TASK-019` using an affected file, a known-good file,
+  and the exact event hardware path; do not add a speculative global toggle.
+
+## 2026-06-25 — Phase-sensitive playback resolved in source preparation
+
+- User confirmed the corrected Logic export plays perfectly through the app.
+- The earlier failed test had played the old managed audio because the changed
+  cue configuration had not been saved.
+- Closed `TASK-019` with no product-code change and no phase/M/S toggle.
+- Recorded the operator workflow: correct and render in Logic, import/select
+  the new file, save the configuration, then test the saved cue.
+- Removed `TASK-019` from the `TASK-016` release-smoke dependency chain.
+- Next: complete the native desktop, audible-output, and iPhone Safari checks
+  in `TASK-016`.
+
+## 2026-06-25 — Safe managed-audio deletion completed
+
+- Completed `TASK-020` with a collapsed desktop file-management section that
+  identifies duplicate-name imports by format, size, and managed filename.
+- Files referenced by saved or draft cues are disabled and list every blocking
+  cue; eligible files require explicit confirmation.
+- Added a staged repository transaction that removes metadata and managed bytes
+  together and restores the original file when metadata persistence fails.
+- Deletion now refreshes the authoritative snapshot and managed-file preflight.
+- Added persistence regressions for referenced-file blocking, restart
+  durability, physical file removal, and rollback, plus UI regressions for
+  duplicate names, confirmation, cancellation, and cue blockers.
+- Passed `cargo test --manifest-path src-tauri/Cargo.toml`,
+  `npm test -- --run`, `npm run build`, and `npm run lint`.
+- The in-app browser connection was unavailable, so visual preview automation
+  was not repeated; component tests cover the new disclosure and actions.
+- Next: complete the physical Mac/iPhone candidate check in `TASK-016`.

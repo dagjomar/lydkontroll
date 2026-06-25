@@ -115,6 +115,29 @@ impl DesktopCoordinator {
         Ok(imported)
     }
 
+    pub fn delete_managed_audio(&self, audio_file_id: &str) -> Result<AppSnapshot, String> {
+        let _operation = self
+            .operations
+            .lock()
+            .map_err(|_| "desktop library operation is unavailable".to_owned())?;
+        let current = self.service.library().map_err(service_error)?;
+        let updated = self
+            .repository
+            .delete_managed_audio(&current, audio_file_id)
+            .map_err(|error| error.to_string())?;
+        let next = self
+            .service
+            .replace_library(updated.clone())
+            .map_err(service_error)?;
+        self.service
+            .set_preflight(PreflightFacts {
+                control_server: next.preflight.control_server,
+                audio_output: next.preflight.audio_output,
+                audio_files: managed_audio_preflight(&self.repository, &updated),
+            })
+            .map_err(service_error)
+    }
+
     pub fn refresh_preflight(
         &self,
         control_server: PreflightStatus,
@@ -232,6 +255,14 @@ pub fn import_audio(
     source_path: PathBuf,
 ) -> Result<ManagedAudioFile, String> {
     state.import_audio(&source_path)
+}
+
+#[tauri::command]
+pub fn delete_managed_audio(
+    state: State<'_, DesktopCoordinator>,
+    audio_file_id: String,
+) -> Result<AppSnapshot, String> {
+    state.delete_managed_audio(&audio_file_id)
 }
 
 #[tauri::command]

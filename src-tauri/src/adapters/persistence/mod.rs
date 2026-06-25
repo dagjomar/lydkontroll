@@ -79,6 +79,13 @@ pub enum PersistenceError {
     MissingManagedFile { file_name: String },
     #[error("managed audio filename is invalid: {file_name}")]
     InvalidManagedFileName { file_name: String },
+    #[error("managed audio file is unknown: {audio_file_id}")]
+    UnknownManagedAudioFile { audio_file_id: String },
+    #[error("managed audio file {original_name} is used by cues: {cue_names}")]
+    ManagedAudioFileInUse {
+        original_name: String,
+        cue_names: String,
+    },
     #[error("cue {cue_id} references unknown audio file {audio_file_id}")]
     MissingAudioReference {
         cue_id: String,
@@ -225,9 +232,102 @@ impl JsonLibraryRepository {
         sync_directory(self.paths.root())
     }
 
+    fn save_with_primary_validation(
+        &self,
+        library: &CueLibrary,
+        require_primary_managed_files: bool,
+    ) -> Result<(), PersistenceError> {
+        if library.schema_version != LIBRARY_SCHEMA_VERSION {
+            return Err(PersistenceError::UnsupportedSchemaVersion {
+                found: library.schema_version,
+                supported: LIBRARY_SCHEMA_VERSION,
+                backup_available: self.paths.backup().is_file(),
+            });
+        }
+        self.validate_managed_files(library, true)?;
+        self.ensure_directories()?;
+
+        let temporary = self.paths.root().join(TEMP_LIBRARY_FILE);
+        write_json_file(&temporary, library)?;
+
+        let primary = self.paths.library();
+        if primary.is_file() {
+            // Only a readable, supported primary is eligible to become backup.
+            self.read_library(
+                &primary,
+                self.paths.backup().is_file(),
+                require_primary_managed_files,
+            )?;
+            replace_file(&primary, &self.paths.backup())?;
+        }
+        replace_file(&temporary, &primary)?;
+        sync_directory(self.paths.root())
+    }
+
     /// Loads valid metadata even when one or more managed files were deleted.
     pub fn load_metadata(&self) -> Result<CueLibrary, PersistenceError> {
         self.read_library(&self.paths.library(), self.paths.backup().is_file(), false)
+    }
+
+    /// Removes one unreferenced managed file and its metadata as one transaction.
+    pub fn delete_managed_audio(
+        &self,
+        library: &CueLibrary,
+        audio_file_id: &str,
+    ) -> Result<CueLibrary, PersistenceError> {
+        let audio = library
+            .audio_files
+            .iter()
+            .find(|audio| audio.id == audio_file_id)
+            .ok_or_else(|| PersistenceError::UnknownManagedAudioFile {
+                audio_file_id: audio_file_id.to_owned(),
+            })?;
+        let cue_names = library
+            .scenes
+            .iter()
+            .flat_map(|scene| &scene.cues)
+            .filter(|cue| cue.audio_file_id == audio_file_id)
+            .map(|cue| cue.name.clone())
+            .collect::<Vec<_>>();
+        if !cue_names.is_empty() {
+            return Err(PersistenceError::ManagedAudioFileInUse {
+                original_name: audio.original_name.clone(),
+                cue_names: cue_names.join(", "),
+            });
+        }
+
+        self.validate_managed_files(library, true)?;
+        self.ensure_directories()?;
+        let managed = self.paths.audio_dir().join(&audio.file_name);
+        let staged =
+            self.paths
+                .staging_dir()
+                .join(format!("{}.{}.delete", audio.file_name, Uuid::new_v4()));
+        fs::rename(&managed, &staged).map_err(|error| {
+            PersistenceError::io("stage managed audio deletion", &managed, error)
+        })?;
+        sync_directory(&self.paths.audio_dir())?;
+
+        let mut updated = library.clone();
+        updated
+            .audio_files
+            .retain(|candidate| candidate.id != audio_file_id);
+        if let Err(error) = self.save_with_primary_validation(&updated, false) {
+            restore_staged_file(&staged, &managed, &self.paths.audio_dir())?;
+            return Err(error);
+        }
+
+        if let Err(error) = fs::remove_file(&staged) {
+            restore_staged_file(&staged, &managed, &self.paths.audio_dir())?;
+            self.save(library)?;
+            return Err(PersistenceError::io(
+                "remove staged managed audio",
+                &staged,
+                error,
+            ));
+        }
+        sync_directory(&self.paths.staging_dir())?;
+        Ok(updated)
     }
 }
 
@@ -249,27 +349,7 @@ impl LibraryRepository for JsonLibraryRepository {
     }
 
     fn save(&self, library: &CueLibrary) -> Result<(), Self::Error> {
-        if library.schema_version != LIBRARY_SCHEMA_VERSION {
-            return Err(PersistenceError::UnsupportedSchemaVersion {
-                found: library.schema_version,
-                supported: LIBRARY_SCHEMA_VERSION,
-                backup_available: self.paths.backup().is_file(),
-            });
-        }
-        self.validate_managed_files(library, true)?;
-        self.ensure_directories()?;
-
-        let temporary = self.paths.root().join(TEMP_LIBRARY_FILE);
-        write_json_file(&temporary, library)?;
-
-        let primary = self.paths.library();
-        if primary.is_file() {
-            // Only a readable, supported primary is eligible to become backup.
-            self.read_library(&primary, self.paths.backup().is_file(), true)?;
-            replace_file(&primary, &self.paths.backup())?;
-        }
-        replace_file(&temporary, &primary)?;
-        sync_directory(self.paths.root())
+        self.save_with_primary_validation(library, true)
     }
 }
 
@@ -435,6 +515,16 @@ fn sync_directory(path: &Path) -> Result<(), PersistenceError> {
     File::open(path)
         .and_then(|directory| directory.sync_all())
         .map_err(|error| PersistenceError::io("sync directory", path, error))
+}
+
+fn restore_staged_file(
+    staged: &Path,
+    managed: &Path,
+    audio_dir: &Path,
+) -> Result<(), PersistenceError> {
+    fs::rename(staged, managed)
+        .map_err(|error| PersistenceError::io("restore managed audio", managed, error))?;
+    sync_directory(audio_dir)
 }
 
 fn display_name(path: &Path) -> String {

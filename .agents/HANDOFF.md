@@ -1,13 +1,14 @@
 # Latest Handoff
 
-Updated: 2026-06-19
+Updated: 2026-06-25
 
 ## What Just Happened
 
-`TASK-017` fixed the iPhone master-volume slider so rapid input stays local and
-draggable while ordered, coalesced commands are confirmed by the Mac.
-`TASK-018` passed the complete release gate and replaced the arm64 bundle
-identity in `.agents/CANDIDATE.md`.
+`TASK-020` is complete. The desktop now has a compact managed-audio section
+that distinguishes repeated imports, names cue references, requires
+confirmation, and safely deletes only unreferenced managed files. Persistence
+rollback, restart durability, disk removal, cancellation, and UI behavior have
+regression coverage. The candidate bundle was not rebuilt by this task.
 
 ## Exact Next Action
 
@@ -22,19 +23,18 @@ Complete `TASK-016` on the event Mac:
    values without lifting; confirm the thumb follows continuously and finishes
    at the chosen value.
 
-Report whether all five checks pass. If they do, close `TASK-016` and promote
-`.agents/CANDIDATE.md` as the accepted event build.
-
 ## Important Context
 
-- Replacement source commit:
-  `20871d5d2b8928af77d3ae3246eee4f4ab4be23c`.
-- Replacement executable SHA-256:
-  `4b8656e4a9b0ab279ae2dec4d5c51b2de58edaf8865969929dbbba85dfc7ea5b`.
+- The audio adapter uses Kira's default backend and selected macOS output. It
+  applies volume only and performs no app-specific polarity, downmix, or M/S
+  transform.
+- Affected source files can be corrected and rendered in Logic. After importing,
+  select the new managed file and save the configuration before playback tests.
+- No global or per-cue phase/M/S switch is needed.
+- Managed-file deletion is desktop-only and never follows the original import
+  source path. Files used by saved or draft cues remain protected.
 - The previously rehearsed candidate in `.agents/REHEARSAL.md` remains the
   accepted fallback until `TASK-016` passes.
-- The release bundle and local audio/data remain ignored and must not be
-  committed.
 
 ## Validation to Run After the Manual Check
 

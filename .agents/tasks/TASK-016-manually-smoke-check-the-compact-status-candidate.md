@@ -65,3 +65,7 @@ python3 scripts/ralph.py check
   report whether all five checks pass.
 - 2026-06-19: The candidate recorded before `TASK-017` does not contain the
   slider fix. `TASK-018` must replace its bundle identity before this check.
+- 2026-06-25: New phase/cancellation feedback must be diagnosed in `TASK-019`
+  before the audible event-path check can promote this candidate.
+- 2026-06-25: `TASK-019` resolved without an app change: the corrected Logic
+  export plays properly after selecting it and saving the configuration.

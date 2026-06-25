@@ -342,6 +342,72 @@ h1 {
   margin-right: auto;
 }
 
+.audio-library {
+  margin-bottom: 1rem;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 1rem;
+  background: rgb(28 25 22 / 88%);
+}
+
+.audio-library summary {
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.audio-library summary span {
+  display: inline-grid;
+  min-width: 1.6rem;
+  min-height: 1.6rem;
+  margin-left: 0.35rem;
+  place-items: center;
+  border-radius: 999px;
+  color: #d9d1c7;
+  background: rgb(255 255 255 / 9%);
+  font-size: 0.75rem;
+}
+
+.audio-file-list {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0 0.75rem 0.75rem;
+}
+
+.audio-file-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 0.8rem;
+  background: #211e1b;
+}
+
+.audio-file-row div {
+  min-width: 0;
+}
+
+.audio-file-row strong,
+.audio-file-row small {
+  display: block;
+}
+
+.audio-file-row strong {
+  overflow-wrap: anywhere;
+}
+
+.audio-file-row small,
+.audio-file-row p {
+  margin: 0.25rem 0 0;
+  color: #a9a096;
+  font-size: 0.76rem;
+}
+
+.audio-file-row button {
+  flex: 0 0 auto;
+}
+
 .workspace {
   display: grid;
   grid-template-columns: minmax(13rem, 17rem) minmax(0, 1fr);
@@ -681,6 +747,11 @@ h1 {
   }
 
   .transport {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .audio-file-row {
     align-items: stretch;
     flex-direction: column;
   }

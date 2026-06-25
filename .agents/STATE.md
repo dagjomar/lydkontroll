@@ -1,19 +1,21 @@
 # Current State
 
-Last updated: 2026-06-19
+Last updated: 2026-06-25
 
 ## Phase
 
-The compact-status and smooth-iPhone-slider replacement candidate is built and
-automatically verified. The previously rehearsed event candidate remains the
-fallback until one short native desktop, audible-output, and physical iPhone
-Safari smoke check passes.
+The compact-status and smooth-iPhone-slider replacement candidate remains
+built and automatically verified. The reported phase-sensitive playback issue
+was resolved through a corrected Logic export; after the app configuration was
+saved, that new file played properly without an app-side audio change. Safe
+managed-audio deletion is now implemented and automatically verified.
 
 ## Current Focus
 
 Complete `TASK-016` on the event Mac and phone: launch the packaged replacement,
 check the collapsed/expanded status UI, QR and refresh, hear the three-second
 test-play fade, then drag master volume continuously in iPhone Safari.
+No implementation task remains behind that manual candidate gate.
 
 ## Working Software
 
@@ -53,6 +55,9 @@ A runnable Tauri 2 application with:
 - a desktop preflight panel with Rust-refreshed managed-file and control-server
   facts, cue-specific missing-file blockers, manual output warnings, mobile
   URL/QR presentation, and instance-scoped three-second test playback.
+- a compact desktop managed-file section that distinguishes repeated imports,
+  blocks files used by saved or draft cues, requires confirmation, and removes
+  unreferenced metadata and managed bytes with rollback on persistence failure.
 - a single `npm run release:build` gate covering frontend/Rust validation,
   tracked private-artifact checks, and an Apple Silicon `.app` bundle;
 - a release runbook with build identity, 60-minute failure-injection rehearsal,
@@ -96,5 +101,7 @@ replacement candidate recorded in `.agents/CANDIDATE.md` for event use.
 - Safari reconnect behavior during real Wi-Fi/mobile transitions;
 - keeping desktop, mobile, and Rust state/protocol definitions synchronized;
 - macOS analog output behavior and fade correctness under overlapping playback;
+- ensuring corrected Logic exports are selected and configuration is saved
+  before rehearsal;
 - ensuring imported files survive source-file moves and app restarts.
 - preserving the identity and checksum of the exact rehearsed build.
