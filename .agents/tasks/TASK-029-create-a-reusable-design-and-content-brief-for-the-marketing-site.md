@@ -2,7 +2,7 @@
 id: TASK-029
 title: Create a reusable design and content brief for the marketing site
 status: ready
-priority: P2
+priority: P1
 type: docs
 owner: unassigned
 depends_on: []
@@ -89,3 +89,5 @@ python3 scripts/ralph.py check
   `TASK-021`/ADR-014.
 - The next action is to claim and start this task, then inventory source-backed
   product and visual facts before drafting `DESIGN.md`.
+- Reprioritized by the owner on 2026-07-04: marketing and the Norwegian website
+  come before English localization.

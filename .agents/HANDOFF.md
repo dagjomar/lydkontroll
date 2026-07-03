@@ -8,7 +8,8 @@ Captured the requested marketing-site work without implementing it. Ready
 `TASK-029` owns a reusable `DESIGN.md` and standalone Google Stitch brief based
 on the actual app, accepted identity, and source palette. `TASK-030` owns the
 later Norwegian GitHub Pages site and remains needs-planning behind `TASK-029`
-and owner review of the resulting design concept.
+and owner review of the resulting design concept. The owner then explicitly
+raised both marketing tasks to P1 ahead of P2 English localization.
 
 ## Exact Next Action
 
@@ -21,7 +22,8 @@ handoff. Do not build the Pages site or invent final sales/distribution claims.
 ## Important Context
 
 - The desired sequence is: factual design/content handoff, Google Stitch
-  concept, owner review, then `TASK-030` implementation.
+  concept, owner review, `TASK-030` implementation, then `TASK-026` English
+  localization.
 - Norwegian launches first. `TASK-026` owns complete English localization and
   translated positioning; a partial English marketing page is not wanted.
 - Preserve `Lydkontroll`, event-generic Norwegian positioning, the calm

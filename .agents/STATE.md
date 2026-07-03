@@ -13,14 +13,15 @@ entrypoint over the repository's Ralph workflows.
 
 ## Current Focus
 
-The public-source milestone is complete. The newly requested public-site track
-starts with ready `TASK-029`: create a source-backed `DESIGN.md` and Google
-Stitch handoff that preserves the app's existing identity. `TASK-030` then owns
-the Norwegian GitHub Pages implementation after an owner-reviewed design and
-its launch choices are accepted. Planning `TASK-026` for full English
-localization remains an independent P2 slice; `TASK-027` retains later
-operating-mode research. `Lydkontroll` remains a Norwegian-first,
-event-generic source-available product with configurable event title.
+The public-source milestone is complete. Marketing and the Norwegian website
+are now the owner's explicit first priority. P1 `TASK-029` creates a
+source-backed `DESIGN.md` and Google Stitch handoff that preserves the app's
+existing identity. P1 `TASK-030` then owns the Norwegian GitHub Pages
+implementation after an owner-reviewed design and its launch choices are
+accepted. P2 `TASK-026` English localization follows that marketing track;
+`TASK-027` retains later operating-mode research. `Lydkontroll` remains a
+Norwegian-first, event-generic source-available product with configurable event
+title.
 Future desktop-only, Tailscale, and same-LAN product modes are captured as
 non-blocking P3 research in `TASK-027`; version one remains desktop-capable and
 Tailscale-only for mobile control.
@@ -92,8 +93,8 @@ A runnable Tauri 2 application with:
 ## Next Milestone
 
 Complete `TASK-029` so the owner can obtain and review a Google Stitch concept;
-then plan `TASK-030` from that accepted design without destabilizing the app or
-prematurely mixing in `TASK-026` English localization.
+then plan and implement `TASK-030` from that accepted design. Start `TASK-026`
+English localization only after the Norwegian marketing site is complete.
 
 ## Accepted Foundation
 

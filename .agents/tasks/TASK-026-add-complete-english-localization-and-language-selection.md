@@ -69,3 +69,6 @@ python3 scripts/ralph.py check
   location, server-rendered metadata limits, and migration behavior.
 - English is the first additional language; the architecture should make later
   reviewed catalogs straightforward.
+- On 2026-07-04 the owner placed the P1 Norwegian marketing-site track
+  (`TASK-029`, then `TASK-030`) ahead of this P2 localization work. This is a
+  delivery-order choice, not a new technical dependency.

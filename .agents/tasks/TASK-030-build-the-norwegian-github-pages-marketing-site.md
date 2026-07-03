@@ -2,7 +2,7 @@
 id: TASK-030
 title: Build the Norwegian GitHub Pages marketing site
 status: needs-planning
-priority: P2
+priority: P1
 type: feature
 owner: unassigned
 depends_on: [TASK-029]
@@ -77,3 +77,5 @@ python3 scripts/ralph.py check
 - Open choices are recorded in the linked plan; no site implementation should
   begin until the design direction, content/CTA, repository layout, and Pages
   deployment model are accepted.
+- Reprioritized by the owner on 2026-07-04: complete this Norwegian marketing
+  track after `TASK-029` and before starting `TASK-026` English localization.

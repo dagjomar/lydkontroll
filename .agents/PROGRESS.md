@@ -514,3 +514,15 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   analytics/privacy, publishable screenshots, and later English structure.
 - No product code, marketing page, final copy, or design artifact was created
   during intake.
+
+## 2026-07-04 — Marketing track reprioritized ahead of English
+
+- Recorded the owner's new delivery order: marketing and the Norwegian website
+  come before English localization.
+- Raised ready `TASK-029` and dependent `TASK-030` from P2 to P1; left
+  `TASK-026` at P2 and documented that it follows the marketing track.
+- Preserved the real dependency graph: `TASK-030` still depends only on the
+  design/handoff result from `TASK-029`, while the ordering before `TASK-026`
+  is expressed through priority and durable notes rather than a false
+  technical dependency.
+- No product, design, localization, or website implementation was performed.
