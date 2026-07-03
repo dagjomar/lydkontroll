@@ -369,3 +369,14 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Removed three trailing blank lines in existing Ralph records because the
   repository-wide Prettier gate flagged them.
 - Next: refine `TASK-021` and obtain the product identity/customization choice.
+
+## 2026-07-03 — TASK-021 naming research checkpoint
+
+- Claimed `TASK-021` and checked the original candidates plus adjacent generic
+  names for obvious web/app conflicts.
+- Recorded why `The Wedding MC`, `The Toastmaster`, and `Toastmastah` should be
+  rejected; retained `SoundMastah` only as a playful English alternate.
+- Recommended retaining `Lydkontroll` as an event-generic public name, adding
+  an optional event title with `Mitt arrangement` fallback, and revising the
+  heart into a neutral rounded waveform mark.
+- Paused before acceptance because public identity is an owner product choice.

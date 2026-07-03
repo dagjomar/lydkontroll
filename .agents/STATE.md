@@ -11,8 +11,9 @@ public release, and only then publish it to GitHub.
 
 ## Current Focus
 
-Refine `TASK-021` by presenting a concise, conflict-aware naming/positioning
-shortlist and deciding whether the displayed event title is configurable. The
+Obtain the owner's acceptance or alteration of the conflict-aware `TASK-021`
+recommendation: retain `Lydkontroll`, use a configurable event title, and
+neutralize the waveform-heart mark. The
 macOS icon alpha defect is fixed in `TASK-023`. Public GitHub publication
 remains gated by branding and a history-wide privacy/license/distribution
 readiness review.
@@ -67,8 +68,8 @@ A runnable Tauri 2 application with:
 
 ## Known Blockers
 
-- `TASK-021` needs the owner's product choice on public positioning/name,
-  event-title customization, and whether the heart remains in the brand.
+- `TASK-021` needs the owner's choice between the recorded `Lydkontroll`
+  recommendation and the `SoundMastah` alternate (or a specific alteration).
 - `TASK-024` needs explicit license and source-only versus signed/notarized
   binary-distribution decisions before public-release preparation can finish.
 - `TASK-016` needs a human at the Mac and iPhone because native Tauri UI

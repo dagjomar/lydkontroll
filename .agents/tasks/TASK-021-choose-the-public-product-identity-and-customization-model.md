@@ -4,7 +4,7 @@ title: Choose the public product identity and customization model
 status: needs-planning
 priority: P1
 type: research
-owner: unassigned
+owner: codex-2026-07-03-public-identity
 depends_on: []
 plan: .agents/plans/TASK-021-public-product-identity.md
 updated: 2026-07-03
@@ -73,3 +73,7 @@ python3 scripts/ralph.py check
   is not assumed to be wrong merely because the original names are specific.
 - Needs planning because choosing generic versus wedding-specific positioning,
   and fixed versus customizable title, materially changes the product.
+- 2026-07-03: Claimed by `codex-2026-07-03-public-identity`. The linked plan now
+  contains a web-checked shortlist, explicit disposition of every original
+  candidate, and a recommended `Lydkontroll` decision package. Completion is
+  paused only for the owner's product choice.

@@ -18,6 +18,15 @@ choices; downstream implementation should not encode contradictory answers.
   `SoundMastah`.
 - The reliable local-first soundboard behavior works beyond weddings, while
   Tailscale and Apple-platform requirements remain real scope constraints.
+- A 2026-07-03 web conflict check found `The Wedding MC` already used by
+  multiple wedding-MC services, `ToastMaster` used by a current Norwegian App
+  Store product and strongly associated with Toastmasters International, and
+  `CueDeck`/`EventCue` used by directly adjacent live-event software.
+- Exact searches for `Toastmastah` and `SoundMastah` found no obvious adjacent
+  software products, but both spellings weaken immediate comprehension and
+  professional trust. Exact `Lydkontroll` app/software searches found only
+  descriptive uses of the Norwegian common noun, not an obvious competing
+  product.
 
 ## Open Questions
 
@@ -44,14 +53,41 @@ choices; downstream implementation should not encode contradictory answers.
 - Benefits: smallest implementation and clearest product consistency.
 - Costs and risks: loses useful event personalization and may feel sterile.
 
+### Recommended decision package: retain Lydkontroll, personalize the event
+
+- Public name: `Lydkontroll`; repository slug and package stem: `lydkontroll`.
+- Positioning: a local-first soundboard for reliably running audio cues at live
+  events from a Mac, with iPhone control over Tailscale.
+- Event title: optional configurable text, default `Mitt arrangement`; trim
+  whitespace and fall back to that default when empty. Show it in the existing
+  eyebrow slot on desktop and mobile so cue coordinates remain stable.
+- Identity: retain the waveform idea but revise the heart into a neutral rounded
+  waveform mark. This keeps visual continuity without implying weddings only.
+- Why: it is the least-conflicted, most honest name for the current Norwegian
+  UI, preserves repository continuity, and lets weddings remain a first-class
+  use case without excluding other events.
+
+### Original candidate disposition
+
+- `The Wedding MC`: reject; wedding-only positioning and active exact-name
+  service use make it both narrow and crowded.
+- `The Toastmaster`: reject; active `ToastMaster` app use plus the dominant
+  Toastmasters association creates confusion, and the app controls audio rather
+  than the full toastmaster role.
+- `Toastmastah`: reject; distinctive spelling but still inherits the
+  toastmaster ambiguity and reads less professionally.
+- `SoundMastah`: viable alternate if an English playful brand is preferred, but
+  reject in the recommendation because the spelling obscures purpose and does
+  not match the product's calm, reliability-first character.
+
 ## Decision
 
-Pending user product choice after a concise, conflict-aware shortlist is
-prepared. Record the accepted result in `.agents/DECISIONS.md`.
+Pending owner acceptance of the recommended package or selection of the
+`SoundMastah` alternate. Record the accepted result in `.agents/DECISIONS.md`.
 
 ## Implementation Slices
 
-1. Prepare a shortlist and conflict/repository-slug check.
+1. Prepare a shortlist and conflict/repository-slug check. (complete)
 2. Select positioning, name, logo direction, and customization model.
 3. Record exact strings/defaults and unblock `TASK-022` and `TASK-025`.
 
@@ -69,7 +105,7 @@ product files change during planning.
 
 ## Ready Checklist
 
-- [ ] Open questions are resolved or explicitly deferred.
+- [ ] Open questions are resolved or explicitly deferred (owner choice pending).
 - [ ] Decisions and tradeoffs are recorded.
 - [ ] Slices are small and dependency ordered.
 - [ ] Tests cover the important failure modes.
