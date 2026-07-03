@@ -4,45 +4,38 @@ Updated: 2026-07-04
 
 ## What Just Happened
 
-Completed `TASK-028`. The repository now has a guided, agent-neutral workflow
-router in `.agents/PROJECT_WORKFLOWS.md`, a thin discoverable Codex adapter at
-`$lydkontroll-workflows`, and a linted drift check covering every route and its
-safety boundaries. Direct prompts remain in `HUMAN_README.md` as route details
-and portable fallbacks; no product code changed.
+Captured the requested marketing-site work without implementing it. Ready
+`TASK-029` owns a reusable `DESIGN.md` and standalone Google Stitch brief based
+on the actual app, accepted identity, and source palette. `TASK-030` owns the
+later Norwegian GitHub Pages site and remains needs-planning behind `TASK-029`
+and owner review of the resulting design concept.
 
 ## Exact Next Action
 
-Claim `TASK-026`, resolve its localization architecture and language-selection
-questions, and split implementation into dependency-ordered slices. Do not let
-translation work shift cue positions or weaken the current Norwegian-first
-operator workflow.
+Claim and start `TASK-029`. Inventory the current visual language from
+`src/styles.css`, the neutral waveform assets, ADR-014/TASK-021 positioning,
+README/PLAN product facts, and representative desktop/mobile workflows; then
+draft and manually validate `DESIGN.md` as a self-contained Google Stitch
+handoff. Do not build the Pages site or invent final sales/distribution claims.
 
 ## Important Context
 
-- `eventTitle` remains inside schema version 1 and uses a serde default, so old
-  libraries load as `Mitt arrangement` without reset.
-- Conflict checking is an obvious-collision screen, not trademark clearance.
-- `npm run icons:generate` reproducibly rebuilds icons from the SVG source;
-  `npm run icons:check` validates transparent macOS corners.
-- Finder/Dock/app-switcher inspection is still a useful human check, but the
-  built `.app` icon byte-matches the asset whose alpha was verified.
-- `TASK-024` is done; ADR-015 records the accepted licensing, distribution,
-  contribution, and retained-history decisions.
-- Canonical GitHub remote is `git@github.com:dagjomar/lydkontroll.git`; public
-  URL is https://github.com/dagjomar/lydkontroll.
-- Preliminary audit evidence lives in
-  `.agents/audits/TASK-024-public-readiness-audit.md`.
-- `TASK-027` is deliberately P3 and needs planning. Its open questions cover
-  LAN authentication/binding, mode defaults and persistence, settings,
-  preflight, onboarding, instructions, and marketing. Do not add automatic LAN
-  fallback or weaken the current fail-closed Tailscale boundary speculatively.
-- `TASK-028` is done. ADR-016 records the portable prompt plus thin skill
-  decision; `npm run workflows:check` protects route and safety drift.
-- Current behavior should be stated plainly in public docs: desktop operation
-  needs no phone or network; version-one mobile control requires Tailscale.
-- Public-source launch is complete. Keep future pushes behind
-  `npm run public:check` and normal project validation.
-- `TASK-016` is done based on successful real-event operation on 2026-06-27.
+- The desired sequence is: factual design/content handoff, Google Stitch
+  concept, owner review, then `TASK-030` implementation.
+- Norwegian launches first. `TASK-026` owns complete English localization and
+  translated positioning; a partial English marketing page is not wanted.
+- Preserve `Lydkontroll`, event-generic Norwegian positioning, the calm
+  reliability-first character, and the neutral rounded-waveform mark.
+- App palette evidence is in `src/styles.css`; the default cue color is
+  `#d88c68` in `src/components/Shell.tsx`.
+- Public claims must say desktop control works locally without phone/network,
+  while current mobile control requires Tailscale and iPhone/Safari.
+- The project is source-available under PolyForm Noncommercial, not OSI open
+  source. No public signed/notarized app distribution exists yet.
+- `TASK-030` still needs owner choices for the accepted design, primary CTA,
+  Pages structure/URL, analytics posture, and publishable screenshot set.
+- `TASK-027` remains separate future research; do not market speculative LAN or
+  automatic fallback modes.
 
 ## Validation
 
@@ -50,8 +43,4 @@ operator workflow.
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next
 git diff --check
-npm run lint
-npm test -- --run
-cargo test --manifest-path src-tauri/Cargo.toml
-npm run public:check
 ```

@@ -497,3 +497,20 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   adapter duplication, missing safety language, and stale task IDs.
 - Passed lint, 17 frontend tests, 66 Rust tests, public-readiness checks, Ralph
   validation, and Git diff checks. Next remains planning `TASK-026`.
+
+## 2026-07-04 — Marketing-site feature intake
+
+- Captured the owner's goal of launching a Norwegian GitHub Pages marketing
+  site, with complete English presentation deferred until the localization
+  track is ready.
+- Split the request into ready `TASK-029` for a reusable, source-backed
+  `DESIGN.md`/Google Stitch handoff and `TASK-030` for the later reviewed-design
+  implementation and deployment.
+- Required the handoff to preserve the app's warm dark visual language,
+  accepted event-generic identity, accurate functionality/limitations, useful
+  page structure, screenshot guidance, and a standalone Stitch prompt.
+- Left `TASK-030` needs-planning behind `TASK-029`; its draft plan records open
+  decisions about the accepted concept, launch CTA, source layout, Pages URL,
+  analytics/privacy, publishable screenshots, and later English structure.
+- No product code, marketing page, final copy, or design artifact was created
+  during intake.
