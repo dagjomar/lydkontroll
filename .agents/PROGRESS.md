@@ -427,3 +427,22 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Recorded the evidence in
   `.agents/audits/TASK-024-public-readiness-audit.md`; `TASK-024` remains
   needs-planning until those decisions are explicit.
+
+## 2026-07-04 — TASK-024 public-release preparation complete
+
+- Accepted ADR-015: source-only publication under PolyForm Noncommercial 1.0.0,
+  separate owner-controlled commercial licensing, retained 31-commit history,
+  and a CLA for commercial/relicensing rights in accepted contributions.
+- Added the exact official license text, required notice, CLA, contribution
+  guide, security policy, support boundary, and direct dependency-license
+  review. Public copy clearly says source-available rather than OSI open source.
+- Expanded README with desktop-only behavior, Tailscale trust boundary,
+  architecture, limitations, source-only distribution, and commercial terms.
+- Added `npm run public:check` to require public documents, scan current tracked
+  files, and reject private artifact paths across all reachable Git history;
+  expanded ignore/release checks for M4A, environment, signing, and library data.
+- Passed `npm run release:check` with loopback permission: build, lint, 17
+  frontend tests, 66 Rust tests, current bindings, icon alpha, 185 tracked-file
+  checks, and 749 reachable object-path checks.
+- Completed `TASK-024` and moved dependency-cleared `TASK-025` to ready. Remote
+  creation still requires the owner's GitHub destination and authorization.

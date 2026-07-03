@@ -1,7 +1,7 @@
 ---
 id: TASK-024
 title: Prepare the repository for safe public GitHub release
-status: needs-planning
+status: done
 priority: P1
 type: chore
 owner: codex-2026-07-04-public-readiness
@@ -46,18 +46,18 @@ repeatable pre-publication gate that passes.
 
 ## Acceptance Criteria
 
-- [ ] A documented audit covers the current tree and every commit intended for
+- [x] A documented audit covers the current tree and every commit intended for
       publication, with no secrets, personal audio, local app data, generated
       bundles, or unintended event-private material exposed.
-- [ ] A deliberate license is present and compatible with direct dependencies.
-- [ ] README and support/security documentation state prerequisites, Tailscale
+- [x] A deliberate license is present and compatible with direct dependencies.
+- [x] README and support/security documentation state prerequisites, Tailscale
       trust boundary, local-audio behavior, build/test commands, limitations,
       and how to report vulnerabilities.
-- [ ] Source-only versus signed/notarized binary distribution is decided and
+- [x] Source-only versus signed/notarized binary distribution is decided and
       the documented release process does not overclaim what is provided.
-- [ ] Ignore rules and automated checks reject private artifacts and secrets
+- [x] Ignore rules and automated checks reject private artifacts and secrets
       likely to recur.
-- [ ] Full project validation and the public-readiness gate pass from a clean
+- [x] Full project validation and the public-readiness gate pass from a clean
       checkout.
 
 ## Validation
@@ -88,3 +88,14 @@ python3 scripts/ralph.py check
   the existing author Gmail address and retired Marius/Wenche identity in old
   commits. Planning is blocked only on explicit license, source-only release,
   and retained-versus-sanitized-history owner decisions.
+
+- 2026-07-04: Owner accepted PolyForm Noncommercial 1.0.0, source-only launch, retained history, separate commercial licensing, and a CLA. ADR-015 records the decision.
+
+- 2026-07-04: Task claimed.
+
+- 2026-07-04: Implemented PolyForm source-available release terms, CLA/contribution/security/support docs, dependency review, retained-history audit, and public-readiness gate. Full release:check passed with loopback permission.
+- 2026-07-04: Added the exact official PolyForm 1.0.0 text and required notice,
+  `CLA.md`, public contribution/security/support guidance, direct dependency
+  review, expanded ignore rules, and a history-aware `npm run public:check`.
+  `npm run release:check` passed: 17 frontend tests, 66 Rust tests, build, lint,
+  Clippy, generated bindings, icon-alpha checks, and 749 reachable object paths.

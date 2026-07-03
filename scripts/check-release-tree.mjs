@@ -7,9 +7,9 @@ const trackedFiles = execFileSync("git", ["ls-files"], {
   .filter(Boolean);
 
 const forbiddenPatterns = [
-  { label: "user audio", pattern: /\.(?:mp3|wav)$/iu },
+  { label: "user audio", pattern: /\.(?:m4a|mp3|wav)$/iu },
   { label: "application bundle", pattern: /\.(?:app|dmg)$/iu },
-  { label: "signing material", pattern: /\.(?:key|p12|pem)$/iu },
+  { label: "signing material", pattern: /\.(?:cer|key|p12|pem)$/iu },
   {
     label: "local library data",
     pattern: /(?:^|\/)library\.json(?:\.bak)?$/iu,

@@ -284,3 +284,34 @@ sequential ID and link the relevant task or plan.
   rejected as narrow or conflicting; `SoundMastah` was rejected as less clear
   and less aligned with reliability-first positioning. Renaming to English
   before translating the UI was rejected as an incoherent launch experience.
+
+## ADR-015: Publish source under noncommercial terms and sell commercial builds separately
+
+- **Date:** 2026-07-04
+- **Status:** accepted
+- **Task:** TASK-024
+- **Context:** The owner wants the code visible, forkable, and open to community
+  improvements without granting third parties a right to sell the software.
+  The owner may later sell finished, signed/notarized bundles and related
+  services. OSI open-source licenses cannot prohibit commercial use, and
+  accepted contributions need sufficient inbound rights for that commercial
+  model to remain coherent.
+- **Decision:** Publish the retained 31-commit history source-only under
+  PolyForm Noncommercial 1.0.0 and describe it as source-available, not open
+  source. Do not publish the current unsigned app bundle. Reserve separate
+  commercial licensing to the owner. Require contributors to accept a CLA that
+  leaves their copyright intact while granting the owner perpetual commercial
+  use and relicensing rights for accepted contributions. The owner accepts the
+  audited commit-email, retired-name, event-context, and rehearsal disclosures.
+- **Consequences:** Noncommercial users may inspect, fork, modify, and
+  redistribute under PolyForm; commercial users need a separate license. The
+  owner can later sell polished bundles without giving every source recipient
+  equivalent commercial rights. A CLA adds contribution friction, and the
+  license/CLA should receive legal review before commercial sales or substantive
+  third-party contributions. Dependencies retain their own licenses and notices.
+- **Alternatives:** MIT, Apache-2.0, GPL, and AGPL were rejected because they
+  permit third-party commercial use or resale. No license was rejected because
+  it would not clearly permit the desired forks and contributions. Publishing
+  unsigned bundles was rejected because of Gatekeeper friction and an unclear
+  public trust story. Squashing or rewriting history was rejected after the
+  owner reviewed and accepted the audit findings.

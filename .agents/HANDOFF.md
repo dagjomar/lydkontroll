@@ -4,19 +4,17 @@ Updated: 2026-07-04
 
 ## What Just Happened
 
-Claimed `TASK-024` planning and completed a preliminary public-tree/history
-audit. No private artifacts or absolute user paths were found, but an ordinary
-public push exposes the author's Gmail address from every commit and the retired
-Marius/Wenche identity from older commits. Source-only is the recommended first
-release; the task remains needs-planning for genuine owner decisions.
+Completed `TASK-024`. The retained history is ready for source-only publication
+under PolyForm Noncommercial 1.0.0, with separate commercial licensing and a
+CLA for accepted contributions. Public docs, support/security boundaries,
+dependency review, ignore rules, and the history-aware readiness gate pass.
 
 ## Exact Next Action
 
-Obtain the owner's three decisions: MIT versus Apache-2.0 (or another named
-license), confirm source-only first release, and retain versus sanitize Git
-history after reviewing the Gmail/retired-name disclosures. Then finish the
-plan, move `TASK-024` to ready, start it, and implement the public-readiness
-docs/checks before allowing `TASK-025` to create a public remote.
+Ask the owner for the destination GitHub account or organization and explicit
+authorization to create and push the public `lydkontroll` repository. Then claim
+and start ready `TASK-025`, create the remote without overwriting anything,
+configure metadata, push the audited history, and validate a fresh clone.
 
 ## Important Context
 
@@ -27,8 +25,8 @@ docs/checks before allowing `TASK-025` to create a public remote.
   `npm run icons:check` validates transparent macOS corners.
 - Finder/Dock/app-switcher inspection is still a useful human check, but the
   built `.app` icon byte-matches the asset whose alpha was verified.
-- `TASK-024` must settle license and source-only versus signed/notarized binary
-  releases and audit the intended Git history.
+- `TASK-024` is done; ADR-015 records the accepted licensing, distribution,
+  contribution, and retained-history decisions.
 - Preliminary audit evidence lives in
   `.agents/audits/TASK-024-public-readiness-audit.md`.
 - `TASK-027` is deliberately P3 and needs planning. Its open questions cover
@@ -38,7 +36,8 @@ docs/checks before allowing `TASK-025` to create a public remote.
 - Current behavior should be stated plainly in public docs: desktop operation
   needs no phone or network; version-one mobile control requires Tailscale.
 - Do not create or push a public GitHub remote until `TASK-022`, `TASK-023`, and
-  `TASK-024` are done.
+  `TASK-024` are done. They are now done, but external publication still needs
+  the destination and explicit owner authorization.
 - The old manual event-candidate gate `TASK-016` remains truthfully blocked.
 
 ## Validation
@@ -50,4 +49,5 @@ git diff --check
 npm run lint
 npm test -- --run
 cargo test --manifest-path src-tauri/Cargo.toml
+npm run public:check
 ```

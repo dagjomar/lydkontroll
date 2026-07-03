@@ -1,6 +1,6 @@
 # Plan: TASK-024 — Public GitHub readiness
 
-Status: draft — owner decisions pending
+Status: accepted
 Updated: 2026-07-04
 
 ## Problem
@@ -25,14 +25,20 @@ decisions and a history-wide audit first.
   though the current tree is generic. Publishing the existing history therefore
   publishes that retired identity unless the history is rewritten.
 
-## Open Questions
+## Resolved Questions
 
-- Which open-source license should govern reuse and contributions?
-- Is the first public launch source-only, or must it ship downloadable macOS
-  binaries with signing/notarization and release automation?
-- Which event/rehearsal records are useful engineering history versus private
-  material that should not be published?
-- Which GitHub community, security, and automation files are warranted now?
+- Use PolyForm Noncommercial 1.0.0 for the public source. This is deliberately
+  source-available rather than OSI open source: noncommercial use, forks, and
+  modification are allowed, while commercial licensing stays with the owner.
+- Launch GitHub source-only. Do not attach the current unsigned `.app`; a future
+  signed/notarized bundle may be sold separately under a commercial license.
+- Retain the 31-commit history. The owner accepts publication of the author
+  email, retired couple names, event context, and non-sensitive rehearsal
+  evidence found by the audit.
+- Add README licensing/distribution/security boundaries, `SECURITY.md`,
+  `SUPPORT.md`, `CONTRIBUTING.md`, and a contributor agreement that preserves
+  contributor copyright while granting the project owner commercial and
+  relicensing rights.
 
 ## Options Considered
 
@@ -55,19 +61,17 @@ decisions and a history-wide audit first.
 
 ## Decision
 
-Pending owner confirmation. Planning recommendations are:
+Publish the retained history under PolyForm Noncommercial 1.0.0 as a
+source-only, source-available project. The owner reserves commercial licensing
+and may later sell signed/notarized bundles, support, or other commercial
+offerings. External contributions require a CLA broad enough for the owner to
+commercially license and relicense accepted contributions while contributors
+retain copyright. Public copy must not call this OSI open source.
 
-- launch source-only first; do not publish the current unsigned bundle and do
-  not add Apple signing/notarization until binary distribution is an explicit
-  product goal;
-- use a permissive license if broad reuse is desired (MIT is the smallest
-  simple option; Apache-2.0 adds an explicit patent grant); and
-- publish a sanitized history only if the author email or retired couple names
-  are not acceptable public information. Otherwise retain the engineering
-  history and explicitly approve those disclosures.
-
-These choices cannot be inferred from implementation evidence because they
-change legal rights, maintenance scope, and irreversible privacy exposure.
+The repository documents the intended model but does not claim that it replaces
+professional legal review. Before selling builds or accepting substantive
+outside contributions, the owner should have Norwegian counsel review the
+license/CLA and applicable dependency-notice obligations.
 
 ## Implementation Slices
 
@@ -92,11 +96,11 @@ before `TASK-025`; never sanitize after public publication as the primary plan.
 
 ## Ready Checklist
 
-- [ ] Open questions are resolved or explicitly deferred.
-- [ ] Decisions and tradeoffs are recorded.
-- [ ] Slices are small and dependency ordered.
-- [ ] Tests cover the important failure modes.
-- [ ] The parent task can move to `ready`.
+- [x] Open questions are resolved or explicitly deferred.
+- [x] Decisions and tradeoffs are recorded.
+- [x] Slices are small and dependency ordered.
+- [x] Tests cover the important failure modes.
+- [x] The parent task can move to `ready`.
 
 ## Planning Progress
 
@@ -105,7 +109,8 @@ before `TASK-025`; never sanitize after public publication as the primary plan.
 - [x] Distribution options were narrowed to a source-only recommendation; an
       unsigned public app bundle is rejected as a weak trust story.
 - [x] History-specific privacy findings were identified for owner review.
-- [ ] Owner selects the license.
-- [ ] Owner confirms source-only launch.
-- [ ] Owner chooses retained versus sanitized history after reviewing the
+- [x] Owner selects PolyForm Noncommercial 1.0.0 plus separate commercial
+      licensing and a contributor agreement.
+- [x] Owner confirms source-only launch.
+- [x] Owner chooses retained history after reviewing the
       author-email and retired-identity disclosures.

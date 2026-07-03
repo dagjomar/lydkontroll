@@ -1,13 +1,13 @@
 ---
 id: TASK-025
 title: Publish the prepared project as a GitHub repository
-status: blocked
+status: ready
 priority: P2
 type: chore
 owner: unassigned
 depends_on: [TASK-022, TASK-023, TASK-024]
 plan: none
-updated: 2026-07-03
+updated: 2026-07-04
 ---
 
 # TASK-025: Publish the prepared project as a GitHub repository
@@ -70,3 +70,5 @@ python3 scripts/ralph.py check
 - Fully scoped but blocked until `TASK-022`, `TASK-023`, and `TASK-024` are
   done. Then move it to ready and ask for GitHub destination/visibility at
   execution time, not during backlog intake.
+
+- 2026-07-04: TASK-022, TASK-023, and TASK-024 are complete. Publication now needs the owner's GitHub destination account/organization and explicit authorization to create/push the public remote.

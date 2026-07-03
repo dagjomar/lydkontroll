@@ -20,8 +20,15 @@ src-tauri/gen/
 *.dmg
 *.key
 *.p12
+*.pem
+*.cer
+.env
+.env.*
 
 # User audio and local data
 *.mp3
 *.wav
+*.m4a
+library.json
+library.json.bak
 local-data/

@@ -20,17 +20,17 @@ intended for publication
 
 ## Findings
 
-### Blocking owner decisions
+### Owner-reviewed disclosures
 
 1. Every commit records `Dag Jomar Mersland <dagjomar@gmail.com>`. A public push
-   exposes that address through Git history. The owner must explicitly accept
-   this or choose a mailmap/history rewrite before publication.
+   exposes that address through Git history. The owner explicitly accepted this
+   disclosure on 2026-07-04.
 2. Older commits contain the retired `Marius`/`Wenche` event identity. The
    current tree is generic, but an ordinary public push exposes the historical
-   names and wedding context. The owner must accept that disclosure or approve
-   a sanitized history.
-3. The repository has no source license. License selection is a legal/product
-   choice, not a technical default.
+   names and wedding context. The owner explicitly accepted this disclosure and
+   chose to retain the 31-commit engineering history on 2026-07-04.
+3. The repository initially had no source license. The owner selected PolyForm
+   Noncommercial 1.0.0 with separate commercial licensing and a CLA.
 
 ### Clean results
 

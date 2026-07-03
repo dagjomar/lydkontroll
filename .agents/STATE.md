@@ -4,17 +4,19 @@ Last updated: 2026-07-04
 
 ## Phase
 
-The private wedding build is functionally complete. The project is entering a
-public-product transition: choose a reusable identity and customization model,
-remove event-specific identity, correct the macOS icon, audit the repository for
-public release, and only then publish it to GitHub.
+The private wedding build is functionally complete and the retained repository
+history is prepared for a source-only public launch. Reusable identity, icon,
+privacy/history audit, licensing, contribution terms, documentation, and public
+validation are complete. Creating the GitHub remote remains a separate external
+action in `TASK-025`.
 
 ## Current Focus
 
-Prepare the repository for safe public release in `TASK-024`, including the
-license and source-versus-binary distribution decision. `Lydkontroll` is now a
-coherent Norwegian-first, event-generic product with configurable event title;
-full English localization and language selection are captured in `TASK-026`.
+Publish the prepared source through `TASK-025` once the owner supplies the
+destination GitHub account/organization and authorizes remote creation/push.
+`Lydkontroll` is a Norwegian-first, event-generic source-available product with
+configurable event title; full English localization and language selection are
+captured in `TASK-026`.
 Future desktop-only, Tailscale, and same-LAN product modes are captured as
 non-blocking P3 research in `TASK-027`; version one remains desktop-capable and
 Tailscale-only for mobile control.
@@ -68,13 +70,14 @@ A runnable Tauri 2 application with:
   checks for every macOS `.icns` representation.
 - a reusable Norwegian-first `Lydkontroll` identity, configurable persisted
   event title with schema-v1 fallback, and neutral rounded-waveform icon.
+- PolyForm Noncommercial 1.0.0 source terms, a separate-commercial-license
+  posture, contributor CLA, support/security guidance, direct dependency
+  license review, and a history-aware public-readiness gate.
 
 ## Known Blockers
 
-- `TASK-024` needs explicit license, source-only distribution, and Git-history
-  privacy decisions before implementation. The preliminary audit found no
-  private artifacts, but the existing history exposes the author's Gmail
-  address and retired Marius/Wenche event identity.
+- `TASK-025` needs the destination GitHub account/organization and explicit
+  authorization before creating and pushing a public remote.
 - `TASK-016` needs a human at the Mac and iPhone because native Tauri UI
   automation is not available on macOS, audible output cannot be inferred from
   mocks, and physical Safari touch gestures cannot be fully reproduced here.
@@ -86,8 +89,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Make `TASK-024` ready with a chosen license, distribution scope, privacy audit,
-and history policy. `TASK-025` may publish only after that prerequisite is done.
+Publish the audited retained history through `TASK-025`, then verify repository
+metadata, rendered legal/security links, and a fresh clone.
 
 ## Accepted Foundation
 
@@ -115,9 +118,9 @@ and history policy. `TASK-025` may publish only after that prerequisite is done.
   before rehearsal;
 - ensuring imported files survive source-file moves and app restarts.
 - preserving the identity and checksum of the exact rehearsed build.
-- avoiding personal/event-private material in the public tree or Git history;
+- preserving the audited public tree/history boundary as future commits land;
 - avoiding ambiguous naming conflicts or an unsupported public brand promise;
-- choosing a license and distribution scope before creating a public remote;
+- obtaining legal review before commercial sales or substantive contributions;
 - keeping configurable branding from destabilizing the mobile cue layout.
 - avoiding accidental exposure on untrusted local networks if optional LAN
   mobile control is added after version one.
