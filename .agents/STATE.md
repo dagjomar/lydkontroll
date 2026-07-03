@@ -1,21 +1,21 @@
 # Current State
 
-Last updated: 2026-06-25
+Last updated: 2026-07-03
 
 ## Phase
 
-The compact-status and smooth-iPhone-slider replacement candidate remains
-built and automatically verified. The reported phase-sensitive playback issue
-was resolved through a corrected Logic export; after the app configuration was
-saved, that new file played properly without an app-side audio change. Safe
-managed-audio deletion is now implemented and automatically verified.
+The private wedding build is functionally complete. The project is entering a
+public-product transition: choose a reusable identity and customization model,
+remove event-specific identity, correct the macOS icon, audit the repository for
+public release, and only then publish it to GitHub.
 
 ## Current Focus
 
-Complete `TASK-016` on the event Mac and phone: launch the packaged replacement,
-check the collapsed/expanded status UI, QR and refresh, hear the three-second
-test-play fade, then drag master volume continuously in iPhone Safari.
-No implementation task remains behind that manual candidate gate.
+Refine `TASK-021` by presenting a concise, conflict-aware naming/positioning
+shortlist and deciding whether the displayed event title is configurable. In
+parallel, independent ready bug `TASK-023` can correct the macOS icon's opaque
+white corners. Public GitHub publication remains gated by branding and a
+history-wide privacy/license/distribution readiness review.
 
 ## Working Software
 
@@ -65,6 +65,10 @@ A runnable Tauri 2 application with:
 
 ## Known Blockers
 
+- `TASK-021` needs the owner's product choice on public positioning/name,
+  event-title customization, and whether the heart remains in the brand.
+- `TASK-024` needs explicit license and source-only versus signed/notarized
+  binary-distribution decisions before public-release preparation can finish.
 - `TASK-016` needs a human at the Mac and iPhone because native Tauri UI
   automation is not available on macOS, audible output cannot be inferred from
   mocks, and physical Safari touch gestures cannot be fully reproduced here.
@@ -76,8 +80,10 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Pass the short native and phone smoke check in `TASK-016`, then promote the
-replacement candidate recorded in `.agents/CANDIDATE.md` for event use.
+Accept the public identity/customization decision in `TASK-021`, complete the
+independent icon correction in `TASK-023`, and make `TASK-024` ready with a
+chosen license and distribution scope. `TASK-025` may publish only after all
+three public-release prerequisites are done.
 
 ## Accepted Foundation
 
@@ -105,3 +111,7 @@ replacement candidate recorded in `.agents/CANDIDATE.md` for event use.
   before rehearsal;
 - ensuring imported files survive source-file moves and app restarts.
 - preserving the identity and checksum of the exact rehearsed build.
+- avoiding personal/event-private material in the public tree or Git history;
+- avoiding ambiguous naming conflicts or an unsupported public brand promise;
+- choosing a license and distribution scope before creating a public remote;
+- keeping configurable branding from destabilizing the mobile cue layout.

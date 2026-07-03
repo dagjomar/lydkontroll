@@ -1,45 +1,47 @@
 # Latest Handoff
 
-Updated: 2026-06-25
+Updated: 2026-07-03
 
 ## What Just Happened
 
-`TASK-020` is complete. The desktop now has a compact managed-audio section
-that distinguishes repeated imports, names cue references, requires
-confirmation, and safely deletes only unreferenced managed files. Persistence
-rollback, restart durability, disk removal, cancellation, and UI behavior have
-regression coverage. The candidate bundle was not rebuilt by this task.
+Public-launch feedback was deduplicated into five independently schedulable
+results: `TASK-021` brand/customization decision, blocked `TASK-022` reusable
+identity implementation, ready `TASK-023` transparent macOS icon corners,
+`TASK-024` safe public-repository preparation, and blocked `TASK-025` GitHub
+publication. No product code changed.
 
 ## Exact Next Action
 
-Complete `TASK-016` on the event Mac:
+Claim `TASK-021`, research a short conflict-aware naming shortlist based on the
+user's original candidates, and present one compact product decision covering:
 
-1. Open `src-tauri/target/release/bundle/macos/Lydkontroll.app`.
-2. Confirm preflight starts collapsed and expands from the status pill.
-3. Confirm the QR appears and `Kjør sjekk på nytt` completes.
-4. With a saved cue, run `Spill i 3 sekunder` and confirm audible playback
-   fades after three seconds.
-5. Open the QR URL in iPhone Safari and drag master volume through several
-   values without lifting; confirm the thumb follows continuously and finishes
-   at the chosen value.
+1. wedding/toastmaster-specific versus event-generic positioning;
+2. the public name and repository slug;
+3. fixed versus configurable displayed event title, including default text;
+4. retaining, revising, or replacing the waveform-heart identity.
+
+Record the accepted choice in `.agents/DECISIONS.md`, complete the linked plan,
+and move `TASK-021` to done. That unblocks `TASK-022`.
 
 ## Important Context
 
-- The audio adapter uses Kira's default backend and selected macOS output. It
-  applies volume only and performs no app-specific polarity, downmix, or M/S
-  transform.
-- Affected source files can be corrected and rendered in Logic. After importing,
-  select the new managed file and save the configuration before playback tests.
-- No global or per-cue phase/M/S switch is needed.
-- Managed-file deletion is desktop-only and never follows the original import
-  source path. Files used by saved or draft cues remain protected.
-- The previously rehearsed candidate in `.agents/REHEARSAL.md` remains the
-  accepted fallback until `TASK-016` passes.
+- `Marius + Wenche` is hard-coded in both desktop and mobile UI; wedding/event
+  identity also appears in Cargo, HTML, Tauri, README, PLAN/project context,
+  server fixtures, and release documentation.
+- `TASK-023` is already ready and independent: fix alpha at the outer corners,
+  preserve the current heart artwork, regenerate `.icns`, build, and inspect it
+  in Finder/Dock/app switcher.
+- ADR-013 says the known-Mac unsigned build is not ready for public
+  distribution. `TASK-024` must explicitly settle license and source-only
+  versus signed/notarized binary releases and audit the intended Git history.
+- Do not create or push a public GitHub remote until `TASK-022`, `TASK-023`, and
+  `TASK-024` are done.
+- The old manual event-candidate gate `TASK-016` remains truthfully blocked but
+  is no longer the current project focus now that the toastmaster job is over.
 
-## Validation to Run After the Manual Check
+## Validation
 
 ```text
-python3 scripts/ralph.py set-status TASK-016 done --note "Native compact-status, audio, and iPhone slider smoke check passed."
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next
 git diff --check

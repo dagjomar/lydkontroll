@@ -335,3 +335,23 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - The in-app browser connection was unavailable, so visual preview automation
   was not repeated; component tests cover the new disclosure and actions.
 - Next: complete the physical Mac/iPhone candidate check in `TASK-016`.
+
+## 2026-07-03 — Public-launch feedback triaged
+
+- Compared the new feedback with PLAN.md, the full task graph, shipped product
+  identity, icon assets, and ADR-013's explicit public-distribution deferral.
+- Preserved the original name ideas (`The Wedding MC`, `The Toastmaster`,
+  `Toastmastah`, and `SoundMastah`) in P1 research `TASK-021`; left it
+  needs-planning because public positioning, title customization, and the heart
+  logo are material product choices.
+- Added fully scoped, dependency-blocked P1 feature `TASK-022` to apply the
+  chosen identity consistently and preserve existing user data.
+- Added independent ready P1 bug `TASK-023` for transparent rounded macOS icon
+  corners while retaining the current heart/waveform artwork for now.
+- Added P1 needs-planning chore `TASK-024` for history-wide privacy, licensing,
+  docs, security, and source-versus-binary distribution readiness.
+- Added fully scoped, dependency-blocked P2 chore `TASK-025` for the external
+  GitHub repository creation/push after branding, icon, and public-readiness
+  gates pass.
+- No product code was implemented. Next: claim and refine `TASK-021`, prepare a
+  concise naming shortlist, and ask only for the resulting brand choice.
