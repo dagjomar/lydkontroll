@@ -315,3 +315,26 @@ sequential ID and link the relevant task or plan.
   unsigned bundles was rejected because of Gatekeeper friction and an unclear
   public trust story. Squashing or rewriting history was rejected after the
   owner reviewed and accepted the audit findings.
+
+## ADR-016: Route project workflows through a portable prompt and thin skill
+
+- **Date:** 2026-07-04
+- **Status:** accepted
+- **Task:** TASK-028
+- **Context:** The direct workflow prompts in `HUMAN_README.md` are durable but
+  require the operator to choose and copy one. Codex supports repository-local
+  Agent Skills, while not every coding agent discovers or invokes them.
+- **Decision:** Keep an agent-neutral router in
+  `.agents/PROJECT_WORKFLOWS.md`, expose it to Codex through one thin skill in
+  `.agents/skills`, and retain the direct prompts as canonical route details
+  and a portable fallback. Route from free-form intent, ask only for materially
+  missing inputs, confirm materially ambiguous operations, and preserve the
+  strictest read-only or no-implementation boundary. Check route alignment and
+  safety language in normal linting.
+- **Consequences:** Codex users gain a discoverable `$lydkontroll-workflows`
+  entrypoint, other agents can consume one plain Markdown prompt, and the
+  adapter cannot silently become a second catalog. New canonical workflows
+  must be added to the guide, router, and drift check together.
+- **Alternatives:** A master prompt alone was rejected because discovery is
+  weaker in Codex. A Codex-only skill was rejected because it is not portable.
+  A plugin was rejected as needless packaging for one repository-local skill.

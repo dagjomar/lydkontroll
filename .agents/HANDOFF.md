@@ -4,10 +4,11 @@ Updated: 2026-07-04
 
 ## What Just Happened
 
-Completed the old manual gate `TASK-016` after the owner confirmed successful
-real-world use of the packaged app on 2026-06-27. That operational evidence
-supersedes the narrower native-window, audible-output, and physical-iPhone smoke
-check. The replacement candidate is accepted; no product code changed.
+Completed `TASK-028`. The repository now has a guided, agent-neutral workflow
+router in `.agents/PROJECT_WORKFLOWS.md`, a thin discoverable Codex adapter at
+`$lydkontroll-workflows`, and a linted drift check covering every route and its
+safety boundaries. Direct prompts remain in `HUMAN_README.md` as route details
+and portable fallbacks; no product code changed.
 
 ## Exact Next Action
 
@@ -35,6 +36,8 @@ operator workflow.
   LAN authentication/binding, mode defaults and persistence, settings,
   preflight, onboarding, instructions, and marketing. Do not add automatic LAN
   fallback or weaken the current fail-closed Tailscale boundary speculatively.
+- `TASK-028` is done. ADR-016 records the portable prompt plus thin skill
+  decision; `npm run workflows:check` protects route and safety drift.
 - Current behavior should be stated plainly in public docs: desktop operation
   needs no phone or network; version-one mobile control requires Tailscale.
 - Public-source launch is complete. Keep future pushes behind

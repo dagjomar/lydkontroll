@@ -469,3 +469,31 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   control path without repeating the obsolete gate.
 - Completed `TASK-016` and promoted the recorded replacement candidate. No
   product code changed; next remains planning `TASK-026` localization.
+
+## 2026-07-04 — Guided agent entrypoint idea captured
+
+- Added P2 chore `TASK-028` to replace manual prompt selection with one guided
+  entrypoint that routes users into the existing Ralph workflows.
+- Scoped the likely solution as an agent-neutral master prompt plus an optional
+  thin Codex skill, pending verification of project-local skill conventions and
+  realistic cross-agent portability.
+- Preserved `AGENTS.md`, Ralph task files, and `HUMAN_README.md` as sources of
+  truth; a custom UI, orchestration service, product changes, and speculative
+  support for every vendor-specific format are non-goals.
+- Left the task P2 and needs-planning with no product dependencies. It does not
+  displace the current `TASK-026` localization milestone.
+
+## 2026-07-04 — TASK-028 guided agent entrypoint complete
+
+- Accepted ADR-016 after verifying the repository-local Codex skill convention
+  and chose an agent-neutral master prompt plus a thin Agent Skills adapter.
+- Added `.agents/PROJECT_WORKFLOWS.md` with ten intent routes, free-form and
+  missing-input behavior, ambiguity confirmation, and strict read-only and
+  no-implementation boundaries.
+- Added the discoverable `$lydkontroll-workflows` adapter and documented the
+  plain-Markdown fallback in `HUMAN_README.md`; direct prompts remain readable
+  route definitions and troubleshooting fallbacks.
+- Added `npm run workflows:check` to normal linting to detect route drift,
+  adapter duplication, missing safety language, and stale task IDs.
+- Passed lint, 17 frontend tests, 66 Rust tests, public-readiness checks, Ralph
+  validation, and Git diff checks. Next remains planning `TASK-026`.

@@ -8,7 +8,8 @@ The retained repository history is publicly available at
 https://github.com/dagjomar/lydkontroll as a source-only, source-available
 project. Reusable identity, icon, privacy/history audit, licensing, contribution
 terms, documentation, public validation, remote metadata, and vulnerability
-reporting are complete.
+reporting are complete. Project operation now also has one guided, portable
+entrypoint over the repository's Ralph workflows.
 
 ## Current Focus
 
@@ -20,6 +21,9 @@ title.
 Future desktop-only, Tailscale, and same-LAN product modes are captured as
 non-blocking P3 research in `TASK-027`; version one remains desktop-capable and
 Tailscale-only for mobile control.
+`TASK-028` is complete: `$lydkontroll-workflows` provides Codex discovery, while
+`.agents/PROJECT_WORKFLOWS.md` is the agent-neutral fallback and live Ralph
+state remains authoritative.
 
 ## Working Software
 

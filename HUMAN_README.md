@@ -8,7 +8,20 @@ inside the repository. A new agent should not need chat history to continue.
 
 ## The Easiest Way to Continue
 
-Open a new agent session in this repository and use this prompt:
+For one guided entrypoint in Codex, invoke `$lydkontroll-workflows` and describe
+what you want, or ask it to show the choices. The repository-local skill routes
+your request through the canonical workflows below.
+
+With another coding agent, use the portable fallback:
+
+> Read `.agents/PROJECT_WORKFLOWS.md` and guide my request through the correct
+> repository workflow: [describe what you want, or ask to see the choices].
+
+The direct prompts in this guide remain available for transparency,
+troubleshooting, and agents that cannot use repository-local skills.
+
+To continue without the guided entrypoint, open a new agent session in this
+repository and use this prompt:
 
 > Follow `AGENTS.md` and the Ralph harness. Inspect the current state, take the
 > next actionable task, complete it if possible, run its validation, update the
