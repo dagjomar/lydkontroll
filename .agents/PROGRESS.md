@@ -446,3 +446,16 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   checks, and 749 reachable object-path checks.
 - Completed `TASK-024` and moved dependency-cleared `TASK-025` to ready. Remote
   creation still requires the owner's GitHub destination and authorization.
+
+## 2026-07-04 — TASK-025 public GitHub publication complete
+
+- Received explicit owner authorization and created public repository
+  `dagjomar/lydkontroll` without initializing or replacing remote content.
+- Pushed the audited retained `main` history and configured the event-generic
+  description plus `tauri`, `rust`, `react`, `soundboard`, and `tailscale`
+  topics; enabled issues and private vulnerability reporting and disabled wiki.
+- Verified public visibility, `main` as default branch, the SSH `origin`, and
+  the remote branch identity. No binary release or unsigned bundle was added.
+- Canonical repository: https://github.com/dagjomar/lydkontroll
+- Next independent slice: plan `TASK-026` English localization; the physical
+  `TASK-016` candidate check remains truthfully blocked.

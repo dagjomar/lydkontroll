@@ -4,17 +4,17 @@ Updated: 2026-07-04
 
 ## What Just Happened
 
-Completed `TASK-024`. The retained history is ready for source-only publication
-under PolyForm Noncommercial 1.0.0, with separate commercial licensing and a
-CLA for accepted contributions. Public docs, support/security boundaries,
-dependency review, ignore rules, and the history-aware readiness gate pass.
+Completed `TASK-025`. The source-only public repository is live at
+https://github.com/dagjomar/lydkontroll with the audited retained history,
+PolyForm terms, CLA, public documentation, correct metadata/topics, issues, and
+private vulnerability reporting. No binary release was created.
 
 ## Exact Next Action
 
-Ask the owner for the destination GitHub account or organization and explicit
-authorization to create and push the public `lydkontroll` repository. Then claim
-and start ready `TASK-025`, create the remote without overwriting anything,
-configure metadata, push the audited history, and validate a fresh clone.
+Claim `TASK-026`, resolve its localization architecture and language-selection
+questions, and split implementation into dependency-ordered slices. Do not let
+translation work shift cue positions or weaken the current Norwegian-first
+operator workflow.
 
 ## Important Context
 
@@ -27,6 +27,8 @@ configure metadata, push the audited history, and validate a fresh clone.
   built `.app` icon byte-matches the asset whose alpha was verified.
 - `TASK-024` is done; ADR-015 records the accepted licensing, distribution,
   contribution, and retained-history decisions.
+- Canonical GitHub remote is `git@github.com:dagjomar/lydkontroll.git`; public
+  URL is https://github.com/dagjomar/lydkontroll.
 - Preliminary audit evidence lives in
   `.agents/audits/TASK-024-public-readiness-audit.md`.
 - `TASK-027` is deliberately P3 and needs planning. Its open questions cover
@@ -35,9 +37,8 @@ configure metadata, push the audited history, and validate a fresh clone.
   fallback or weaken the current fail-closed Tailscale boundary speculatively.
 - Current behavior should be stated plainly in public docs: desktop operation
   needs no phone or network; version-one mobile control requires Tailscale.
-- Do not create or push a public GitHub remote until `TASK-022`, `TASK-023`, and
-  `TASK-024` are done. They are now done, but external publication still needs
-  the destination and explicit owner authorization.
+- Public-source launch is complete. Keep future pushes behind
+  `npm run public:check` and normal project validation.
 - The old manual event-candidate gate `TASK-016` remains truthfully blocked.
 
 ## Validation

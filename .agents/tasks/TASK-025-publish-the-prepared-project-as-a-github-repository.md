@@ -1,10 +1,10 @@
 ---
 id: TASK-025
 title: Publish the prepared project as a GitHub repository
-status: ready
+status: in-progress
 priority: P2
 type: chore
-owner: unassigned
+owner: codex-2026-07-04-github-publication
 depends_on: [TASK-022, TASK-023, TASK-024]
 plan: none
 updated: 2026-07-04
@@ -44,13 +44,13 @@ matching the recorded decisions, and a fresh clone validates successfully.
 
 ## Acceptance Criteria
 
-- [ ] The remote URL, owner, visibility, default branch, description, and
+- [x] The remote URL, owner, visibility, default branch, description, and
       topics match the approved public identity.
-- [ ] Only the audited history and intended tracked files are present remotely.
-- [ ] README, license, security/support links, and any approved release assets
+- [x] Only the audited history and intended tracked files are present remotely.
+- [x] README, license, security/support links, and any approved release assets
       render and resolve correctly on GitHub.
-- [ ] A fresh clone passes the documented public-readiness validation.
-- [ ] The local remote configuration and `.agents` handoff record the canonical
+- [x] A fresh clone passes the documented public-readiness validation.
+- [x] The local remote configuration and `.agents` handoff record the canonical
       repository URL and next maintenance action.
 
 ## Validation
@@ -71,4 +71,13 @@ python3 scripts/ralph.py check
   done. Then move it to ready and ask for GitHub destination/visibility at
   execution time, not during backlog intake.
 
+- 2026-07-04: Owner authorized creation of public `dagjomar/lydkontroll` from
+  the audited `main` history. Created the repository without remote
+  initialization, pushed `main`, and configured the event-generic description,
+  `tauri`/`rust`/`react`/`soundboard`/`tailscale` topics, issues enabled, wiki
+  disabled, and private vulnerability reporting enabled. No binary release was
+  created. Canonical URL: https://github.com/dagjomar/lydkontroll
+
 - 2026-07-04: TASK-022, TASK-023, and TASK-024 are complete. Publication now needs the owner's GitHub destination account/organization and explicit authorization to create/push the public remote.
+
+- 2026-07-04: Task claimed.

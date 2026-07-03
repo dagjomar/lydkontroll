@@ -4,19 +4,19 @@ Last updated: 2026-07-04
 
 ## Phase
 
-The private wedding build is functionally complete and the retained repository
-history is prepared for a source-only public launch. Reusable identity, icon,
-privacy/history audit, licensing, contribution terms, documentation, and public
-validation are complete. Creating the GitHub remote remains a separate external
-action in `TASK-025`.
+The retained repository history is publicly available at
+https://github.com/dagjomar/lydkontroll as a source-only, source-available
+project. Reusable identity, icon, privacy/history audit, licensing, contribution
+terms, documentation, public validation, remote metadata, and vulnerability
+reporting are complete.
 
 ## Current Focus
 
-Publish the prepared source through `TASK-025` once the owner supplies the
-destination GitHub account/organization and authorizes remote creation/push.
-`Lydkontroll` is a Norwegian-first, event-generic source-available product with
-configurable event title; full English localization and language selection are
-captured in `TASK-026`.
+The public-source milestone is complete. The next independent product slice is
+planning `TASK-026` for full English localization and language selection;
+`TASK-027` retains later operating-mode research. `Lydkontroll` remains a
+Norwegian-first, event-generic source-available product with configurable event
+title.
 Future desktop-only, Tailscale, and same-LAN product modes are captured as
 non-blocking P3 research in `TASK-027`; version one remains desktop-capable and
 Tailscale-only for mobile control.
@@ -76,8 +76,6 @@ A runnable Tauri 2 application with:
 
 ## Known Blockers
 
-- `TASK-025` needs the destination GitHub account/organization and explicit
-  authorization before creating and pushing a public remote.
 - `TASK-016` needs a human at the Mac and iPhone because native Tauri UI
   automation is not available on macOS, audible output cannot be inferred from
   mocks, and physical Safari touch gestures cannot be fully reproduced here.
@@ -89,8 +87,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Publish the audited retained history through `TASK-025`, then verify repository
-metadata, rendered legal/security links, and a fresh clone.
+Refine `TASK-026` into an accepted localization architecture and dependency-
+ordered implementation plan without destabilizing the Norwegian interface.
 
 ## Accepted Foundation
 
