@@ -263,6 +263,7 @@ export function createRemoteApi(): DesktopApi {
 function createPreviewApi(mode: "desktop" | "mobile"): DesktopApi {
   let snapshot: AppSnapshot = {
     revision: 0,
+    eventTitle: "Mitt arrangement",
     scenes: [
       {
         id: "preview-scene",

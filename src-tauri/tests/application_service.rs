@@ -553,9 +553,10 @@ fn envelope_with_id(command_id: &str, command: Command) -> CommandEnvelope {
 fn library_with_cues(cues: &[(&str, CueMode)]) -> CueLibrary {
     CueLibrary {
         schema_version: LIBRARY_SCHEMA_VERSION,
+        event_title: "Testarrangement".to_owned(),
         scenes: vec![Scene {
             id: "scene-1".to_owned(),
-            name: "Wedding".to_owned(),
+            name: "Event".to_owned(),
             cues: cues
                 .iter()
                 .map(|(id, mode)| Cue {

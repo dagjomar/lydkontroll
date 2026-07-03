@@ -197,7 +197,11 @@ export function MobileControl({
 
   return (
     <main className="mobile-shell">
-      <MobileHeader connection={connection} commandStatus={commandStatus} />
+      <MobileHeader
+        eventTitle={snapshot.eventTitle}
+        connection={connection}
+        commandStatus={commandStatus}
+      />
       <MasterControls
         masterVolume={displayedMasterVolume}
         controlsDisabled={controlsDisabled}
@@ -228,16 +232,18 @@ export function MobileControl({
 type RunCommand = (command: Command, label: string) => Promise<void>;
 
 function MobileHeader({
+  eventTitle,
   connection,
   commandStatus,
 }: {
+  eventTitle: string;
   connection: ConnectionStatus;
   commandStatus: CommandStatus;
 }) {
   return (
     <header className="mobile-header">
       <div>
-        <p className="eyebrow">Marius + Wenche</p>
+        <p className="eyebrow">{eventTitle.trim() || "Mitt arrangement"}</p>
         <h1>Lydkontroll</h1>
       </div>
       <StatusBar connection={connection} commandStatus={commandStatus} />

@@ -1,7 +1,7 @@
 ---
 id: TASK-021
 title: Choose the public product identity and customization model
-status: needs-planning
+status: done
 priority: P1
 type: research
 owner: codex-2026-07-03-public-identity
@@ -46,15 +46,15 @@ coherent identity.
 
 ## Acceptance Criteria
 
-- [ ] The public app name and one-sentence positioning are selected.
-- [ ] The decision explicitly accepts or rejects each original candidate and
+- [x] The public app name and one-sentence positioning are selected.
+- [x] The decision explicitly accepts or rejects each original candidate and
       gives the reason for the final choice.
-- [ ] Fixed versus configurable event title is decided, including default and
+- [x] Fixed versus configurable event title is decided, including default and
       empty-state behavior on desktop and mobile.
-- [ ] The waveform-heart direction is retained, revised, or replaced.
-- [ ] Repository slug, package/product name, and user-facing title strings are
+- [x] The waveform-heart direction is retained, revised, or replaced.
+- [x] Repository slug, package/product name, and user-facing title strings are
       specified for `TASK-022` and `TASK-025`.
-- [ ] The result is recorded in `.agents/DECISIONS.md` and the linked plan is
+- [x] The result is recorded in `.agents/DECISIONS.md` and the linked plan is
       completed.
 
 ## Validation
@@ -77,3 +77,6 @@ python3 scripts/ralph.py check
   contains a web-checked shortlist, explicit disposition of every original
   candidate, and a recommended `Lydkontroll` decision package. Completion is
   paused only for the owner's product choice.
+- 2026-07-03: Owner selected a Norwegian-first `Lydkontroll` launch with later
+  full internationalization, configurable event title, and neutral waveform
+  identity. Task complete; `TASK-022` may implement the exact strings.

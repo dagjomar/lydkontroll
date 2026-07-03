@@ -1,6 +1,6 @@
 # Plan: TASK-021 — Public product identity and customization
 
-Status: draft
+Status: accepted
 Updated: 2026-07-03
 
 ## Problem
@@ -28,13 +28,17 @@ choices; downstream implementation should not encode contradictory answers.
   descriptive uses of the Norwegian common noun, not an obvious competing
   product.
 
-## Open Questions
+## Resolved Questions
 
-- Should positioning be wedding/toastmaster-specific or event-generic?
-- Which public name and repository slug are distinctive, understandable, and
-  free of obvious conflicts?
-- Should operators customize an event title, and where is it edited/stored?
-- Does the heart communicate the intended niche or unnecessarily narrow it?
+- Positioning is event-generic but Norwegian-first.
+- The public name is `Lydkontroll`; repository slug and package stem are
+  `lydkontroll`.
+- Operators can customize an event title stored with the cue library. It is
+  edited on desktop and projected read-only on mobile.
+- The heart is revised into a neutral rounded waveform mark.
+- English and additional UI languages are deferred to a dedicated
+  internationalization task. English is the first added language, Norwegian
+  remains available, and language selection must not be mixed into branding.
 
 ## Options Considered
 
@@ -53,11 +57,14 @@ choices; downstream implementation should not encode contradictory answers.
 - Benefits: smallest implementation and clearest product consistency.
 - Costs and risks: loses useful event personalization and may feel sterile.
 
-### Recommended decision package: retain Lydkontroll, personalize the event
+### Accepted decision package: retain Lydkontroll, personalize the event
 
 - Public name: `Lydkontroll`; repository slug and package stem: `lydkontroll`.
-- Positioning: a local-first soundboard for reliably running audio cues at live
-  events from a Mac, with iPhone control over Tailscale.
+- Positioning (Norwegian): `En lokal lydtavle for trygg avspilling av lyd-cues
+på arrangementer fra Mac, med iPhone-kontroll over Tailscale.`
+- Marketing scope: launch as a Norwegian project. A later localization slice
+  will add complete English UI/marketing copy and a language selector before
+  positioning it broadly to international users.
 - Event title: optional configurable text, default `Mitt arrangement`; trim
   whitespace and fall back to that default when empty. Show it in the existing
   eyebrow slot on desktop and mobile so cue coordinates remain stable.
@@ -82,14 +89,17 @@ choices; downstream implementation should not encode contradictory answers.
 
 ## Decision
 
-Pending owner acceptance of the recommended package or selection of the
-`SoundMastah` alternate. Record the accepted result in `.agents/DECISIONS.md`.
+Accepted by the owner on 2026-07-03: launch as the Norwegian-first,
+event-generic `Lydkontroll`; support a configurable event title; revise the
+heart into a neutral waveform; defer complete English and additional-language
+support to a separate internationalization task.
 
 ## Implementation Slices
 
 1. Prepare a shortlist and conflict/repository-slug check. (complete)
-2. Select positioning, name, logo direction, and customization model.
+2. Select positioning, name, logo direction, and customization model. (complete)
 3. Record exact strings/defaults and unblock `TASK-022` and `TASK-025`.
+   (complete)
 
 ## Test Strategy
 
@@ -105,8 +115,8 @@ product files change during planning.
 
 ## Ready Checklist
 
-- [ ] Open questions are resolved or explicitly deferred (owner choice pending).
-- [ ] Decisions and tradeoffs are recorded.
-- [ ] Slices are small and dependency ordered.
-- [ ] Tests cover the important failure modes.
-- [ ] The parent task can move to `ready`.
+- [x] Open questions are resolved or explicitly deferred.
+- [x] Decisions and tradeoffs are recorded.
+- [x] Slices are small and dependency ordered.
+- [x] Tests cover the important failure modes.
+- [x] The parent task is complete.

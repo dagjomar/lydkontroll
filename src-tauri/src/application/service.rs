@@ -337,6 +337,7 @@ where
     fn snapshot(&self) -> AppSnapshot {
         AppSnapshot {
             revision: self.revision,
+            event_title: self.library.event_title.clone(),
             scenes: self.library.scenes.clone(),
             audio_files: self.library.audio_files.clone(),
             active_playback: self.playback.active(),

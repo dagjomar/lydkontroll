@@ -17,6 +17,7 @@ interface ShellProps {
 }
 
 const DEFAULT_COLOR = "#d88c68";
+const DEFAULT_EVENT_TITLE = "Mitt arrangement";
 
 export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
   const [snapshot, setSnapshot] = useState<AppSnapshot | null>(null);
@@ -363,7 +364,7 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
     <main className="operator-shell">
       <header className="topbar">
         <div>
-          <p className="eyebrow">Marius + Wenche</p>
+          <p className="eyebrow">{displayEventTitle(draft.eventTitle)}</p>
           <h1>Lydkontroll</h1>
         </div>
         <div className="topbar-actions">
@@ -387,6 +388,22 @@ export function Shell({ api = desktopApi, pollIntervalMs = 500 }: ShellProps) {
           </button>
         </div>
       </header>
+
+      <label className="event-title-field">
+        Arrangementstittel
+        <input
+          aria-label="Arrangementstittel"
+          value={draft.eventTitle}
+          placeholder={DEFAULT_EVENT_TITLE}
+          onChange={(event) =>
+            setDraft((current) =>
+              current
+                ? { ...current, eventTitle: event.target.value }
+                : current,
+            )
+          }
+        />
+      </label>
 
       {visibleErrors.length ? (
         <section className="error-stack" aria-label="Meldinger">
@@ -949,9 +966,14 @@ function statusMessage(status: PreflightStatus, readyMessage: string): string {
 function libraryFromSnapshot(snapshot: AppSnapshot): CueLibrary {
   return {
     schemaVersion: 1,
+    eventTitle: snapshot.eventTitle,
     scenes: snapshot.scenes,
     audioFiles: snapshot.audioFiles,
   };
+}
+
+function displayEventTitle(eventTitle: string): string {
+  return eventTitle.trim() || DEFAULT_EVENT_TITLE;
 }
 
 function audioCueNames(

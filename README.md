@@ -1,7 +1,8 @@
 # Lydkontroll
 
-Tauri 2 application for reliable local wedding audio playback, with a
-React/TypeScript interface and a Rust-owned application core.
+Norwegian-first Tauri 2 application for reliable local audio-cue playback at
+live events, with a React/TypeScript interface and a Rust-owned application
+core.
 
 The current implementation includes managed cue persistence/import,
 deterministic local playback, desktop editing, reconnecting iPhone control over

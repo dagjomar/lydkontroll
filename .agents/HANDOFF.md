@@ -1,25 +1,27 @@
 # Latest Handoff
 
-Updated: 2026-07-03
+Updated: 2026-07-04
 
 ## What Just Happened
 
-`TASK-021` was claimed and its conflict-aware shortlist was completed. The
-recommended package retains `Lydkontroll`, positions it for live events, makes
-the displayed event title optional with `Mitt arrangement` as the fallback,
-and revises the heart into a neutral rounded waveform. `SoundMastah` remains
-the only alternate offered; every original candidate has an explicit recorded
-disposition.
+`TASK-021` and `TASK-022` are complete. `Lydkontroll` now launches as a
+Norwegian-first, event-generic project. The event title is editable, persisted,
+projected to desktop/mobile, and backward-compatible with existing schema-v1
+libraries. Couple-specific metadata is gone and every platform icon now derives
+from the neutral rounded-waveform SVG. `TASK-026` holds future English
+localization and language selection.
 
 ## Exact Next Action
 
-Ask the owner to accept the complete `Lydkontroll` recommendation, choose the
-`SoundMastah` alternate, or name one specific change. Then record the accepted
-choice in `.agents/DECISIONS.md`, complete the linked plan, move `TASK-021` to
-done, and proceed to `TASK-022`.
+Claim `TASK-024`, finish its public-readiness plan, and obtain only the genuine
+owner decisions it identifies: license and source-only versus signed/notarized
+binary distribution. Then audit the tracked tree and intended Git history
+before allowing `TASK-025` to create a public remote.
 
 ## Important Context
 
+- `eventTitle` remains inside schema version 1 and uses a serde default, so old
+  libraries load as `Mitt arrangement` without reset.
 - Conflict checking is an obvious-collision screen, not trademark clearance.
 - `npm run icons:generate` reproducibly rebuilds icons from the SVG source;
   `npm run icons:check` validates transparent macOS corners.
@@ -37,4 +39,7 @@ done, and proceed to `TASK-022`.
 python3 scripts/ralph.py check
 python3 scripts/ralph.py next
 git diff --check
+npm run lint
+npm test -- --run
+cargo test --manifest-path src-tauri/Cargo.toml
 ```

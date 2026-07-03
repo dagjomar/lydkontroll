@@ -1,8 +1,8 @@
-# Tauri-basert lydkontroll for bryllupet
+# Lydkontroll for arrangementer
 
 ## Sammendrag
 
-Bygg en Tauri 2-app for Apple Silicon Mac som spiller lokale MP3/WAV-filer gjennom macOS-systemutgangen. En iPhone styrer appen direkte over Tailscale, uten Bluetooth, stedets LAN eller ekstern skyserver.
+Bygg en norsk Tauri 2-app for Apple Silicon Mac som spiller lokale MP3/WAV-filer gjennom macOS-systemutgangen under arrangementer. En iPhone styrer appen direkte over Tailscale, uten Bluetooth, stedets LAN eller ekstern skyserver. Full engelsk lokalisering og språkvalg planlegges som et senere steg før internasjonal posisjonering.
 
 ## Implementasjon
 

@@ -4,6 +4,11 @@ use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
 pub const LIBRARY_SCHEMA_VERSION: u32 = 1;
+pub const DEFAULT_EVENT_TITLE: &str = "Mitt arrangement";
+
+fn default_event_title() -> String {
+    DEFAULT_EVENT_TITLE.to_owned()
+}
 
 /// Identifies which presentation surface consumes a shared snapshot.
 ///
@@ -23,6 +28,8 @@ pub enum AppMode {
 #[ts(export)]
 pub struct CueLibrary {
     pub schema_version: u32,
+    #[serde(default = "default_event_title")]
+    pub event_title: String,
     pub scenes: Vec<Scene>,
     pub audio_files: Vec<ManagedAudioFile>,
 }
@@ -31,6 +38,7 @@ impl Default for CueLibrary {
     fn default() -> Self {
         Self {
             schema_version: LIBRARY_SCHEMA_VERSION,
+            event_title: default_event_title(),
             scenes: Vec::new(),
             audio_files: Vec::new(),
         }

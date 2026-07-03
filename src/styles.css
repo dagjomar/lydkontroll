@@ -142,6 +142,16 @@ label {
   text-transform: uppercase;
 }
 
+.event-title-field {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 28rem;
+  margin-bottom: 1rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 h1,
 h2 {
   margin: 0;

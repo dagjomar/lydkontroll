@@ -1,6 +1,6 @@
 # Current State
 
-Last updated: 2026-07-03
+Last updated: 2026-07-04
 
 ## Phase
 
@@ -11,12 +11,10 @@ public release, and only then publish it to GitHub.
 
 ## Current Focus
 
-Obtain the owner's acceptance or alteration of the conflict-aware `TASK-021`
-recommendation: retain `Lydkontroll`, use a configurable event title, and
-neutralize the waveform-heart mark. The
-macOS icon alpha defect is fixed in `TASK-023`. Public GitHub publication
-remains gated by branding and a history-wide privacy/license/distribution
-readiness review.
+Prepare the repository for safe public release in `TASK-024`, including the
+license and source-versus-binary distribution decision. `Lydkontroll` is now a
+coherent Norwegian-first, event-generic product with configurable event title;
+full English localization and language selection are captured in `TASK-026`.
 
 ## Working Software
 
@@ -65,11 +63,11 @@ A runnable Tauri 2 application with:
   recovery procedures, and event-day checklists.
 - a reproducible SVG-to-platform icon pipeline with automated transparent-corner
   checks for every macOS `.icns` representation.
+- a reusable Norwegian-first `Lydkontroll` identity, configurable persisted
+  event title with schema-v1 fallback, and neutral rounded-waveform icon.
 
 ## Known Blockers
 
-- `TASK-021` needs the owner's choice between the recorded `Lydkontroll`
-  recommendation and the `SoundMastah` alternate (or a specific alteration).
 - `TASK-024` needs explicit license and source-only versus signed/notarized
   binary-distribution decisions before public-release preparation can finish.
 - `TASK-016` needs a human at the Mac and iPhone because native Tauri UI
@@ -83,9 +81,8 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Accept the public identity/customization decision in `TASK-021` and make
-`TASK-024` ready with a chosen license and distribution scope. `TASK-025` may
-publish only after the remaining public-release prerequisites are done.
+Make `TASK-024` ready with a chosen license, distribution scope, privacy audit,
+and history policy. `TASK-025` may publish only after that prerequisite is done.
 
 ## Accepted Foundation
 

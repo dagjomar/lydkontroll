@@ -33,6 +33,7 @@ fn imports_wav_and_round_trips_scenes_without_source_paths() {
 
     let library = CueLibrary {
         schema_version: LIBRARY_SCHEMA_VERSION,
+        event_title: "Første dans".to_owned(),
         audio_files: vec![audio.clone()],
         scenes: vec![Scene {
             id: "scene-1".to_owned(),
@@ -175,6 +176,23 @@ fn corrupt_and_future_schemas_are_typed_errors() {
 }
 
 #[test]
+fn schema_one_without_event_title_loads_with_reusable_default() {
+    let temp = TempDir::new().expect("temp directory");
+    let repository = JsonLibraryRepository::new(temp.path());
+    fs::write(
+        repository.paths().library(),
+        br#"{"schemaVersion":1,"scenes":[],"audioFiles":[]}"#,
+    )
+    .expect("legacy schema-one library");
+
+    let loaded = repository.load().expect("legacy library should load");
+
+    assert_eq!(loaded.event_title, "Mitt arrangement");
+    assert!(loaded.scenes.is_empty());
+    assert!(loaded.audio_files.is_empty());
+}
+
+#[test]
 fn missing_managed_files_are_reported_without_losing_metadata() {
     let temp = TempDir::new().expect("temp directory");
     let repository = JsonLibraryRepository::new(temp.path());
@@ -313,6 +331,7 @@ fn deletes_only_unreferenced_managed_audio_and_persists_the_result() {
     let obsolete = repository.import(&second_source).expect("second import");
     let library = CueLibrary {
         schema_version: LIBRARY_SCHEMA_VERSION,
+        event_title: "Fest".to_owned(),
         scenes: vec![Scene {
             id: "scene-1".to_owned(),
             name: "Fest".to_owned(),

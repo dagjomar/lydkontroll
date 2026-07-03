@@ -380,3 +380,17 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   an optional event title with `Mitt arrangement` fallback, and revising the
   heart into a neutral rounded waveform mark.
 - Paused before acceptance because public identity is an owner product choice.
+
+## 2026-07-04 — TASK-021 and TASK-022 Norwegian-first reusable identity
+
+- Accepted ADR-014: retain `Lydkontroll` as an event-generic Norwegian-first
+  product, defer complete English localization and language selection to the
+  newly refined `TASK-026`, and avoid international claims until it ships.
+- Added configurable `eventTitle` to schema v1 with a serde default, preserving
+  existing libraries and showing `Mitt arrangement` when missing or empty.
+- Added desktop editing and authoritative mobile projection with regression
+  coverage, while retaining the existing stable header/cue layout.
+- Removed Marius/Wenche identity from shipped UI, metadata, package identity,
+  tests, README, and PLAN; regenerated platform icons from a neutral waveform.
+- Passed frontend, Rust, lint, build, binding, icon-alpha, identity-search, and
+  Ralph validation. Next: plan `TASK-024` public-release safety decisions.

@@ -316,6 +316,7 @@ fn service_error(error: ApplicationServiceError) -> String {
 fn current_library(snapshot: &AppSnapshot) -> CueLibrary {
     CueLibrary {
         schema_version: crate::domain::LIBRARY_SCHEMA_VERSION,
+        event_title: snapshot.event_title.clone(),
         scenes: snapshot.scenes.clone(),
         audio_files: snapshot.audio_files.clone(),
     }
@@ -347,6 +348,7 @@ mod tests {
         };
         let library = CueLibrary {
             schema_version: 1,
+            event_title: crate::domain::DEFAULT_EVENT_TITLE.to_owned(),
             scenes: vec![Scene {
                 id: "scene-1".to_owned(),
                 name: "Middag".to_owned(),
@@ -382,6 +384,7 @@ mod tests {
             .expect("managed file");
         let library = CueLibrary {
             schema_version: 1,
+            event_title: crate::domain::DEFAULT_EVENT_TITLE.to_owned(),
             scenes: Vec::new(),
             audio_files: vec![ManagedAudioFile {
                 id: "audio-1".to_owned(),

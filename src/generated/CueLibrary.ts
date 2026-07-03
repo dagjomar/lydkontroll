@@ -5,4 +5,4 @@ import type { Scene } from "./Scene";
 /**
  * The complete persisted cue library.
  */
-export type CueLibrary = { schemaVersion: number, scenes: Array<Scene>, audioFiles: Array<ManagedAudioFile>, };
+export type CueLibrary = { schemaVersion: number, eventTitle: string, scenes: Array<Scene>, audioFiles: Array<ManagedAudioFile>, };

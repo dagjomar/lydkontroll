@@ -257,3 +257,30 @@ sequential ID and link the relevant task or plan.
 - **Alternatives:** An informal final check was rejected because it provides no
   stable gates or evidence. Signing and notarization were deferred because they
   require Apple credentials without improving the agreed known-event-Mac path.
+
+## ADR-014: Launch Lydkontroll as Norwegian-first and localize later
+
+- **Date:** 2026-07-03
+- **Status:** accepted
+- **Task:** TASK-021
+- **Context:** The working app and all operator copy are Norwegian, but the
+  project may later serve international users. An English name alone would
+  promise an experience the current interface does not provide, while delaying
+  reusable branding until full localization would block public preparation.
+- **Decision:** Keep `Lydkontroll` as the public product name and
+  `lydkontroll` as repository/package stem. Position it generically for live
+  events but launch it as a Norwegian project. Store an optional event title
+  with the cue library, default and empty fallback `Mitt arrangement`, edit it
+  on desktop, and show it in the existing desktop/mobile eyebrow slot. Revise
+  the waveform-heart into a neutral rounded waveform. Plan full English as the
+  first additional language, with a language selector and complete UI/marketing
+  translation, as a separate feature before international positioning.
+- **Consequences:** `TASK-022` can remove couple-specific identity without a
+  premature translation framework. Existing layout remains stable, and future
+  localization has an explicit product boundary. The generic Norwegian noun is
+  less globally legible, but the product will not claim international readiness
+  before its interface supports it.
+- **Alternatives:** `The Wedding MC`, `The Toastmaster`, and `Toastmastah` were
+  rejected as narrow or conflicting; `SoundMastah` was rejected as less clear
+  and less aligned with reliability-first positioning. Renaming to English
+  before translating the UI was rejected as an incoherent launch experience.

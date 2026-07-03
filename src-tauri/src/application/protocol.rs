@@ -100,6 +100,7 @@ pub enum CommandError {
 pub struct AppSnapshot {
     #[ts(type = "number")]
     pub revision: u64,
+    pub event_title: String,
     pub scenes: Vec<Scene>,
     pub audio_files: Vec<ManagedAudioFile>,
     pub active_playback: Vec<PlaybackInstance>,

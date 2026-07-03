@@ -5,4 +5,4 @@ import type { PlaybackInstance } from "./PlaybackInstance";
 import type { PreflightFacts } from "./PreflightFacts";
 import type { Scene } from "./Scene";
 
-export type AppSnapshot = { revision: number, scenes: Array<Scene>, audioFiles: Array<ManagedAudioFile>, activePlayback: Array<PlaybackInstance>, pendingCueId: string | null, masterVolume: number, preflight: PreflightFacts, errors: Array<OperatorError>, };
+export type AppSnapshot = { revision: number, eventTitle: string, scenes: Array<Scene>, audioFiles: Array<ManagedAudioFile>, activePlayback: Array<PlaybackInstance>, pendingCueId: string | null, masterVolume: number, preflight: PreflightFacts, errors: Array<OperatorError>, };

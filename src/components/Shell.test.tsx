@@ -47,6 +47,25 @@ test("creates, edits, reorders, and saves scenes", async () => {
   ]);
 });
 
+test("persists a reusable event title and shows its empty fallback", async () => {
+  const user = userEvent.setup();
+  const harness = createHarness();
+
+  render(<Shell api={harness.api} pollIntervalMs={0} />);
+  const title = await screen.findByLabelText("Arrangementstittel");
+  expect(screen.getByText("Mitt arrangement")).toBeVisible();
+
+  await user.clear(title);
+  expect(screen.getByText("Mitt arrangement")).toBeVisible();
+  await user.type(title, "Sommerfesten");
+  await user.click(screen.getByRole("button", { name: "Lagre oppsett" }));
+
+  expect(harness.saveLibrary).toHaveBeenCalledWith(
+    expect.objectContaining({ eventTitle: "Sommerfesten" }),
+  );
+  expect(screen.getByText("Sommerfesten")).toBeVisible();
+});
+
 test("imports audio, configures a cue, and triggers shared playback", async () => {
   const user = userEvent.setup();
   const harness = createHarness();
@@ -345,6 +364,7 @@ function createHarness(
 } {
   let snapshot: AppSnapshot = {
     revision: 0,
+    eventTitle: "Mitt arrangement",
     scenes: [],
     audioFiles: [],
     activePlayback: [],
@@ -379,6 +399,7 @@ function createHarness(
     snapshot = {
       ...snapshot,
       revision: snapshot.revision + 1,
+      eventTitle: library.eventTitle,
       scenes: library.scenes,
       audioFiles: library.audioFiles,
     };

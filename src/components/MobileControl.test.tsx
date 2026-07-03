@@ -20,6 +20,7 @@ test("shows touch controls and suppresses duplicate taps while awaiting acknowle
 
   render(<MobileControl api={harness.api} pollIntervalMs={0} />);
   const cue = await screen.findByRole("button", { name: /Første dans/ });
+  expect(screen.getByText("Sommerfesten")).toBeVisible();
 
   await user.click(cue);
   await user.click(cue);
@@ -182,6 +183,7 @@ test("shows authoritative master volume changes while locally idle", async () =>
 
 const baseSnapshot: AppSnapshot = {
   revision: 3,
+  eventTitle: "Sommerfesten",
   scenes: [
     {
       id: "scene-1",

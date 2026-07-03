@@ -4,7 +4,7 @@
   role="img"
   aria-labelledby="title"
 >
-  <title id="title">Lydkontroll waveform heart</title>
+  <title id="title">Lydkontroll rounded waveform</title>
   <rect width="1024" height="1024" rx="224" fill="#181512" />
   <path
     d="M188 520h96l42-144 78 286 76-396 72 396 76-286 42 144h166"
@@ -13,14 +13,5 @@
     stroke-linecap="round"
     stroke-linejoin="round"
     stroke-width="46"
-  />
-  <path
-    d="M326 376c-74-104-218-24-138 94l324 340 324-340c80-118-64-198-138-94"
-    fill="none"
-    stroke="#b87555"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    stroke-width="34"
-    opacity="0.9"
   />
 </svg>

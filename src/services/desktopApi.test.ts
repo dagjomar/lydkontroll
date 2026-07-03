@@ -93,6 +93,7 @@ class FakeWebSocket {
 function snapshotMessage(revision: number, cueName: string): string {
   const snapshot: AppSnapshot = {
     revision,
+    eventTitle: "Mitt arrangement",
     scenes: [
       {
         id: "scene-1",
