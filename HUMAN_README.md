@@ -111,6 +111,14 @@ separate backlog table to keep synchronized.
 
 ## Useful Copy-Paste Prompts
 
+### Summarize the Task Queue
+
+> Follow `AGENTS.md` and inspect the Ralph harness. Summarize all unfinished
+> tasks grouped by `ready`, `needs-planning`, `in-progress`, and `blocked`. For
+> each, give its priority, purpose, dependencies or blocker, and recommended
+> next action. Then suggest the likely execution order. Do not modify files or
+> implement anything.
+
 ### Continue Normally
 
 > Follow the repository harness and take the next actionable task. Complete and
