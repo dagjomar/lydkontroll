@@ -12,10 +12,10 @@ public release, and only then publish it to GitHub.
 ## Current Focus
 
 Refine `TASK-021` by presenting a concise, conflict-aware naming/positioning
-shortlist and deciding whether the displayed event title is configurable. In
-parallel, independent ready bug `TASK-023` can correct the macOS icon's opaque
-white corners. Public GitHub publication remains gated by branding and a
-history-wide privacy/license/distribution readiness review.
+shortlist and deciding whether the displayed event title is configurable. The
+macOS icon alpha defect is fixed in `TASK-023`. Public GitHub publication
+remains gated by branding and a history-wide privacy/license/distribution
+readiness review.
 
 ## Working Software
 
@@ -62,6 +62,8 @@ A runnable Tauri 2 application with:
   tracked private-artifact checks, and an Apple Silicon `.app` bundle;
 - a release runbook with build identity, 60-minute failure-injection rehearsal,
   recovery procedures, and event-day checklists.
+- a reproducible SVG-to-platform icon pipeline with automated transparent-corner
+  checks for every macOS `.icns` representation.
 
 ## Known Blockers
 
@@ -80,10 +82,9 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Accept the public identity/customization decision in `TASK-021`, complete the
-independent icon correction in `TASK-023`, and make `TASK-024` ready with a
-chosen license and distribution scope. `TASK-025` may publish only after all
-three public-release prerequisites are done.
+Accept the public identity/customization decision in `TASK-021` and make
+`TASK-024` ready with a chosen license and distribution scope. `TASK-025` may
+publish only after the remaining public-release prerequisites are done.
 
 ## Accepted Foundation
 

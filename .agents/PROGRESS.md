@@ -355,3 +355,17 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   gates pass.
 - No product code was implemented. Next: claim and refine `TASK-021`, prepare a
   concise naming shortlist, and ask only for the resulting brand choice.
+
+## 2026-07-03 — Transparent macOS icon corners completed
+
+- Completed `TASK-023` by regenerating all tracked platform icon derivatives
+  from the existing rounded `icon.svg` while preserving the waveform heart.
+- Added `npm run icons:generate` and a release-gated alpha regression check for
+  tracked PNGs and all ten representations inside `icon.icns`.
+- Confirmed every checked corner has alpha zero and the packaged app contains a
+  byte-identical `.icns`; visually inspected the retained large-size artwork.
+- Passed `npm run release:build` with loopback permission: 16 frontend tests,
+  65 Rust tests, lint, bindings, release-tree checks, and macOS app bundling.
+- Removed three trailing blank lines in existing Ralph records because the
+  repository-wide Prettier gate flagged them.
+- Next: refine `TASK-021` and obtain the product identity/customization choice.

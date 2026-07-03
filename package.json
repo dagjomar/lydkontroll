@@ -11,7 +11,9 @@
     "format": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
     "bindings:generate": "cargo test --manifest-path src-tauri/Cargo.toml export_bindings",
     "bindings:check": "node scripts/check-generated.mjs",
-    "release:check": "npm run build && npm test && npm run lint && cargo test --manifest-path src-tauri/Cargo.toml && node scripts/check-release-tree.mjs",
+    "icons:generate": "tauri icon src-tauri/icons/icon.svg --output src-tauri/icons",
+    "icons:check": "node scripts/check-icon-alpha.mjs",
+    "release:check": "npm run build && npm test && npm run lint && cargo test --manifest-path src-tauri/Cargo.toml && npm run icons:check && node scripts/check-release-tree.mjs",
     "release:build": "npm run release:check && tauri build",
     "tauri": "tauri"
   },

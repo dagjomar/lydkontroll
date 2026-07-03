@@ -73,4 +73,3 @@ python3 scripts/ralph.py check
   is not assumed to be wrong merely because the original names are specific.
 - Needs planning because choosing generic versus wedding-specific positioning,
   and fixed versus customizable title, materially changes the product.
-

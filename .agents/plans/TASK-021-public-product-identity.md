@@ -74,4 +74,3 @@ product files change during planning.
 - [ ] Slices are small and dependency ordered.
 - [ ] Tests cover the important failure modes.
 - [ ] The parent task can move to `ready`.
-

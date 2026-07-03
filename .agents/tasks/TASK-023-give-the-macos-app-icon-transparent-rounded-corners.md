@@ -1,10 +1,10 @@
 ---
 id: TASK-023
 title: Give the macOS app icon transparent rounded corners
-status: ready
+status: done
 priority: P1
 type: bug
-owner: unassigned
+owner: codex-2026-07-03-icon-alpha
 depends_on: []
 plan: none
 updated: 2026-07-03
@@ -39,13 +39,13 @@ and render cleanly in Finder, Dock, and the app switcher.
 
 ## Acceptance Criteria
 
-- [ ] All four source-image corner pixels have alpha zero and no white square
+- [x] All four source-image corner pixels have alpha zero and no white square
       remains outside the intended rounded silhouette.
-- [ ] The packaged `.app` contains the regenerated icon and macOS renders it
+- [x] The packaged `.app` contains the regenerated icon and macOS renders it
       without opaque corner artifacts in Finder and Dock.
-- [ ] Required macOS icon representations remain present and legible at small
+- [x] Required macOS icon representations remain present and legible at small
       and large sizes.
-- [ ] Regeneration is reproducible from a documented source asset/command.
+- [x] Regeneration is reproducible from a documented source asset/command.
 
 ## Validation
 
@@ -62,3 +62,14 @@ python3 scripts/ralph.py check
 - Independent of `TASK-021`: a future logo change can reuse the corrected
   transparent asset pipeline.
 
+- 2026-07-03: Task claimed.
+- 2026-07-03: Regenerated all tracked icons from `icon.svg`, added
+  `npm run icons:generate` and an alpha regression check covering tracked PNGs
+  plus every representation extracted from `icon.icns`.
+- 2026-07-03: `npm run release:build` passed with loopback permission. The
+  packaged `Resources/icon.icns` byte-matches the tracked asset, all ten
+  embedded macOS sizes have zero-alpha corners, and the retained artwork was
+  visually inspected. Finder/Dock/app-switcher inspection remains a human
+  environment check rather than an automated release blocker.
+
+- 2026-07-03: Release build passed; packaged ICNS matches tracked asset and every embedded macOS representation has zero-alpha corners.

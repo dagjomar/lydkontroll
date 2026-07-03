@@ -4,11 +4,10 @@ Updated: 2026-07-03
 
 ## What Just Happened
 
-Public-launch feedback was deduplicated into five independently schedulable
-results: `TASK-021` brand/customization decision, blocked `TASK-022` reusable
-identity implementation, ready `TASK-023` transparent macOS icon corners,
-`TASK-024` safe public-repository preparation, and blocked `TASK-025` GitHub
-publication. No product code changed.
+`TASK-023` corrected the macOS icon's opaque corners. All tracked icon assets
+now regenerate from `src-tauri/icons/icon.svg`; the release gate checks corner
+alpha in the desktop PNGs and every representation embedded in `icon.icns`.
+The packaged app contains the checked icon and the full release build passes.
 
 ## Exact Next Action
 
@@ -25,19 +24,15 @@ and move `TASK-021` to done. That unblocks `TASK-022`.
 
 ## Important Context
 
-- `Marius + Wenche` is hard-coded in both desktop and mobile UI; wedding/event
-  identity also appears in Cargo, HTML, Tauri, README, PLAN/project context,
-  server fixtures, and release documentation.
-- `TASK-023` is already ready and independent: fix alpha at the outer corners,
-  preserve the current heart artwork, regenerate `.icns`, build, and inspect it
-  in Finder/Dock/app switcher.
-- ADR-013 says the known-Mac unsigned build is not ready for public
-  distribution. `TASK-024` must explicitly settle license and source-only
-  versus signed/notarized binary releases and audit the intended Git history.
+- `npm run icons:generate` reproducibly rebuilds icons from the SVG source;
+  `npm run icons:check` validates transparent macOS corners.
+- Finder/Dock/app-switcher inspection is still a useful human check, but the
+  built `.app` icon byte-matches the asset whose alpha was verified.
+- `TASK-024` must settle license and source-only versus signed/notarized binary
+  releases and audit the intended Git history.
 - Do not create or push a public GitHub remote until `TASK-022`, `TASK-023`, and
   `TASK-024` are done.
-- The old manual event-candidate gate `TASK-016` remains truthfully blocked but
-  is no longer the current project focus now that the toastmaster job is over.
+- The old manual event-candidate gate `TASK-016` remains truthfully blocked.
 
 ## Validation
 
