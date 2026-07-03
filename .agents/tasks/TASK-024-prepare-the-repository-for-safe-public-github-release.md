@@ -4,10 +4,10 @@ title: Prepare the repository for safe public GitHub release
 status: needs-planning
 priority: P1
 type: chore
-owner: unassigned
+owner: codex-2026-07-04-public-readiness
 depends_on: []
 plan: .agents/plans/TASK-024-public-github-readiness.md
-updated: 2026-07-03
+updated: 2026-07-04
 ---
 
 # TASK-024: Prepare the repository for safe public GitHub release
@@ -81,3 +81,10 @@ python3 scripts/ralph.py check
   binaries materially change the public promise and release work.
 - This deduplicates public-launch hygiene into one readiness result; the actual
   remote creation/push remains separately schedulable as `TASK-025`.
+- 2026-07-04: Claimed by `codex-2026-07-04-public-readiness`. Preliminary tree
+  and reachable-history audit recorded in
+  `.agents/audits/TASK-024-public-readiness-audit.md`. No audio, bundle, signing,
+  local-library, or absolute-user-path leak was found. Publication would expose
+  the existing author Gmail address and retired Marius/Wenche identity in old
+  commits. Planning is blocked only on explicit license, source-only release,
+  and retained-versus-sanitized-history owner decisions.

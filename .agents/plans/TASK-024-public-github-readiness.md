@@ -1,7 +1,7 @@
 # Plan: TASK-024 — Public GitHub readiness
 
-Status: draft
-Updated: 2026-07-03
+Status: draft — owner decisions pending
+Updated: 2026-07-04
 
 ## Problem
 
@@ -17,6 +17,13 @@ decisions and a history-wide audit first.
   data, but have not established a history-wide public audit.
 - README and PLAN still frame the product around one wedding.
 - Tailscale is the only access-control boundary and must remain prominent.
+- The 2026-07-04 preliminary audit found no audio, app bundles, signing
+  material, local library data, or absolute `/Users/...` paths in any reachable
+  Git object. See `.agents/audits/TASK-024-public-readiness-audit.md`.
+- Every existing commit publishes the author's full name and Gmail address.
+- Older commits contain the couple-specific `Marius`/`Wenche` identity even
+  though the current tree is generic. Publishing the existing history therefore
+  publishes that retired identity unless the history is rewritten.
 
 ## Open Questions
 
@@ -48,9 +55,19 @@ decisions and a history-wide audit first.
 
 ## Decision
 
-Pending license and distribution choices. Default planning recommendation is a
-source-only first public release unless end-user binary distribution is an
-explicit goal.
+Pending owner confirmation. Planning recommendations are:
+
+- launch source-only first; do not publish the current unsigned bundle and do
+  not add Apple signing/notarization until binary distribution is an explicit
+  product goal;
+- use a permissive license if broad reuse is desired (MIT is the smallest
+  simple option; Apache-2.0 adds an explicit patent grant); and
+- publish a sanitized history only if the author email or retired couple names
+  are not acceptable public information. Otherwise retain the engineering
+  history and explicitly approve those disclosures.
+
+These choices cannot be inferred from implementation evidence because they
+change legal rights, maintenance scope, and irreversible privacy exposure.
 
 ## Implementation Slices
 
@@ -80,3 +97,15 @@ before `TASK-025`; never sanitize after public publication as the primary plan.
 - [ ] Slices are small and dependency ordered.
 - [ ] Tests cover the important failure modes.
 - [ ] The parent task can move to `ready`.
+
+## Planning Progress
+
+- [x] Current tracked tree and reachable Git objects received a preliminary
+      path/content/large-object audit.
+- [x] Distribution options were narrowed to a source-only recommendation; an
+      unsigned public app bundle is rejected as a weak trust story.
+- [x] History-specific privacy findings were identified for owner review.
+- [ ] Owner selects the license.
+- [ ] Owner confirms source-only launch.
+- [ ] Owner chooses retained versus sanitized history after reviewing the
+      author-email and retired-identity disclosures.

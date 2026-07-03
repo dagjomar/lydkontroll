@@ -15,6 +15,9 @@ Prepare the repository for safe public release in `TASK-024`, including the
 license and source-versus-binary distribution decision. `Lydkontroll` is now a
 coherent Norwegian-first, event-generic product with configurable event title;
 full English localization and language selection are captured in `TASK-026`.
+Future desktop-only, Tailscale, and same-LAN product modes are captured as
+non-blocking P3 research in `TASK-027`; version one remains desktop-capable and
+Tailscale-only for mobile control.
 
 ## Working Software
 
@@ -68,8 +71,10 @@ A runnable Tauri 2 application with:
 
 ## Known Blockers
 
-- `TASK-024` needs explicit license and source-only versus signed/notarized
-  binary-distribution decisions before public-release preparation can finish.
+- `TASK-024` needs explicit license, source-only distribution, and Git-history
+  privacy decisions before implementation. The preliminary audit found no
+  private artifacts, but the existing history exposes the author's Gmail
+  address and retired Marius/Wenche event identity.
 - `TASK-016` needs a human at the Mac and iPhone because native Tauri UI
   automation is not available on macOS, audible output cannot be inferred from
   mocks, and physical Safari touch gestures cannot be fully reproduced here.
@@ -114,3 +119,5 @@ and history policy. `TASK-025` may publish only after that prerequisite is done.
 - avoiding ambiguous naming conflicts or an unsupported public brand promise;
 - choosing a license and distribution scope before creating a public remote;
 - keeping configurable branding from destabilizing the mobile cue layout.
+- avoiding accidental exposure on untrusted local networks if optional LAN
+  mobile control is added after version one.

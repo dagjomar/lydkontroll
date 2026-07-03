@@ -394,3 +394,36 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   tests, README, and PLAN; regenerated platform icons from a neutral waveform.
 - Passed frontend, Rust, lint, build, binding, icon-alpha, identity-search, and
   Ralph validation. Next: plan `TASK-024` public-release safety decisions.
+
+## 2026-07-04 — Optional operating-mode feedback captured
+
+- Checked the existing backlog and separated this concern from `TASK-024`
+  public-readiness documentation and `TASK-026` localization.
+- Added P3 research `TASK-027` for eventual desktop-only, recommended
+  Tailscale, and optional same-LAN operating modes without delaying the minimal
+  first public release.
+- Preserved the user's observation that Tailscale is unfamiliar, desktop-only
+  use needs no network, and LAN mobile control is useful but loses reachability
+  outside Wi-Fi.
+- Left `TASK-027` needs-planning with explicit security, settings, onboarding,
+  instructions, and marketing questions; automatic insecure LAN fallback is a
+  non-goal.
+- No product code was implemented. Next remains `TASK-024`; plan `TASK-027`
+  after first-public-release work unless it is deliberately reprioritized.
+
+## 2026-07-04 — Public-release history audit started
+
+- Claimed planning work for `TASK-024` and audited the current tracked tree,
+  commit paths, reachable objects, authorship, private-artifact patterns, and
+  event-specific history.
+- Found no committed audio, app/disk-image bundle, signing material, local cue
+  library, or absolute user path in reachable history.
+- Identified two irreversible publication disclosures: every commit contains
+  the author's Gmail address, and older commits retain the retired
+  Marius/Wenche wedding identity.
+- Recommended a source-only first release and rejected an unsigned public app
+  bundle. Left license and retained-versus-sanitized-history choices for the
+  owner because they change legal rights and privacy exposure.
+- Recorded the evidence in
+  `.agents/audits/TASK-024-public-readiness-audit.md`; `TASK-024` remains
+  needs-planning until those decisions are explicit.

@@ -4,19 +4,19 @@ Updated: 2026-07-04
 
 ## What Just Happened
 
-`TASK-021` and `TASK-022` are complete. `Lydkontroll` now launches as a
-Norwegian-first, event-generic project. The event title is editable, persisted,
-projected to desktop/mobile, and backward-compatible with existing schema-v1
-libraries. Couple-specific metadata is gone and every platform icon now derives
-from the neutral rounded-waveform SVG. `TASK-026` holds future English
-localization and language selection.
+Claimed `TASK-024` planning and completed a preliminary public-tree/history
+audit. No private artifacts or absolute user paths were found, but an ordinary
+public push exposes the author's Gmail address from every commit and the retired
+Marius/Wenche identity from older commits. Source-only is the recommended first
+release; the task remains needs-planning for genuine owner decisions.
 
 ## Exact Next Action
 
-Claim `TASK-024`, finish its public-readiness plan, and obtain only the genuine
-owner decisions it identifies: license and source-only versus signed/notarized
-binary distribution. Then audit the tracked tree and intended Git history
-before allowing `TASK-025` to create a public remote.
+Obtain the owner's three decisions: MIT versus Apache-2.0 (or another named
+license), confirm source-only first release, and retain versus sanitize Git
+history after reviewing the Gmail/retired-name disclosures. Then finish the
+plan, move `TASK-024` to ready, start it, and implement the public-readiness
+docs/checks before allowing `TASK-025` to create a public remote.
 
 ## Important Context
 
@@ -29,6 +29,14 @@ before allowing `TASK-025` to create a public remote.
   built `.app` icon byte-matches the asset whose alpha was verified.
 - `TASK-024` must settle license and source-only versus signed/notarized binary
   releases and audit the intended Git history.
+- Preliminary audit evidence lives in
+  `.agents/audits/TASK-024-public-readiness-audit.md`.
+- `TASK-027` is deliberately P3 and needs planning. Its open questions cover
+  LAN authentication/binding, mode defaults and persistence, settings,
+  preflight, onboarding, instructions, and marketing. Do not add automatic LAN
+  fallback or weaken the current fail-closed Tailscale boundary speculatively.
+- Current behavior should be stated plainly in public docs: desktop operation
+  needs no phone or network; version-one mobile control requires Tailscale.
 - Do not create or push a public GitHub remote until `TASK-022`, `TASK-023`, and
   `TASK-024` are done.
 - The old manual event-candidate gate `TASK-016` remains truthfully blocked.
