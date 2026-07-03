@@ -1,7 +1,7 @@
 ---
 id: TASK-029
 title: Create a reusable design and content brief for the marketing site
-status: ready
+status: done
 priority: P1
 type: docs
 owner: unassigned
@@ -57,19 +57,19 @@ concept while preserving the app's identity and product truth.
 
 ## Acceptance Criteria
 
-- [ ] `DESIGN.md` gives a designer enough product context to understand the
+- [x] `DESIGN.md` gives a designer enough product context to understand the
       audience, use case, workflow, differentiators, requirements, and limits
       without reading the codebase.
-- [ ] The visual section records exact source-backed colors and explains their
+- [x] The visual section records exact source-backed colors and explains their
       roles instead of presenting an unstructured swatch list.
-- [ ] The brief preserves the accepted Norwegian-first, event-generic,
+- [x] The brief preserves the accepted Norwegian-first, event-generic,
       calm/reliability-first identity and does not imply unsupported app-store,
       multi-platform, LAN, cloud, or international availability.
-- [ ] A proposed information architecture and screenshot/asset checklist cover
+- [x] A proposed information architecture and screenshot/asset checklist cover
       both Mac operation and iPhone control over Tailscale.
-- [ ] A copy-paste Google Stitch prompt identifies fixed brand constraints and
+- [x] A copy-paste Google Stitch prompt identifies fixed brand constraints and
       areas where Stitch may explore alternatives.
-- [ ] The document points to the canonical implementation/decision sources and
+- [x] The document points to the canonical implementation/decision sources and
       notes that final copy and design remain subject to owner review.
 
 ## Validation
@@ -91,3 +91,12 @@ python3 scripts/ralph.py check
   product and visual facts before drafting `DESIGN.md`.
 - Reprioritized by the owner on 2026-07-04: marketing and the Norwegian website
   come before English localization.
+
+- 2026-07-04: Task claimed.
+- 2026-07-04: Added and manually reviewed `DESIGN.md` against the product,
+  public documentation, ADR-014/ADR-015, current desktop/mobile UI, palette,
+  and icon sources. The standalone Stitch prompt preserves fixed facts while
+  leaving composition and presentation open for exploration. `git diff
+--check` and Ralph validation pass.
+
+- 2026-07-04: Acceptance criteria complete: DESIGN.md contains the source-backed Norwegian product and visual brief, site hierarchy, screenshot list, standalone Stitch prompt, review boundary, and canonical references; formatting, diff, and Ralph checks pass.

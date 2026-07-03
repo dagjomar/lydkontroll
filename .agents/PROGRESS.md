@@ -1,5 +1,20 @@
 # Progress Log
 
+## 2026-07-04 — TASK-029 marketing design handoff complete
+
+- Added a self-contained Norwegian `DESIGN.md` covering audience, workflow,
+  reliability principles, supported functionality, requirements, limitations,
+  security boundary, and source-available license posture.
+- Extracted the implemented warm-dark palette into semantic roles and recorded
+  typography, shape, motion, accessibility, and neutral waveform constraints.
+- Proposed a full site hierarchy and practical Mac/iPhone screenshot list, then
+  added a standalone Google Stitch prompt that separates fixed product truth
+  from legitimate design freedom.
+- Manually compared claims with PLAN, README, ADR-014/ADR-015, current UI and
+  icon sources; passed Prettier, `git diff --check`, and Ralph validation.
+- Next step requires owner input: generate/review the Stitch concept before
+  planning and implementing dependent `TASK-030`.
+
 Append concise, dated entries. Keep detailed implementation notes in task files.
 
 ## 2026-06-18 — Project harness established
