@@ -459,3 +459,13 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Canonical repository: https://github.com/dagjomar/lydkontroll
 - Next independent slice: plan `TASK-026` English localization; the physical
   `TASK-016` candidate check remains truthfully blocked.
+
+## 2026-07-04 — TASK-016 operational validation accepted
+
+- The owner confirmed that the packaged app was used successfully in the real
+  event setting on 2026-06-27.
+- Treated that operational use as stronger evidence than the older manual smoke
+  checklist and accepted the compact status, audible playback/fade, and iPhone
+  control path without repeating the obsolete gate.
+- Completed `TASK-016` and promoted the recorded replacement candidate. No
+  product code changed; next remains planning `TASK-026` localization.

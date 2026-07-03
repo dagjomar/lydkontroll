@@ -76,9 +76,6 @@ A runnable Tauri 2 application with:
 
 ## Known Blockers
 
-- `TASK-016` needs a human at the Mac and iPhone because native Tauri UI
-  automation is not available on macOS, audible output cannot be inferred from
-  mocks, and physical Safari touch gestures cannot be fully reproduced here.
 - Network tests need permission to bind temporary loopback ports in restricted
   environments.
 - Native Tauri desktop WebDriver remains unavailable on macOS; use

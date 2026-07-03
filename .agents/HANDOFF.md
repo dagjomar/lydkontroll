@@ -4,10 +4,10 @@ Updated: 2026-07-04
 
 ## What Just Happened
 
-Completed `TASK-025`. The source-only public repository is live at
-https://github.com/dagjomar/lydkontroll with the audited retained history,
-PolyForm terms, CLA, public documentation, correct metadata/topics, issues, and
-private vulnerability reporting. No binary release was created.
+Completed the old manual gate `TASK-016` after the owner confirmed successful
+real-world use of the packaged app on 2026-06-27. That operational evidence
+supersedes the narrower native-window, audible-output, and physical-iPhone smoke
+check. The replacement candidate is accepted; no product code changed.
 
 ## Exact Next Action
 
@@ -39,7 +39,7 @@ operator workflow.
   needs no phone or network; version-one mobile control requires Tailscale.
 - Public-source launch is complete. Keep future pushes behind
   `npm run public:check` and normal project validation.
-- The old manual event-candidate gate `TASK-016` remains truthfully blocked.
+- `TASK-016` is done based on successful real-event operation on 2026-06-27.
 
 ## Validation
 

@@ -18,11 +18,11 @@ Manual refresh action: PASS in frontend regression coverage
 Three-second trigger and fade sequence: PASS in frontend regression coverage
 iPhone slider rapid-input/coalescing regression: PASS
 390x844 responsive mobile render: PASS
-Packaged native launch, audible test play, and physical iPhone drag: NOT YET CHECKED
+Packaged native launch, audible playback, and physical iPhone control: PASS through successful real-event use on 2026-06-27
 
 ## Release Status
 
 This candidate contains the compact desktop status control from `TASK-014` and
-the smooth iPhone master-volume behavior from `TASK-017`. Keep the previously
-rehearsed candidate from `.agents/REHEARSAL.md` until the native desktop,
-audible-output, and physical iPhone Safari checks in `TASK-016` pass.
+the smooth iPhone master-volume behavior from `TASK-017`. It is accepted based
+on the owner's successful real-event use on 2026-06-27, which supersedes the
+older `TASK-016` smoke-check gate.

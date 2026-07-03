@@ -1,13 +1,13 @@
 ---
 id: TASK-016
 title: Manually smoke-check the compact-status candidate
-status: blocked
+status: done
 priority: P0
 type: chore
 owner: unassigned
 depends_on: [TASK-018]
 plan: none
-updated: 2026-06-18
+updated: 2026-07-04
 ---
 
 # TASK-016: Manually smoke-check the compact-status candidate
@@ -41,12 +41,12 @@ seconds.
 
 ## Acceptance Criteria
 
-- [ ] Packaged app launches without a blocking error.
-- [ ] Status pill, expansion, QR, and refresh work in the native window.
-- [ ] A saved cue is audible during test play and fades after three seconds.
-- [ ] Master volume drags continuously in iPhone Safari and finishes at the
+- [x] Packaged app launches without a blocking error.
+- [x] Status pill, expansion, QR, and refresh work in the native window.
+- [x] A saved cue is audible during test play and fades after three seconds.
+- [x] Master volume drags continuously in iPhone Safari and finishes at the
       selected value.
-- [ ] `.agents/CANDIDATE.md` is promoted to the accepted event candidate.
+- [x] `.agents/CANDIDATE.md` is promoted to the accepted event candidate.
 
 ## Validation
 
@@ -69,3 +69,7 @@ python3 scripts/ralph.py check
   before the audible event-path check can promote this candidate.
 - 2026-06-25: `TASK-019` resolved without an app change: the corrected Logic
   export plays properly after selecting it and saving the configuration.
+
+- 2026-07-04: Owner confirmed successful real-world use of the packaged app on
+  2026-06-27; this operational validation supersedes the older manual
+  smoke-check gate.
