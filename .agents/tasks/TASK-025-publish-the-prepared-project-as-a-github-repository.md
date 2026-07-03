@@ -1,7 +1,7 @@
 ---
 id: TASK-025
 title: Publish the prepared project as a GitHub repository
-status: in-progress
+status: done
 priority: P2
 type: chore
 owner: codex-2026-07-04-github-publication
@@ -81,3 +81,5 @@ python3 scripts/ralph.py check
 - 2026-07-04: TASK-022, TASK-023, and TASK-024 are complete. Publication now needs the owner's GitHub destination account/organization and explicit authorization to create/push the public remote.
 
 - 2026-07-04: Task claimed.
+
+- 2026-07-04: Published https://github.com/dagjomar/lydkontroll and validated a fresh SSH clone with npm ci, release:check, Ralph check, and a clean worktree.
