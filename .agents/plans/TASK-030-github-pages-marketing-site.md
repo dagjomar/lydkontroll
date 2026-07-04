@@ -1,6 +1,6 @@
 # Plan: TASK-030 — Norwegian GitHub Pages marketing site
 
-Status: draft
+Status: accepted
 Updated: 2026-07-04
 
 ## Problem
@@ -68,10 +68,16 @@ unsupported claims, or hardening an exploratory Stitch concept prematurely.
 
 ## Decision
 
-Pending completion of `TASK-029`, owner review of the design proposal, and
-resolution of the open questions above. Default direction for evaluation: a
-separate site package inside this repository, built to static output and
-deployed automatically to GitHub Pages with no analytics at first.
+The owner accepted the Google Stitch/AI Studio concept delivered as
+`lydkontroll-website.zip` on 2026-07-04, including its existing desktop and
+mobile mockup images. Integrate it as an isolated `website/` package in this
+repository and deploy it with GitHub Actions to the repository Pages URL. Use
+the canonical GitHub repository as the primary CTA, collect no analytics, and
+do not add a custom domain yet. Launch only the Norwegian presentation;
+`TASK-026` retains the later complete English track. Download the approved
+Google-hosted mockups into tracked static assets so production does not depend
+on temporary external URLs. Remove unused AI Studio/Gemini/server scaffolding
+and correct generated claims against `DESIGN.md` and public project records.
 
 ## Implementation Slices
 
@@ -104,8 +110,8 @@ application release path; disable or revert only the Pages workflow/output.
 
 ## Ready Checklist
 
-- [ ] Open questions are resolved or explicitly deferred.
-- [ ] Decisions and tradeoffs are recorded.
+- [x] Open questions are resolved or explicitly deferred.
+- [x] Decisions and tradeoffs are recorded.
 - [x] Slices are small and dependency ordered.
 - [x] Tests cover the important failure modes.
-- [ ] The parent task can move to `ready`.
+- [x] The parent task can move to `ready`.

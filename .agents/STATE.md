@@ -15,10 +15,11 @@ entrypoint over the repository's Ralph workflows.
 
 The public-source milestone is complete. Marketing and the Norwegian website
 are now the owner's explicit first priority. P1 `TASK-029` produced the
-source-backed `DESIGN.md` and standalone Google Stitch handoff. The owner can
-now generate and review a concept from it. P1 `TASK-030` owns the Norwegian
-GitHub Pages implementation after that design and its launch choices are
-accepted. P2 `TASK-026` English localization follows that marketing track;
+source-backed `DESIGN.md`; the owner accepted a Google Stitch/AI Studio concept.
+P1 `TASK-030` has integrated that concept as an isolated `website/` package and
+Pages workflow. It remains in progress until its retired event-name mockups are
+replaced and the deployed URL is verified. P2 `TASK-026` English localization
+follows that marketing track;
 `TASK-027` retains later operating-mode research. `Lydkontroll` remains a
 Norwegian-first, event-generic source-available product with configurable event
 title.
@@ -92,10 +93,10 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Give the standalone prompt in `DESIGN.md` to Google Stitch and review the
-result with the owner. Then resolve `TASK-030`'s launch choices and implement
-the accepted design. Start `TASK-026` English localization only after the
-Norwegian marketing site is complete.
+Capture event-generic replacements for the seven website mockups, at minimum
+removing visible `Marius + Wenche` identity from the hero desktop/mobile
+images. Replace the tracked files in `website/public/images/`, rerun website
+validation, deploy Pages, and verify the public URL on desktop and iPhone.
 
 ## Accepted Foundation
 

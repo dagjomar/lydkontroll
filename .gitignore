@@ -4,6 +4,9 @@ __pycache__/
 
 # JavaScript
 node_modules/
+website/node_modules/
+website/dist/
+lydkontroll-website.zip
 dist/
 
 # Rust and Tauri

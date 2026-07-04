@@ -1,5 +1,21 @@
 # Progress Log
 
+## 2026-07-04 — TASK-030 website concept integrated
+
+- Imported the owner-approved Stitch/AI Studio concept into an isolated
+  `website/` Vite package without coupling it to the Tauri frontend.
+- Downloaded all seven Google-hosted mockups into tracked static assets and
+  removed Gemini, Express, dotenv, AI Studio environment, and language-switch
+  dependencies from the launch path.
+- Corrected repository links, Norwegian product claims, platform/Tailscale
+  requirements, license language, metadata, focus treatment, and reduced-motion
+  behavior; added a reproducible GitHub Pages Actions workflow.
+- Passed zero-vulnerability npm audit, TypeScript, production build, public
+  checks, diff checks, and visual review at 1280x720 and 390x844 with no browser
+  errors.
+- Kept the task in progress: the mockups still visibly contain the retired
+  `Marius + Wenche` event identity and must be replaced before public deploy.
+
 ## 2026-07-04 — TASK-029 marketing design handoff complete
 
 - Added a self-contained Norwegian `DESIGN.md` covering audience, workflow,

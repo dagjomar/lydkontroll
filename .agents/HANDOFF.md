@@ -4,21 +4,23 @@ Updated: 2026-07-04
 
 ## What Just Happened
 
-Completed `TASK-029`. `DESIGN.md` is a self-contained Norwegian product,
-visual, content, screenshot, and Google Stitch handoff grounded in current
-source and accepted decisions. It clearly separates fixed claims and brand
-constraints from areas Stitch may explore.
+Integrated the accepted Stitch/AI Studio site for in-progress `TASK-030` under
+`website/`. It now has local assets, accurate Norwegian claims, canonical
+GitHub links, isolated dependencies, and a GitHub Pages Actions workflow.
+Automated and responsive visual checks pass.
 
 ## Exact Next Action
 
-Copy the prompt under «Kopierbar brief til Google Stitch» in `DESIGN.md` into
-Google Stitch. The owner should review the result and choose or revise a
-concept. After that review, plan `TASK-030` by resolving its CTA, Pages
-structure/URL, analytics/privacy, and publishable screenshot choices.
+Obtain event-generic replacements for the tracked files in
+`website/public/images/`. The current mockups still show `Marius + Wenche`,
+especially `desktop-overview.png` and `mobile-control.png`. Replace the images,
+rerun `npm ci && npm run lint && npm run build` in `website/`, then deploy and
+verify `https://dagjomar.github.io/lydkontroll/` on desktop and iPhone Safari.
 
 ## Important Context
 
-- Do not start `TASK-030` before the owner has reviewed a design concept.
+- `TASK-030` remains in progress; do not mark it done before generic screenshots
+  and live Pages verification are complete.
 - The marketing site remains Norwegian-first; `TASK-026` follows it and owns
   complete English localization.
 - Current mobile control requires iPhone/Safari and Tailscale. Desktop control

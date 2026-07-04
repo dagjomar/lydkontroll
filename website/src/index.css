@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Georgia:ital,wght@0,400;0,700;1,400&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #141311;
+  --color-surface-dim: #181512;
+  --color-surface-bright: #3b3936;
+  --color-surface-container-lowest: #0f0e0c;
+  --color-surface-container-low: #1d1b19;
+  --color-surface-container: #211e1b;
+  --color-surface-container-high: #2b2a27;
+  --color-surface-container-highest: #363432;
+  --color-on-surface: #e6e2de;
+  --color-on-surface-variant: #d5c3b8;
+  --color-outline: #9e8e84;
+  --color-outline-variant: #51443c;
+  --color-primary: #fec298;
+  --color-on-primary: #4b2709;
+  --color-primary-container: #e0a77f;
+  --color-on-primary-container: #643b1c;
+  --color-secondary: #cec5bf;
+  --color-on-secondary: #352f2b;
+  --color-secondary-container: #4c4641;
+  --color-on-secondary-container: #bcb3ae;
+  --color-tertiary: #f5c5a2;
+  --color-on-tertiary: #472a11;
+  --color-status-success: #79c58d;
+  --color-status-warning: #e5a85a;
+  --color-status-error: #df776f;
+  --color-status-destructive: #7e302d;
+  --color-text-primary: #f8f4ec;
+  --color-text-secondary: #cfc8bd;
+  --color-text-muted: #a9a096;
+
+  --font-serif: "Georgia", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+body {
+  background-color: #141311;
+  color: #f8f4ec;
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 3px solid #fec298;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.glow-radial {
+  background: radial-gradient(
+    circle at center,
+    rgba(126, 48, 45, 0.15) 0%,
+    transparent 70%
+  );
+}
+
+.bento-card {
+  background-color: #211e1b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.bento-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}

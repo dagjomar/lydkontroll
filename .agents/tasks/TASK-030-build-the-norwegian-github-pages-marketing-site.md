@@ -1,10 +1,10 @@
 ---
 id: TASK-030
 title: Build the Norwegian GitHub Pages marketing site
-status: needs-planning
+status: in-progress
 priority: P1
 type: feature
-owner: unassigned
+owner: codex-2026-07-04-task-030
 depends_on: [TASK-029]
 plan: .agents/plans/TASK-030-github-pages-marketing-site.md
 updated: 2026-07-04
@@ -51,12 +51,12 @@ appropriate repository or future distribution action.
 
 - [ ] The accepted Norwegian content and design render correctly at desktop
       and representative iPhone widths.
-- [ ] GitHub Pages deploys from a documented, reproducible repository workflow.
-- [ ] The site has accessible landmarks, keyboard behavior, contrast, image
+- [x] GitHub Pages deploys from a documented, reproducible repository workflow.
+- [x] The site has accessible landmarks, keyboard behavior, contrast, image
       alternatives, metadata, and no avoidable layout shift.
-- [ ] Public claims match the current product, source-available terms, and
+- [x] Public claims match the current product, source-available terms, and
       supported distribution model.
-- [ ] Marketing-site source and assets are clearly separated from the embedded
+- [x] Marketing-site source and assets are clearly separated from the embedded
       Tauri application frontend.
 - [ ] Automated validation covers build integrity, links, and the agreed page
       quality gates; representative layouts receive visual/manual review.
@@ -79,3 +79,19 @@ python3 scripts/ralph.py check
   deployment model are accepted.
 - Reprioritized by the owner on 2026-07-04: complete this Norwegian marketing
   track after `TASK-029` and before starting `TASK-026` English localization.
+- 2026-07-04: Owner accepted the supplied Google Stitch/AI Studio concept and
+  its existing mockups. The linked plan now fixes an isolated `website/`
+  package, repository Pages URL, GitHub CTA, no analytics/custom domain,
+  Norwegian-only launch, local static copies of mockups, and removal of unused
+  AI Studio/Gemini scaffolding.
+- 2026-07-04: Integrated the concept under `website/`, downloaded all seven
+  remote mockups, corrected public claims and links, removed the language
+  switch and unused AI Studio dependencies, and added a Pages Actions workflow.
+  TypeScript, production build, dependency audit, public checks, and visual
+  review at 1280x720 and 390x844 pass. Publication remains open because the
+  approved mockups visibly contain the retired `Marius + Wenche` event title;
+  replace them with event-generic captures before deployment.
+
+- 2026-07-04: Owner accepted the Stitch concept; repository layout, CTA, deployment, analytics, language, and asset decisions are resolved in the linked plan.
+
+- 2026-07-04: Task claimed.
