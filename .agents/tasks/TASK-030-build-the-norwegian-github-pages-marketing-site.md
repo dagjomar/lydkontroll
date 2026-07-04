@@ -1,7 +1,7 @@
 ---
 id: TASK-030
 title: Build the Norwegian GitHub Pages marketing site
-status: in-progress
+status: done
 priority: P1
 type: feature
 owner: codex-2026-07-04-task-030
@@ -49,7 +49,7 @@ appropriate repository or future distribution action.
 
 ## Acceptance Criteria
 
-- [ ] The accepted Norwegian content and design render correctly at desktop
+- [x] The accepted Norwegian content and design render correctly at desktop
       and representative iPhone widths.
 - [x] GitHub Pages deploys from a documented, reproducible repository workflow.
 - [x] The site has accessible landmarks, keyboard behavior, contrast, image
@@ -58,7 +58,7 @@ appropriate repository or future distribution action.
       supported distribution model.
 - [x] Marketing-site source and assets are clearly separated from the embedded
       Tauri application frontend.
-- [ ] Automated validation covers build integrity, links, and the agreed page
+- [x] Automated validation covers build integrity, links, and the agreed page
       quality gates; representative layouts receive visual/manual review.
 
 ## Validation
@@ -91,6 +91,11 @@ python3 scripts/ralph.py check
   review at 1280x720 and 390x844 pass. Publication remains open because the
   approved mockups visibly contain the retired `Marius + Wenche` event title;
   replace them with event-generic captures before deployment.
+- 2026-07-04: Replaced all seven mockups with deterministic, event-generic
+  captures from the app preview, added an asset revision to defeat stale Pages
+  caching, and deployed commit `d1f9a92`. GitHub Actions run `28690125409`
+  passed, and `https://dagjomar.github.io/lydkontroll/` was visually verified
+  at 1280x720 and 390x844.
 
 - 2026-07-04: Owner accepted the Stitch concept; repository layout, CTA, deployment, analytics, language, and asset decisions are resolved in the linked plan.
 

@@ -16,9 +16,10 @@ entrypoint over the repository's Ralph workflows.
 The public-source milestone is complete. Marketing and the Norwegian website
 are now the owner's explicit first priority. P1 `TASK-029` produced the
 source-backed `DESIGN.md`; the owner accepted a Google Stitch/AI Studio concept.
-P1 `TASK-030` has integrated that concept as an isolated `website/` package and
-Pages workflow. It remains in progress until its retired event-name mockups are
-replaced and the deployed URL is verified. P2 `TASK-026` English localization
+P1 `TASK-030` is complete: the concept is integrated as an isolated `website/`
+package, its mockups are event-generic, and GitHub Pages is live and verified at
+`https://dagjomar.github.io/lydkontroll/`. P1 `TASK-031` is now ready to add the
+verified site link and final Mac/iPhone imagery to the README. P2 `TASK-026` English localization
 follows that marketing track;
 `TASK-027` retains later operating-mode research. `Lydkontroll` remains a
 Norwegian-first, event-generic source-available product with configurable event
@@ -93,10 +94,9 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Capture event-generic replacements for the seven website mockups, at minimum
-removing visible `Marius + Wenche` identity from the hero desktop/mobile
-images. Replace the tracked files in `website/public/images/`, rerun website
-validation, deploy Pages, and verify the public URL on desktop and iPhone.
+Implement ready `TASK-031`: add the verified Pages URL and compact,
+event-generic Mac/iPhone product screenshots near the top of `README.md`, then
+verify the rendered README at desktop and narrow widths.
 
 ## Accepted Foundation
 

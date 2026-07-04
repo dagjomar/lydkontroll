@@ -1,7 +1,7 @@
 ---
 id: TASK-031
 title: Add product screenshots and the marketing-site link to the README
-status: needs-planning
+status: ready
 priority: P1
 type: docs
 owner: unassigned
@@ -79,3 +79,5 @@ python3 scripts/ralph.py check
 - Fully scoped but intentionally left `needs-planning` behind `TASK-030`; the
   only remaining input is its verified production URL. Move it to `ready` and
   implement only after the Pages deployment is live.
+- `TASK-030` verified the canonical production URL on 2026-07-04. The task is
+  now dependency-free and ready for implementation.

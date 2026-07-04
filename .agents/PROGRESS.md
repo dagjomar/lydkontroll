@@ -574,3 +574,16 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
   is expressed through priority and durable notes rather than a false
   technical dependency.
 - No product, design, localization, or website implementation was performed.
+
+## 2026-07-04 — TASK-030 Norwegian marketing site complete
+
+- Replaced all seven retired event-specific website mockups with deterministic,
+  event-generic desktop and iPhone captures from the actual app preview.
+- Added an explicit image asset revision after live verification exposed stale
+  same-name Pages caching; the corrected hero now shows `Mitt arrangement` and
+  generic `Middag`, `Introduksjon`, and `Første dans` fixtures.
+- Passed website TypeScript/build checks, the public-readiness audit, Ralph
+  validation, Git diff checks, and GitHub Pages Actions run `28690125409`.
+- Verified `https://dagjomar.github.io/lydkontroll/` visually at 1280x720 and
+  390x844. Promoted dependent `TASK-031` to ready for the README link and final
+  product screenshot presentation.
