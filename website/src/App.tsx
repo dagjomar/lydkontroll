@@ -212,7 +212,7 @@ export default function App() {
 
               {/* Main Desktop Interface Hotlink */}
               <img
-                src="./images/desktop-overview.png"
+                src="./images/desktop-overview.png?v=2"
                 alt="Lydkontroll Main Workstation"
                 referrerPolicy="no-referrer"
                 className="rounded-2xl shadow-2xl border border-white/10 w-full object-cover"
@@ -231,7 +231,7 @@ export default function App() {
                 className="absolute -bottom-10 -left-6 md:-left-12 w-48 md:w-64 shadow-2xl z-20 border-[6px] border-surface-dim rounded-[2.5rem] overflow-hidden"
               >
                 <img
-                  src="./images/mobile-control.png"
+                  src="./images/mobile-control.png?v=2"
                   alt="Lydkontroll Mobile App Overlay"
                   referrerPolicy="no-referrer"
                   className="w-full object-cover"
@@ -272,7 +272,7 @@ export default function App() {
             >
               <div className="aspect-video bg-surface-container rounded-2xl border border-outline-variant/10 overflow-hidden relative group shadow-xl">
                 <img
-                  src="./images/mac-workflow.png"
+                  src="./images/mac-workflow.png?v=2"
                   alt="Lydkontroll System Architecture"
                   referrerPolicy="no-referrer"
                   className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-75 transition-opacity duration-500"
@@ -376,7 +376,7 @@ export default function App() {
             <div className="flex-1 w-full relative">
               <div className="absolute -inset-3 bg-primary/5 rounded-2xl blur-xl"></div>
               <img
-                src="./images/iphone-workflow.png"
+                src="./images/iphone-workflow.png?v=2"
                 alt="Preflight diagnostics dashboard"
                 referrerPolicy="no-referrer"
                 className="rounded-2xl border border-outline-variant/30 shadow-2xl relative z-10 w-full"
@@ -390,7 +390,7 @@ export default function App() {
             <div className="lg:col-span-6 order-2 lg:order-1 grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <img
-                  src="./images/preflight.png"
+                  src="./images/preflight.png?v=2"
                   alt="Sound asset details card"
                   referrerPolicy="no-referrer"
                   className="rounded-xl border border-outline-variant/20 shadow-md w-full"
@@ -398,7 +398,7 @@ export default function App() {
               </div>
               <div className="space-y-4 pt-8">
                 <img
-                  src="./images/dark-interface.png"
+                  src="./images/dark-interface.png?v=2"
                   alt="Desktop arrangements board"
                   referrerPolicy="no-referrer"
                   className="rounded-xl border border-outline-variant/20 shadow-md w-full"
@@ -469,7 +469,7 @@ export default function App() {
                 <div className="md:col-span-5 space-y-4">
                   <div className="bg-[#11100e] p-2 rounded-[2rem] border-4 border-outline-variant/30 shadow-2xl max-w-[220px] mx-auto transform rotate-3 hover:rotate-0 transition-transform duration-500">
                     <img
-                      src="./images/operator-story.png"
+                      src="./images/operator-story.png?v=2"
                       alt="Lydkontroll Mobile wedding cue"
                       referrerPolicy="no-referrer"
                       className="rounded-[1.75rem] w-full"
