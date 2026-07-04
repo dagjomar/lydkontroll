@@ -43,9 +43,9 @@ export const translations = {
     storyEyebrow: "EN TOASTMASTER-HISTORIE",
     storyQuote: '"Full kontroll fra middagsbordet til talerstolen."',
     storyPara1:
-      '"Jeg brukte Lydkontroll som toastmaster i et bryllup med over 100 gjester. Jeg hadde Mac-en koblet til anlegget ved scenen, men selv satt jeg ute i salen ved middagsbordet."',
+      '"Jeg brukte Lydkontroll som toastmaster i et bryllup med over 50 gjester. Jeg hadde Mac-en koblet til anlegget ved scenen, og hadde på forhånd satt opp alle lydene jeg planla å bruke."',
     storyPara2:
-      "\"Med iPhonen i hånda kunne jeg trigge 'glass-tapping' lyder, fanfarer og musikkinnslag helt sømløst uten at noen så at jeg styrte det. Det fungerte til og med utenfor rommet da jeg skulle kalle folk inn igjen fra pause.\"",
+      "\"Med iPhonen i hånda kunne jeg trigge 'glass-klinking', fanfarer, rim-shot, latter-lyder og musikkinnslag helt sømløst uten at noen så at jeg styrte det. Det gjorde alt veldig profesjonelt og sømløst.\"",
     storyCaption: "Erfaringen som startet utviklingen av Lydkontroll.",
     storyUserTitle: "Fra et virkelig arrangement",
     storyUserSub: "OPPHAVSHISTORIEN",
