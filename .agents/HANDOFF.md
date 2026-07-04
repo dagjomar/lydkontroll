@@ -29,6 +29,8 @@ verify `https://dagjomar.github.io/lydkontroll/` on desktop and iPhone Safari.
   public signed/notarized download. Preserve those claim boundaries.
 - `TASK-027` remains future research; do not market speculative LAN or fallback
   modes.
+- `TASK-031` adds the verified Pages URL prominently to `README.md` after
+  `TASK-030` is complete; do not add the link before the site is live.
 
 ## Validation
 

@@ -1,5 +1,14 @@
 # Progress Log
 
+## 2026-07-04 — README marketing-site link captured
+
+- Added P1 `TASK-031` for a prominent README link to the canonical
+  GitHub Pages marketing site.
+- Made it depend on `TASK-030` so the repository never advertises an unverified
+  or unavailable URL.
+- Scoped the change to a concise link while preserving technical, limitation,
+  license, support, and security information.
+
 ## 2026-07-04 — TASK-030 website concept integrated
 
 - Imported the owner-approved Stitch/AI Studio concept into an isolated
