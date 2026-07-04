@@ -1,5 +1,13 @@
 # Progress Log
 
+## 2026-07-04 — README presentation task expanded
+
+- Updated existing P1 `TASK-031` instead of creating a duplicate.
+- Added final, event-generic Mac and iPhone screenshots, useful alt text, and
+  reasonable repository-page weight to the existing Pages-link outcome.
+- Kept the dependency on `TASK-030` so temporary retired-name mockups are not
+  promoted into the README.
+
 ## 2026-07-04 — README marketing-site link captured
 
 - Added P1 `TASK-031` for a prominent README link to the canonical
