@@ -277,34 +277,6 @@ export default function App() {
                   referrerPolicy="no-referrer"
                   className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-75 transition-opacity duration-500"
                 />
-
-                {/* Visual architectural link labels inside graphic */}
-                <div className="absolute inset-0 z-10 flex items-center justify-between px-12 md:px-20 py-8 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="w-16 h-16 rounded-xl bg-surface-container-highest border border-primary/40 flex items-center justify-center shadow-lg">
-                      <Laptop size={28} className="text-primary" />
-                    </div>
-                    <span className="text-[10px] font-bold text-text-primary tracking-widest font-sans uppercase">
-                      MAC (CORE)
-                    </span>
-                  </div>
-
-                  <div className="flex-1 flex flex-col items-center gap-1.5 px-6">
-                    <div className="h-0.5 w-full bg-gradient-to-r from-primary/10 via-primary to-primary/10 animate-pulse"></div>
-                    <span className="text-[9px] text-primary font-bold tracking-widest font-sans uppercase">
-                      TAILSCALE LINK
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="w-16 h-16 rounded-xl bg-surface-container-highest border border-primary/40 flex items-center justify-center shadow-lg">
-                      <Smartphone size={28} className="text-primary" />
-                    </div>
-                    <span className="text-[10px] font-bold text-text-primary tracking-widest font-sans uppercase">
-                      IPHONE (REMOTE)
-                    </span>
-                  </div>
-                </div>
               </div>
             </motion.div>
 
