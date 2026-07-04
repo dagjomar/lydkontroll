@@ -18,9 +18,10 @@ are now the owner's explicit first priority. P1 `TASK-029` produced the
 source-backed `DESIGN.md`; the owner accepted a Google Stitch/AI Studio concept.
 P1 `TASK-030` is complete: the concept is integrated as an isolated `website/`
 package, its mockups are event-generic, and GitHub Pages is live and verified at
-`https://dagjomar.github.io/lydkontroll/`. P1 `TASK-031` is now ready to add the
-verified site link and final Mac/iPhone imagery to the README. P2 `TASK-026` English localization
-follows that marketing track;
+`https://dagjomar.github.io/lydkontroll/`. P1 `TASK-031` is complete: the README
+now links prominently to the verified site and presents compact, event-generic
+Mac/iPhone product imagery. P2 `TASK-026` English localization now follows that
+completed marketing track;
 `TASK-027` retains later operating-mode research. `Lydkontroll` remains a
 Norwegian-first, event-generic source-available product with configurable event
 title.
@@ -94,9 +95,9 @@ A runnable Tauri 2 application with:
 
 ## Next Milestone
 
-Implement ready `TASK-031`: add the verified Pages URL and compact,
-event-generic Mac/iPhone product screenshots near the top of `README.md`, then
-verify the rendered README at desktop and narrow widths.
+Plan `TASK-026`: resolve complete English localization, language-selection,
+locale ownership, persistence, and validation choices without implementing the
+production change yet.
 
 ## Accepted Foundation
 

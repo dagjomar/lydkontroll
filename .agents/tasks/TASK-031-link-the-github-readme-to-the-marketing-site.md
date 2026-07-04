@@ -1,7 +1,7 @@
 ---
 id: TASK-031
 title: Add product screenshots and the marketing-site link to the README
-status: ready
+status: done
 priority: P1
 type: docs
 owner: unassigned
@@ -47,17 +47,17 @@ verified GitHub Pages marketing site.
 
 ## Acceptance Criteria
 
-- [ ] The link is visible without searching through the full README.
-- [ ] The link targets the verified canonical Pages URL and returns the
+- [x] The link is visible without searching through the full README.
+- [x] The link targets the verified canonical Pages URL and returns the
       marketing site.
-- [ ] Surrounding copy does not imply a public signed download or unsupported
+- [x] Surrounding copy does not imply a public signed download or unsupported
       platform availability.
-- [ ] Existing technical setup, limitations, license, contribution, support,
+- [x] Existing technical setup, limitations, license, contribution, support,
       and security information remains intact.
-- [ ] The README shows representative Mac and iPhone views near the product
+- [x] The README shows representative Mac and iPhone views near the product
       introduction, with event-generic content and descriptive alternative
       text.
-- [ ] Screenshots render cleanly on GitHub at desktop and narrow widths without
+- [x] Screenshots render cleanly on GitHub at desktop and narrow widths without
       dominating the technical documentation or adding unnecessary large files.
 
 ## Validation
@@ -81,3 +81,13 @@ python3 scripts/ralph.py check
   implement only after the Pages deployment is live.
 - `TASK-030` verified the canonical production URL on 2026-07-04. The task is
   now dependency-free and ready for implementation.
+- 2026-07-04: Added the verified Pages link near the introduction and reused
+  the canonical event-generic Mac and iPhone captures in a percentage-width
+  table. The two existing assets total 152 KB. The production URL returned
+  HTTP 200; `npm run public:check` and `git diff --check` passed. GitHub's
+  responsive image styling and relative table widths keep the pair compact at
+  desktop and narrow widths without duplicating image files.
+
+- 2026-07-04: Task claimed.
+
+- 2026-07-04: Added the verified Pages link and compact event-generic Mac/iPhone imagery; public readiness, link, responsive markup, and diff validation passed.

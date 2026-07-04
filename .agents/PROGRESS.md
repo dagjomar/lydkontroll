@@ -587,3 +587,15 @@ Append concise, dated entries. Keep detailed implementation notes in task files.
 - Verified `https://dagjomar.github.io/lydkontroll/` visually at 1280x720 and
   390x844. Promoted dependent `TASK-031` to ready for the README link and final
   product screenshot presentation.
+
+## 2026-07-04 — TASK-031 README product presentation complete
+
+- Added a prominent Norwegian link from the README introduction to the verified
+  GitHub Pages site; the production URL returned HTTP 200.
+- Reused the canonical event-generic Mac and iPhone captures in a compact
+  percentage-width table with descriptive Norwegian alternative text.
+- Kept the existing technical, platform, distribution, licensing,
+  contribution, support, and security guidance unchanged and added no duplicate
+  image files; the reused pair totals 152 KB.
+- Passed `npm run public:check`, `git diff --check`, and Ralph validation. The
+  next milestone is planning P2 `TASK-026` English localization.

@@ -8,6 +8,20 @@ The current implementation includes managed cue persistence/import,
 deterministic local playback, desktop editing, reconnecting iPhone control over
 Tailscale, and event preflight diagnostics.
 
+**[Se Lydkontroll-nettsiden](https://dagjomar.github.io/lydkontroll/)** for en
+kort norsk presentasjon av produktet.
+
+<table>
+  <tr>
+    <td width="66%">
+      <img src="website/public/images/desktop-overview.png" alt="Lydkontroll på Mac med scener, cue-redigering og lokale avspillingskontroller">
+    </td>
+    <td width="34%">
+      <img src="website/public/images/mobile-control.png" alt="Lydkontroll på iPhone med mastervolum og store cue-knapper">
+    </td>
+  </tr>
+</table>
+
 ## What works without a network
 
 The Mac application can import audio, edit scenes/cues, play, stop, fade, and
